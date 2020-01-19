@@ -69,15 +69,11 @@ public class TimeSlot{
         this.room = room;
     }
 
-    public String getStartTime12HrFormat(){
-        String time = startTime <= 1200 ? Integer.toString(startTime) : Integer.toString(startTime%1200);
-        String suffix = startTime <= 1200 ? "am" : "pm";
-        return time.substring(0,time.length()-2)+":"+time.substring(time.length()-2)+ " "+ suffix;
-    }
-
-    public String getEndTime12HrFormat(){
-        String time = endTime <= 1200 ? Integer.toString(endTime) : Integer.toString(endTime%1200);
-        String suffix = endTime <= 1200 ? "am" : "pm";
+    public String getTime12HrFormat(int t){
+        String time = t <= 1200 ? Integer.toString(t) : Integer.toString(t%1200);
+        String suffix = t < 1200 ? "am" : "pm";
+        if (time.length()==2)
+        { time = "12" + time;}
         return time.substring(0,time.length()-2)+":"+time.substring(time.length()-2)+ " "+ suffix;
     }
 

@@ -44,8 +44,8 @@
                 <tbody>
                   <tr th:each="ts : ${timeSlotModel}">
                     <td th:text="${ts.day}"></td>
-                    <td th:text="${ts.getStartTime12HrFormat()}"></td>
-                    <td th:text="${ts.getEndTime12HrFormat()}"></td>
+                    <td th:text="${ts.getTime12HrFormat(ts.startTime)}"></td>
+                    <td th:text="${ts.getTime12HrFormat(ts.endTime)}"></td>
                     <td th:text="${ts.room.name}"></td>
                   </tr>
                 </tbody>
