@@ -9,10 +9,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class Application extends WebSecurityConfigurerAdapter {
 
     public static void main(String[] args) {
-	SpringApplication.run(Application.class, args);
+	    SpringApplication.run(Application.class, args);
     }
 
-   @Override
+    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
         .authorizeRequests()
