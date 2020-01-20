@@ -8,9 +8,8 @@ INSERT INTO time_slot(day, start_time, end_time, room_id) VALUES('Tuesday', 1900
 INSERT INTO time_slot(day, start_time, end_time, room_id) VALUES('Wednesday', 1700, 2100,1);
 INSERT INTO time_slot(day, start_time, end_time, room_id) VALUES('Thursday', 1900, 2100,2);
 INSERT INTO time_slot(day, start_time, end_time, room_id) VALUES('Friday', 1000, 1200,3);
-INSERT INTO time_slot(day, start_time, end_time, room_id) VALUES('Friday', 1300, 1700,2);
-
-
+INSERT INTO time_slot(day, start_time, end_time, room_id) VALUES('Friday', 1300, 1500,2);
+INSERT INTO time_slot(day, start_time, end_time, room_id) VALUES('Friday', 1500, 1700,1);
 
 
 
