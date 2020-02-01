@@ -7,12 +7,15 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Room{
+public class Users{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    private String name;
+    
+    private long googleId;
+    private String ucsbemail;
+    private String firstName;
+    private String lastName;
 
     public Room(){}
 

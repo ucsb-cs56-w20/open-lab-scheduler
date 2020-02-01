@@ -13,15 +13,68 @@ public class TimeSlot{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    @NotBlank(message = "Start time is required")
+    private String quarter;//QYY
+    private long roomId;
     private int startTime;
-
-    @NotBlank(message = "End time is required")
     private int endTime;
-
-    @NotBlank(message = "Day is required")
     private String day;
+
+    public TimeSlot(String quarter, String room, int startTime, int endTime, String day){
+        setQuarter(quarter);
+        setRoomId(room);
+        setStartTime(startTime);
+        setEndTime(endTime);
+        setDay(day);
+    }
+
+    public long getId(){
+        return id;
+    }
+    public void setId(long id){
+        this.id = id;
+    }
+
+    public String getQuarter(){
+        return quarter;
+    }  
+    public void setQuarter(String quarter){
+        this.quarter = quarter;
+    }
+
+    public long getRoomId(){
+        return roomId;
+    }
+    public void setRoomId(long roomId){
+        this.roomId = roomId;
+    }
+    public void setRoomId(String roomName){
+        //stub
+    }
+    public String getRoom(){
+        return "stub";
+    }
+
+    public int getStartTime(){
+        return startTime;
+    }
+    public void setStartTime(int StartTime){
+        this.startTime = startTime;
+    }
+
+    public int getEndTime(){
+        return endTime;
+    }
+    public void setEndTime(int endTime){
+        this.endTime = endTime;
+    }
+
+    public String getDay(){
+        return day;
+    }
+    public void setDay(String day){
+        this.day = day;
+    }
+
 
     @OneToOne
     @JoinColumn(name = "room_id")

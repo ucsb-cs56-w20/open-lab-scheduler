@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TimeSlotRepository extends CrudRepository<TimeSlot, Long> {
-
+    List<TimeSlot> findById(long id);
 }
