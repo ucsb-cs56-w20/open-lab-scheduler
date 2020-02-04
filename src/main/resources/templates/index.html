@@ -42,11 +42,11 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="ts : ${timeSlotModel}">
-                    <td th:text="${ts.day}"></td>
-                    <td th:text="${ts.getTime12HrFormat(ts.startTime)}"></td>
-                    <td th:text="${ts.getTime12HrFormat(ts.endTime)}"></td>
-                    <td th:text="${ts.room.name}"></td>
+                  <tr th:each="ra : ${RoomAvailabilityModel}">
+                    <td th:text="${ra.day}"></td>
+                    <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
+                    <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
+                    <td th:text="${ra.room.name}"></td>
                   </tr>
                 </tbody>
               </table>

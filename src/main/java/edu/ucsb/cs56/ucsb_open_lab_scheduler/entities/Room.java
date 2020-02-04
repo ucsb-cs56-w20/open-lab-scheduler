@@ -12,6 +12,7 @@ public class Room{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank(message = "Room name is required")
     private String name;
 
     public Room(){}
