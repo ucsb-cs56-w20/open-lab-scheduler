@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RoomAvailabilityRepository extends CrudRepository<RoomAvailability, Long> {
-
+    RoomAvailability findById(long id);
 }
