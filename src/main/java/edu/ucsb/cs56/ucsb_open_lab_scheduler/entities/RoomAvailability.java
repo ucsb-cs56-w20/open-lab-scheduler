@@ -1,5 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +14,9 @@ public class RoomAvailability{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotBlank(message = "Quarter is required")
+    private String quarter;
 
     @NotBlank(message = "Start time is required")
     private int startTime;
@@ -28,13 +32,23 @@ public class RoomAvailability{
     @NotBlank(message = "Room is required")
     private Room room;
 
-    public RoomAvailability(){}
-    
-    public RoomAvailability(int startTime, int endTime, String day, Room room){
+    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, Room room) {
+        this.id = id;
+        this.quarter = quarter;
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
         this.room = room;
+    }
+
+    public RoomAvailability(){}
+    
+    public String getQuarter() {
+        return this.quarter;
+    }
+
+    public void setQuarter(String quarter) {
+        this.quarter = quarter;
     }
 
     public int getStartTime(){
@@ -78,7 +92,30 @@ public class RoomAvailability{
     }
 
     @Override
-    public String toString(){
-        return day+" ["+startTime+" - "+endTime+"] "+room.toString();
+    public String toString() {
+        return "{" +
+            " id='" + id + "'" +
+            ", quarter='" + quarter + "'" +
+            ", startTime='" + getTime12HrFormat(startTime) + "'" +
+            ", endTime='" + getTime12HrFormat(endTime) + "'" +
+            ", day='" + day + "'" +
+            ", room='" + room + "'" +
+            "}";
+    }
+   
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof RoomAvailability)) {
+            return false;
+        }
+        RoomAvailability roomAvailability = (RoomAvailability) o;
+        return id == roomAvailability.id && Objects.equals(quarter, roomAvailability.quarter) && startTime == roomAvailability.startTime && endTime == roomAvailability.endTime && Objects.equals(day, roomAvailability.day) && Objects.equals(room, roomAvailability.room);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, quarter, startTime, endTime, day, room);
     }
 }
