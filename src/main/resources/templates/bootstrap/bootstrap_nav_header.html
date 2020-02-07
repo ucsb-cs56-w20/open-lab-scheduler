@@ -7,6 +7,11 @@
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">  
+                <li th:if="${isAdmin}" class="nav-item ">
+                        <a class="nav-link" href="/admin" id="navbarDropdown" role="button">
+                          Admin
+                        </a>
+                </li> 
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
