@@ -7,37 +7,29 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class TimeSlot{
+public class Tutor{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long roomAvailabilityId;
-    private int startTime;
 
-    public TimeSlot(){}
+    private long uid;
+
+    public Tutor(){}
 
     public void setId(long id){
         this.id = id;
     }    
 
-    public void setRoomAvailabilityId(long roomAvailabilityId){
-        this.roomAvailabilityId = roomAvailabilityId;
-    }
-
-    public void setStartTime(int startTime){
-        this.startTime = startTime;
+    public void setUid(long uid){
+        this.uid = uid;
     }
 
     public long getId(){
         return id;
     }
 
-    public long getRoomAvailabilityId(){
-        return roomAvailabilityId;
-    }
-
-    public int getStartTime(){
-        return startTime;
+    public long getUid(){
+        return uid;
     }
 
 }

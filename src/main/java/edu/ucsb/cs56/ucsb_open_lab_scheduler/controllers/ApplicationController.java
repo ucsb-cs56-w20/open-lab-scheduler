@@ -6,24 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
 
 @Controller
 public class ApplicationController{
     private final RoomRepository roomRepository;
-    private final TimeSlotRepository timeSlotRepository;
+    private final RoomAvailabilityRepository RoomAvailabilityRepository;
 
     @Autowired
-    public ApplicationController(RoomRepository roomRepository, TimeSlotRepository timeSlotRepository){
+    public ApplicationController(RoomRepository roomRepository, RoomAvailabilityRepository RoomAvailabilityRepository){
         this.roomRepository = roomRepository;
-        this.timeSlotRepository = timeSlotRepository;
+        this.RoomAvailabilityRepository = RoomAvailabilityRepository;
     }
 
     @GetMapping("/")
     public String home(Model model){
         model.addAttribute("roomModel", roomRepository.findAll());
-        model.addAttribute("timeSlotModel", timeSlotRepository.findAll());
+        model.addAttribute("RoomAvailabilityModel", RoomAvailabilityRepository.findAll());
         return "index";
     }
 }
