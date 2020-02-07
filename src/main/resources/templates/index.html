@@ -1,22 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
-
 <head>
-  <title>Open Lab Hours</title>
-
-  <meta charset="utf-8" />
-  <meta http-equiv="x-ua-compatible" content="ie=edge" />
-  <title>Tutors</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
-    integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous" />
+  <div th:replace="bootstrap/title.html"></div>
+  <div th:replace="bootstrap/bootstrap_head.html"></div>
 </head>
 
 <body>
   <div class="container">
+    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
     <div class="row">
       <div class="col-md-6">
 
@@ -45,7 +38,10 @@
 
       </div>
     </div>
+
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
+  <div th:replace="bootstrap/bootstrap_scripts.html"></div>
 </body>
 
 </html>

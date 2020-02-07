@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
@@ -29,7 +30,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class HomePageTest {
 
     @Autowired
-    private MockMvc mvc;
+	private MockMvc mvc;
+
+	@MockBean
+	private AuthControllerAdvice aca;
+	
+	@MockBean
+    private ClientRegistrationRepository crr;
 
 	@MockBean
 	private RoomRepository rr;
@@ -47,6 +54,6 @@ public class HomePageTest {
     public void getHomePage_hasCorrectTitle() throws Exception {
         mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
                 .andExpect(xpath("//title").exists())
-                .andExpect(xpath("//title").string("Open Lab Hours"));
+                .andExpect(xpath("//title").string("Open Lab Scheduler"));
     }
 }
