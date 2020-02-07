@@ -49,6 +49,9 @@ public class GoogleMembershipService implements MembershipService {
      */
 
     public boolean hasRole(OAuth2AuthenticationToken oauthToken, String roleToTest) {
+
+        logger.info("adminEmail=["+adminEmail+"]");
+
         if (oauthToken == null) {
             return false;
         }
@@ -61,17 +64,17 @@ public class GoogleMembershipService implements MembershipService {
         OAuth2User oAuth2User = oauthToken.getPrincipal();
 
         String email = (String) oAuth2User.getAttributes().get("email");
-        String hd = (String) oAuth2User.getAttributes().get("hd");
+        // hd is the domain of the email, e.g. ucsb.edu
+        String hostedDomain = (String) oAuth2User.getAttributes().get("hd");
 
-        if (hd == null) {
-            return false;
-        }
+        logger.info("email=["+email+"]");
+        logger.info("hostedDomain="+hostedDomain);
 
-        if (roleToTest.equals("member") && hd.equals(memberHostedDomain)) {
+        if (roleToTest.equals("admin") && email.equals(adminEmail)) {
             return true;
         }
 
-        if (roleToTest.equals("admin") && email.equals(adminEmail)) {
+        if (roleToTest.equals("member") && memberHostedDomain.equals(hostedDomain)) {
             return true;
         }
 
