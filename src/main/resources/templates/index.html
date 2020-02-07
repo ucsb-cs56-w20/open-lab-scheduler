@@ -1,56 +1,49 @@
-
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 
 <head>
-  <title>Open Lab Hours Yeeee</title>
+  <title>Open Lab Hours</title>
 
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Tutors</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
-      integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
-      crossorigin="anonymous"
-    />
-  </head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>Tutors</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+    integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous" />
+</head>
 
 <body>
   <div class="container">
-  
-        <div class="row">
-          <div class="col-md-</div>6">
-          
-              <h2 class="my-5">CS56 W20 Open Lab Hours</h2>
-              <th align="left">
-              <table class="table table-striped table-responsive-md">
-                <thead>
-                  <tr>
-                    <th>Day</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Room</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr th:each="ra : ${RoomAvailabilityModel}">
-                    <td th:text="${ra.day}"></td>
-                    <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
-                    <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
-                    <td th:text="${ra.room.name}"></td>
-                  </tr>
-                </tbody>
-              </table>
-            </th>
-            </div>
+    <div class="row">
+      <div class="col-md-6">
+
+        <h2 class="my-5">CS56 W20 Open Lab Hours</h2>
+
+        <table class="table table-striped table-responsive-md">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Room</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="ra : ${RoomAvailabilityModel}">
+              <td th:text="${ra.day}"></td>
+              <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
+              <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
+              <td th:text="${ra.room.name}"></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>
