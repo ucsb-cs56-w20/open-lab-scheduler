@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.AdminRepository;
 
 /**
  * Service object that wraps the UCSB Academic Curriculum API
@@ -28,6 +28,9 @@ public class GoogleMembershipService implements MembershipService {
 
     @Autowired
     private OAuth2AuthorizedClientService clientService;
+
+    @Autowired
+    private AdminRepository adminRepository;
 
     /**
      * is current logged in user a member but NOT an admin of the google org
@@ -50,7 +53,7 @@ public class GoogleMembershipService implements MembershipService {
 
     public boolean hasRole(OAuth2AuthenticationToken oauthToken, String roleToTest) {
 
-        logger.info("adminEmail=["+adminEmail+"]");
+        logger.info("adminEmail=[" + adminEmail + "]");
 
         if (oauthToken == null) {
             return false;
@@ -67,10 +70,10 @@ public class GoogleMembershipService implements MembershipService {
         // hd is the domain of the email, e.g. ucsb.edu
         String hostedDomain = (String) oAuth2User.getAttributes().get("hd");
 
-        logger.info("email=["+email+"]");
-        logger.info("hostedDomain="+hostedDomain);
+        logger.info("email=[" + email + "]");
+        logger.info("hostedDomain=" + hostedDomain);
 
-        if (roleToTest.equals("admin") && email.equals(adminEmail)) {
+        if (roleToTest.equals("admin") && isAdminEmail(email)) {
             return true;
         }
 
@@ -79,6 +82,10 @@ public class GoogleMembershipService implements MembershipService {
         }
 
         return false;
+    }
+
+    private boolean isAdminEmail(String email) {
+        return (!adminRepository.findByEmail(email).isEmpty() || email.equals(adminEmail));
     }
 
 }
