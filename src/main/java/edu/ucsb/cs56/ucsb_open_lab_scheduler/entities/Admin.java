@@ -1,35 +1,39 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Admin{
+public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long uid;
+    @NotBlank
+    private String email;
 
-    public Admin(){}
-
-    public void setId(long id){
-        this.id = id;
-    }    
-
-    public void setUid(long uid){
-        this.uid = uid;
+    public Admin() {
     }
 
-    public long getId(){
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public long getUid(){
-        return uid;
+    public String getEmail() {
+        return email;
     }
 
 }

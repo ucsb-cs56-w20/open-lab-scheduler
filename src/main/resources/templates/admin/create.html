@@ -1,25 +1,45 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+  </head>
 
-<head>
-  <div th:replace="bootstrap/title.html"></div>
-  <div th:replace="bootstrap/bootstrap_head.html"></div>
-</head>
+  <body>
+    <div class="container">
+      <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
 
-<body>
-  <div class="container">
-    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+      <h1>Maintain Admins</h1>
 
-    <h1>Maintain Admins</h1>
+      <h2>Add New Admin</h2>
 
-    <p>TODO: Put CRUD Operations for Admins here</p>
+      <div th:replace="admin/form.html"></div>
 
-    <div th:replace="admin/form.html"></div>
+      <h2>Current Admins</h2>
 
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="a: ${admins}">
+            <td th:text="${a.email}"></td>
+            <td>
+              <a
+                th:href="@{/admin/delete/{id}(id=${a.id})}"
+                class="btn btn-danger"
+                >Delete</a
+              >
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <div th:replace="bootstrap/bootstrap_footer.html"></div>
-  </div>
-  <div th:replace="bootstrap/bootstrap_scripts.html"></div>
-</body>
-
+      <div th:replace="bootstrap/bootstrap_footer.html"></div>
+    </div>
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  </body>
 </html>
