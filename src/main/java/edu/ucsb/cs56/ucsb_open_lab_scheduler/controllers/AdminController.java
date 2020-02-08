@@ -7,6 +7,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Admin;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.AdminRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.ValidEmailService;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -33,9 +35,18 @@ public class AdminController {
 
     private AdminRepository adminRepository;
 
+    @Value("${app.admin.email}")
+    private String adminEmail;
+
     @Autowired
     public AdminController(AdminRepository repo) {
         this.adminRepository = repo;
+    }
+
+    private void addOGAdmin() {
+        if (adminRepository.findByEmail(adminEmail).isEmpty()) {
+            adminRepository.save(new Admin(adminEmail));
+        }
     }
 
     @GetMapping("/admin")
@@ -45,6 +56,7 @@ public class AdminController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+        addOGAdmin();
         model.addAttribute("admins", adminRepository.findAll());
         model.addAttribute("newAdmin", new Admin());
         return "admin/create";
@@ -85,8 +97,8 @@ public class AdminController {
             errors = true;
             redirAttrs.addFlashAttribute("alertDanger", "Invalid email.");
         }
-        Admin alreadyExistingAdmin = adminRepository.findByEmail(admin.getEmail());
-        if (alreadyExistingAdmin != null) {
+        List<Admin> alreadyExistingAdmins = adminRepository.findByEmail(admin.getEmail());
+        if (!alreadyExistingAdmins.isEmpty()) {
             errors = true;
             redirAttrs.addFlashAttribute("alertDanger", "An admin with that email already exists.");
         }

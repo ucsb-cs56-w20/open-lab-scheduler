@@ -20,6 +20,10 @@ public class Admin {
     public Admin() {
     }
 
+    public Admin(String email) {
+        this.email = email;
+    }
+
     public void setId(long id) {
         this.id = id;
     }
