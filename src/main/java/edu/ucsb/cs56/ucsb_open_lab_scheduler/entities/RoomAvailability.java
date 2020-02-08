@@ -1,5 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+import com.opencsv.bean.CsvBindByName;
+
 import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,9 +20,11 @@ public class RoomAvailability{
     @NotBlank(message = "Quarter is required")
     private String quarter;
 
+    @CsvBindByName(column = "start_time")
     @NotBlank(message = "Start time is required")
     private int startTime;
 
+    @CsvBindByName(column = "end_time")
     @NotBlank(message = "End time is required")
     private int endTime;
 
@@ -42,7 +46,7 @@ public class RoomAvailability{
     }
 
     public RoomAvailability(){}
-    
+
     public String getQuarter() {
         return this.quarter;
     }
@@ -102,7 +106,7 @@ public class RoomAvailability{
             ", room='" + room + "'" +
             "}";
     }
-   
+
     @Override
     public boolean equals(Object o) {
         if (o == this)
