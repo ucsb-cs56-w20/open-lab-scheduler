@@ -50,7 +50,7 @@ public class AdminController {
         return "admin/create";
     }
 
-    @GetMapping("/admin/delete/{id}")
+    @PostMapping("/admin/delete/{id}")
     public String deleteAdmin(@PathVariable("id") long id, Model model, RedirectAttributes redirAttrs,
             OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);

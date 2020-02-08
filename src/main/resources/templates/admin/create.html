@@ -28,11 +28,17 @@
           <tr th:each="a: ${admins}">
             <td th:text="${a.email}"></td>
             <td>
-              <a
-                th:href="@{/admin/delete/{id}(id=${a.id})}"
-                class="btn btn-danger"
-                >Delete</a
+              <form
+                th:action="@{/admin/delete/{id}(id=${a.id})}"
+                th:method="post"
               >
+                <input
+                  type="hidden"
+                  th:name="${_csrf.parameterName}"
+                  th:value="${_csrf.token}"
+                />
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
             </td>
           </tr>
         </tbody>
