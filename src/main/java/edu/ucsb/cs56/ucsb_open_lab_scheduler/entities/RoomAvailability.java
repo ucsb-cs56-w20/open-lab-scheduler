@@ -2,15 +2,13 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 public class RoomAvailability{
