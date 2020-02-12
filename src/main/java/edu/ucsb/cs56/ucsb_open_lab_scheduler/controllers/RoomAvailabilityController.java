@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 
 @Controller
@@ -32,6 +35,14 @@ public class RoomAvailabilityController {
 
     @PostMapping("/roomAvailability/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv) {
+        try {
+            Reader reader = new InputStreamReader(csv.getInputStream());
+            List<RoomAvailability> roomAvails = csvtra.parse(reader);
+            rar.saveAll(roomAvails);
+        }catch(IOException e){
+            log.info(e.toString());
+        }
+
         return "redirect:/roomAvailability";
     }
 }

@@ -10,6 +10,9 @@
 .project
 .settings/
 
+#IntelliJ
+.idea/
+*.iml
 
 # MacOS
 

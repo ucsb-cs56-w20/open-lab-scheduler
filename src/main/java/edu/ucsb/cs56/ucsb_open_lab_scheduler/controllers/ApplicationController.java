@@ -18,21 +18,18 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityReposi
 
 @Controller
 public class ApplicationController{
-    private final RoomRepository roomRepository;
     private final RoomAvailabilityRepository RoomAvailabilityRepository;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
-    public ApplicationController(RoomRepository roomRepository, RoomAvailabilityRepository RoomAvailabilityRepository){
-        this.roomRepository = roomRepository;
+    public ApplicationController(RoomAvailabilityRepository RoomAvailabilityRepository){
         this.RoomAvailabilityRepository = RoomAvailabilityRepository;
     }
 
     @GetMapping("/")
     public String home(Model model){
-        model.addAttribute("roomModel", roomRepository.findAll());
         model.addAttribute("RoomAvailabilityModel", RoomAvailabilityRepository.findAll());
         return "index";
     }

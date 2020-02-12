@@ -15,7 +15,7 @@ public class CSVToRoomAvailabilityServiceImpl implements CSVToRoomAvailabilitySe
 
     @Override
     public List<RoomAvailability> parse(Reader csv) {
-        return new CsvToBeanBuilder<RoomAvailability>(csv).withType(RoomAvailability.class).build().parse();
+        return new CsvToBeanBuilder<RoomAvailability>(csv).withSkipLines(1).withType(RoomAvailability.class).build().parse();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
-import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
 
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class RoomAvailability{
@@ -17,26 +18,27 @@ public class RoomAvailability{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @CsvBindByPosition(position = 0)
     @NotBlank(message = "Quarter is required")
     private String quarter;
 
-    @CsvBindByName(column = "start_time")
-    @NotBlank(message = "Start time is required")
+    @CsvBindByPosition(position = 2)
+    @NotNull
     private int startTime;
 
-    @CsvBindByName(column = "end_time")
-    @NotBlank(message = "End time is required")
+    @CsvBindByPosition(position = 3)
+    @NotNull
     private int endTime;
 
+    @CsvBindByPosition(position = 1)
     @NotBlank(message = "Day is required")
     private String day;
 
-    @OneToOne
-    @JoinColumn(name = "room_id")
+    @CsvBindByPosition(position = 4)
     @NotBlank(message = "Room is required")
-    private Room room;
+    private String room;
 
-    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, Room room) {
+    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
         this.id = id;
         this.quarter = quarter;
         this.startTime = startTime;
@@ -67,7 +69,7 @@ public class RoomAvailability{
         return day;
     }
 
-    public Room getRoom(){
+    public String getRoom(){
         return room;
     }
 
@@ -83,7 +85,7 @@ public class RoomAvailability{
         this.day = day;
     }
 
-    public void setRoom(Room room){
+    public void setRoom(String room){
         this.room = room;
     }
 
