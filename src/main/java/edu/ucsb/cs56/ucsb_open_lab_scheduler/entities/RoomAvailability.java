@@ -1,13 +1,14 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
-import java.util.Objects;
+import com.opencsv.bean.CsvBindByPosition;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 public class RoomAvailability{
@@ -15,24 +16,27 @@ public class RoomAvailability{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @CsvBindByPosition(position = 0)
     @NotBlank(message = "Quarter is required")
     private String quarter;
 
-    @NotBlank(message = "Start time is required")
+    @CsvBindByPosition(position = 2)
+    @NotNull
     private int startTime;
 
-    @NotBlank(message = "End time is required")
+    @CsvBindByPosition(position = 3)
+    @NotNull
     private int endTime;
 
+    @CsvBindByPosition(position = 1)
     @NotBlank(message = "Day is required")
     private String day;
 
-    @OneToOne
-    @JoinColumn(name = "room_id")
+    @CsvBindByPosition(position = 4)
     @NotBlank(message = "Room is required")
-    private Room room;
+    private String room;
 
-    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, Room room) {
+    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
         this.id = id;
         this.quarter = quarter;
         this.startTime = startTime;
@@ -42,7 +46,7 @@ public class RoomAvailability{
     }
 
     public RoomAvailability(){}
-    
+
     public String getQuarter() {
         return this.quarter;
     }
@@ -63,7 +67,7 @@ public class RoomAvailability{
         return day;
     }
 
-    public Room getRoom(){
+    public String getRoom(){
         return room;
     }
 
@@ -79,7 +83,7 @@ public class RoomAvailability{
         this.day = day;
     }
 
-    public void setRoom(Room room){
+    public void setRoom(String room){
         this.room = room;
     }
 
@@ -102,7 +106,7 @@ public class RoomAvailability{
             ", room='" + room + "'" +
             "}";
     }
-   
+
     @Override
     public boolean equals(Object o) {
         if (o == this)

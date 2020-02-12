@@ -1,9 +1,8 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.opencsv.bean.CsvBindByName;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
@@ -12,6 +11,7 @@ public class Room{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @CsvBindByName(column = "room")
     @NotBlank(message = "Room name is required")
     private String name;
 
@@ -23,7 +23,7 @@ public class Room{
 
     public void setId(long id){
         this.id = id;
-    }    
+    }
 
     public void setName(String name){
         this.name = name;
