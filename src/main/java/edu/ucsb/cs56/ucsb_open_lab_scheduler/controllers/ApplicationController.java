@@ -14,19 +14,19 @@ import java.util.Map;
 
 @Controller
 public class ApplicationController{
-    private final RoomAvailabilityRepository RoomAvailabilityRepository;
+    private final RoomAvailabilityRepository roomAvailabilityRepository;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
-    public ApplicationController(RoomAvailabilityRepository RoomAvailabilityRepository){
-        this.RoomAvailabilityRepository = RoomAvailabilityRepository;
+    public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository){
+        this.roomAvailabilityRepository = roomAvailabilityRepository;
     }
 
     @GetMapping("/")
     public String home(Model model){
-        model.addAttribute("RoomAvailabilityModel", RoomAvailabilityRepository.findAll());
+        model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index";
     }
 

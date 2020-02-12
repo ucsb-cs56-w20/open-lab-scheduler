@@ -32,7 +32,7 @@ public class RoomAvailabilityController {
     CSVToRoomAvailabilityService csvtra;
 
     @Autowired
-    RoomAvailabilityRepository rar;
+    RoomAvailabilityRepository roomAvailabilityRepository;
 
     @GetMapping("/roomAvailability")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
@@ -41,7 +41,7 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("RoomAvailabilityModel", rar.findAll());
+        model.addAttribute("RoomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "roomAvailability";
     }
 
@@ -54,7 +54,7 @@ public class RoomAvailabilityController {
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
             List<RoomAvailability> roomAvails = csvtra.parse(reader);
-            rar.saveAll(roomAvails);
+            roomAvailabilityRepository.saveAll(roomAvails);
         }catch(IOException e){
             log.error(e.toString());
         }
