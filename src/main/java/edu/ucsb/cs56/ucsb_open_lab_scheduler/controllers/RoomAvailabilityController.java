@@ -52,12 +52,11 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        try {
-            Reader reader = new InputStreamReader(csv.getInputStream());
+        try(Reader reader = new InputStreamReader(csv.getInputStream())){
             List<RoomAvailability> roomAvails = csvtra.parse(reader);
             rar.saveAll(roomAvails);
         }catch(IOException e){
-            log.info(e.toString());
+            log.error(e.toString());
         }
         return "redirect:/roomAvailability";
     }
