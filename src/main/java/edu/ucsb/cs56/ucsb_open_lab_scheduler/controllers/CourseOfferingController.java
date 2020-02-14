@@ -29,7 +29,7 @@ public class CourseOfferingController {
     private AuthControllerAdvice authControllerAdvice;
 
     @Autowired
-    CSVToCourseOfferingServiceImpl csvtco;
+    CSVToCourseOfferingServiceImpl csvToCourseOfferingServiceImpl ;
 
     @Autowired
     CourseOfferingRepository courseOfferingRepository;
@@ -53,7 +53,7 @@ public class CourseOfferingController {
             return "redirect:/";
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            List<CourseOffering> courseOfferings = csvtco.parse(reader);
+            List<CourseOffering> courseOfferings =  csvToCourseOfferingServiceImpl .parse(reader);
             courseOfferingRepository.saveAll(courseOfferings);
         }catch(IOException e){
             log.error(e.toString());
