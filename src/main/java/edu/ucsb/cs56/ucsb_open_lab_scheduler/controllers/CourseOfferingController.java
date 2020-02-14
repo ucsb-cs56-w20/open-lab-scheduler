@@ -3,7 +3,7 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToCourseOfferingServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class CourseOfferingController {
     private AuthControllerAdvice authControllerAdvice;
 
     @Autowired
-    CSVToObjectService<CourseOffering> csvToObjectService;
+    CSVToCourseOfferingServiceImpl csvToCourseOfferingServiceImpl ;
 
     @Autowired
     CourseOfferingRepository courseOfferingRepository;
@@ -53,8 +53,7 @@ public class CourseOfferingController {
             return "redirect:/";
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            csvToObjectService.setType(CourseOffering.class);   
-            List<CourseOffering> courseOfferings =  csvToObjectService.parse(reader);
+            List<CourseOffering> courseOfferings =  csvToCourseOfferingServiceImpl .parse(reader);
             courseOfferingRepository.saveAll(courseOfferings);
         }catch(IOException e){
             log.error(e.toString());
