@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TutorRepository extends CrudRepository<Tutor, Long> {
-    Tutor findById(long id);
+    // Tutor findById(long id);
 }

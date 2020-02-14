@@ -16,9 +16,12 @@ public class TutorAssignment{
 
     private long tutorId;
 
-    private String level;
-
     public TutorAssignment(){}
+
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering){
+        this.tutorId = tutor.getId();
+        this.courseOfferingId = courseOffering.getId();
+    }
 
     public void setId(long id){
         this.id = id;
@@ -32,10 +35,6 @@ public class TutorAssignment{
         this.tutorId = tutorId;
     }
 
-    public void setLevel(String level){
-        this.level = level;
-    }
-
     public long getId(){
         return id;
     }
@@ -46,10 +45,6 @@ public class TutorAssignment{
 
     public long getTutorId(){
         return tutorId;
-    }
-
-    public String getLevel(){
-        return level;
     }
 
 }
