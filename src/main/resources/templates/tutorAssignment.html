@@ -1,40 +1,42 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+  </head>
 
-<head>
-  <div th:replace="bootstrap/title.html"></div>
-  <div th:replace="bootstrap/bootstrap_head.html"></div>
-</head>
+  <body>
+    <div class="container">
+      <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
 
-<body>
-  <div class="container">
-    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
-
-    <div class="row">
-      <div class="col-md-6">
-
-        <h2 class="my-5">CS56 Tutor Assignment</h2>
-        <table class="table table-striped table-responsive-md">
-          <thead>
-            <tr>
-              <th>Course</th>
-              <th>Tutor</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="ra : ${tutorAssignment}">
-              <td th:text="${ta.getCourseId()}"></td>
-              <td th:text="${ta.getTutorId()}"></td>
-            </tr>
-          </tbody>
-        </table>
-
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="my-5">CS56 Tutor Assignments</h2>
+          <table class="table table-striped table-responsive-md">
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="courseOffering : ${courseOfferings}">
+                <td
+                  th:text="${courseOffering.getQuarter() + ' ' + courseOffering.getCourseId()}"
+                ></td>
+                <td>
+                  <a th:href="'/tutorAssignment/' + ${courseOffering.id}"
+                    >Manage</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
+
+      <div th:replace="bootstrap/bootstrap_footer.html"></div>
     </div>
-
-    <div th:replace="bootstrap/bootstrap_footer.html"></div>
-  </div>
-  <div th:replace="bootstrap/bootstrap_scripts.html"></div>
-</body>
-
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  </body>
 </html>
