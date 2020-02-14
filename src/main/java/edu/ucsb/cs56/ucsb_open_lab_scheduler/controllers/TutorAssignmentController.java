@@ -5,11 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
@@ -23,8 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 @Controller
 public class TutorAssignmentController {
@@ -44,7 +42,7 @@ public class TutorAssignmentController {
     this.courseOfferingRepository = courseOfferingRepository;
   }
 
-  @GetMapping("/tutorAssignment")
+  @GetMapping("/tutorAssignment/courseSelect")
   public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
     if (!role.equals("Admin")) {
@@ -55,7 +53,7 @@ public class TutorAssignmentController {
     return "tutorAssignment";
   }
 
-  @GetMapping("/tutorAssignment/{id}")
+  @GetMapping("/tutorAssignment/courseSelect/{id}")
   public String manageCourse(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
       RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
@@ -70,7 +68,14 @@ public class TutorAssignmentController {
       return "redirect:/";
 
     }
+    Iterable<Tutor> tutors = tutorRepository.findAll();
+    List<TutorAssignment> tutorAssignments = tutorAssignmentRepository
+        .findByCourseOfferingId(courseOffering.get().getId());
 
+    Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream()
+        .anyMatch((ta) -> ta.getTutorId() == tutor.getId());
+    model.addAttribute("shouldBeChecked", shouldBeChecked);
+    model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());
 
     return "tutorAssignment/manage";
