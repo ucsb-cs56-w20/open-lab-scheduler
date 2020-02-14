@@ -13,16 +13,9 @@ import java.lang.Class;
 @Service
 public class CSVToObjectServiceImpl<T> implements CSVToObjectService<T> {
     private static Logger log = LoggerFactory.getLogger(CSVToObjectServiceImpl.class);
-    
-    // cannot get type of generic T at runtime, here is a workaround
-    // NOTE: setType before parse
-    private Class<T> type;
-    public void setType(Class<T> type) {
-        this.type = type;
-    }
 
     @Override
-    public List<T> parse(Reader csv) {
+    public List<T> parse(Reader csv, Class<T> type) {
         return new CsvToBeanBuilder<T>(csv)
         .withSkipLines(1)
         .withType(type)

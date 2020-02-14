@@ -11,15 +11,13 @@ import java.util.List;
 
 
 public interface CSVToObjectService<T> {
-    List<T> parse(Reader csv);
+    List<T> parse(Reader csv, Class<T> type);
 
     Logger getLogger();
 
-    void setType(Class<T> type);
-
-    default List<T> parse(MultipartFile file) {
+    default List<T> parse(MultipartFile file, Class<T> type) {
         try {
-            return parse(new InputStreamReader(file.getInputStream()));
+            return parse(new InputStreamReader(file.getInputStream()), type);
         } catch (IOException e) {
             getLogger().error("CSV could not be parsed", e);
         }

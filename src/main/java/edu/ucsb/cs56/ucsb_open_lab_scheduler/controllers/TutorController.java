@@ -55,8 +55,7 @@ public class TutorController {
             return "redirect:/";
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            csvToObjectService.setType(Tutor.class);
-            List<Tutor> tutors = csvToObjectService.parse(reader);
+            List<Tutor> tutors = csvToObjectService.parse(reader, Tutor.class);
             tutorRepository.saveAll(tutors);
         }catch(IOException e){
             log.error(e.toString());

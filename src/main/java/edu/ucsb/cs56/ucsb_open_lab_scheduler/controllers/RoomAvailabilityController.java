@@ -54,8 +54,7 @@ public class RoomAvailabilityController {
             return "redirect:/";
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            csvToObjectService.setType(RoomAvailability.class);
-            List<RoomAvailability> roomAvails = csvToObjectService.parse(reader);
+            List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
             roomAvailabilityRepository.saveAll(roomAvails);
         }catch(IOException e){
             log.error(e.toString());

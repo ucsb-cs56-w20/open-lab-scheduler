@@ -53,8 +53,7 @@ public class CourseOfferingController {
             return "redirect:/";
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            csvToObjectService.setType(CourseOffering.class);   
-            List<CourseOffering> courseOfferings =  csvToObjectService.parse(reader);
+            List<CourseOffering> courseOfferings =  csvToObjectService.parse(reader, CourseOffering.class);
             courseOfferingRepository.saveAll(courseOfferings);
         }catch(IOException e){
             log.error(e.toString());
