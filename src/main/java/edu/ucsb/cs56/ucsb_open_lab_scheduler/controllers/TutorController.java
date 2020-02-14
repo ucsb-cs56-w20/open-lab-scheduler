@@ -21,7 +21,7 @@ import java.util.List;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToTutorService;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 
 @Controller
 public class TutorController {
@@ -31,7 +31,7 @@ public class TutorController {
     private AuthControllerAdvice authControllerAdvice;
 
     @Autowired
-    CSVToTutorService csvtt;
+    CSVToObjectService<Tutor> csvToObjectService;
 
     @Autowired
     TutorRepository tutorRepository;
@@ -55,7 +55,8 @@ public class TutorController {
             return "redirect:/";
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            List<Tutor> tutors = csvtt.parse(reader);
+            csvToObjectService.setType(Tutor.class);
+            List<Tutor> tutors = csvToObjectService.parse(reader);
             tutorRepository.saveAll(tutors);
         }catch(IOException e){
             log.error(e.toString());

@@ -3,7 +3,7 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToRoomAvailabilityService;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,8 @@ public class RoomAvailabilityController {
     private AuthControllerAdvice authControllerAdvice;
 
     @Autowired
-    CSVToRoomAvailabilityService csvtra;
+    CSVToObjectService<RoomAvailability> csvToObjectService;
+
 
     @Autowired
     RoomAvailabilityRepository roomAvailabilityRepository;
@@ -53,7 +54,8 @@ public class RoomAvailabilityController {
             return "redirect:/";
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            List<RoomAvailability> roomAvails = csvtra.parse(reader);
+            csvToObjectService.setType(RoomAvailability.class);
+            List<RoomAvailability> roomAvails = csvToObjectService.parse(reader);
             roomAvailabilityRepository.saveAll(roomAvails);
         }catch(IOException e){
             log.error(e.toString());
