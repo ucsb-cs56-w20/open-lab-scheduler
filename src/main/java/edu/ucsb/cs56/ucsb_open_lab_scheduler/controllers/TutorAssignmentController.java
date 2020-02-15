@@ -3,8 +3,12 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
@@ -81,28 +85,26 @@ public class TutorAssignmentController {
     return "tutorAssignment/manage";
   }
 
-  // @PostMapping("/tutorAssignment/add")
-  // public String add(@RequestParam(name = "cid") long cid, @RequestParam(name =
-  // "tid") long tid, Model model) {
-  // Tutor tutor = tutorRepository.findById(tid)
-  // .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
-  // CourseOffering courseOffering = courseOfferingRepository.findById(cid)
-  // .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:"
-  // + cid));
+  @PostMapping("/tutorAssignment/add")
+  @ResponseBody
+  public String add(@RequestParam(name = "cid", required = true) long cid, @RequestParam(name = "tid", required = true) long tid, Model model) {
+    Tutor tutor = tutorRepository.findById(tid)
+        .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
+    CourseOffering courseOffering = courseOfferingRepository.findById(cid)
+        .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:" + cid));
 
-  // TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering);
-  // tutorAssignmentRepository.save(tutorAssignment);
-  // model.addAttribute("tutorAssignment", tutorAssignmentRepository.findAll());
-  // return "tutorAssignment";
-  // }
+    TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering);
+    tutorAssignmentRepository.save(tutorAssignment);
+    model.addAttribute("tutorAssignment", tutorAssignmentRepository.findAll());
+    return "tutorAssignment";
+  }
 
-  // @GetMapping("/tutorAssignment/delete/{id}")
-  // public String delete(@PathVariable("id") long id, Model model) {
-  // TutorAssignment tutorAssignment = tutorAssignmentRepository.findById(id)
-  // .orElseThrow(() -> new IllegalArgumentException("Invalid tutor assignment
-  // Id:" + id));
-  // tutorAssignmentRepository.delete(tutorAssignment);
-  // return "tutorAssignment";
-  // }
+  @GetMapping("/tutorAssignment/delete/{id}")
+  public String delete(@PathVariable("id") long id, Model model) {
+    TutorAssignment tutorAssignment = tutorAssignmentRepository.findById(id)
+    .orElseThrow(() -> new IllegalArgumentException("Invalid tutor assignment Id:" + id));
+    tutorAssignmentRepository.delete(tutorAssignment);
+    return "tutorAssignment";
+  }
 
 }
