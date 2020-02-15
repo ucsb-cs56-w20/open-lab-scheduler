@@ -6,5 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CourseOfferingRepository extends CrudRepository<CourseOffering, Long> {
-    // CourseOffering findById(long id);
 }

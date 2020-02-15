@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface TutorAssignmentRepository extends CrudRepository<TutorAssignment, Long> {
-    // TutorAssignment findById(long id);
     List<TutorAssignment> findByCourseOfferingId(long courseOfferingId);
 
     @Transactional
