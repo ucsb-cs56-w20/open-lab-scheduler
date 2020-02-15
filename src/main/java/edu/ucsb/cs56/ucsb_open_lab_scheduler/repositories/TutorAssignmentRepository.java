@@ -15,6 +15,5 @@ public interface TutorAssignmentRepository extends CrudRepository<TutorAssignmen
     List<TutorAssignment> findByCourseOfferingId(long courseOfferingId);
 
     @Transactional
-    long deleteByCourseOfferingIdAndTutorId(@Param("courseOfferingId") long courseOfferingId,
-                                            @Param("tutorId") long tutorId);
+    void deleteByCourseOfferingIdAndTutorId(long courseOfferingId, long tutorId);
 }
