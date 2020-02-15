@@ -1,13 +1,10 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
@@ -86,8 +83,8 @@ public class TutorAssignmentController {
   }
 
   @PostMapping("/tutorAssignment/add")
-  @ResponseBody
-  public String add(@RequestParam(name = "cid", required = true) long cid, @RequestParam(name = "tid", required = true) long tid, Model model) {
+  @ResponseStatus(value = HttpStatus.OK)
+  public void add(@RequestParam("cid") long cid, @RequestParam("tid") long tid) {
     Tutor tutor = tutorRepository.findById(tid)
         .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
     CourseOffering courseOffering = courseOfferingRepository.findById(cid)
@@ -95,8 +92,6 @@ public class TutorAssignmentController {
 
     TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering);
     tutorAssignmentRepository.save(tutorAssignment);
-    model.addAttribute("tutorAssignment", tutorAssignmentRepository.findAll());
-    return "tutorAssignment";
   }
 
   @GetMapping("/tutorAssignment/delete/{id}")
