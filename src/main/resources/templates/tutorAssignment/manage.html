@@ -6,7 +6,7 @@
   <div th:replace="bootstrap/bootstrap_head.html"></div>
 </head>
 
-<body onload="onLoad()">
+<body>
   <div class="container">
     <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
 
@@ -24,7 +24,7 @@
             <tr th:each="tutor : ${tutors}">
               <td th:text="${tutor.firstName + ' ' + tutor.lastName}"></td>
               <td>
-                <input id="tutorAssignmentCheckBox" type="checkbox" th:checked="${shouldBeChecked.test(tutor)}"
+                <input class="tutorAssignmentCheckBox" type="checkbox" th:checked="${shouldBeChecked.test(tutor)}"
                   th:attr="data-tid=${tutor.id},data-cid=${courseOffering.id}" />
               </td>
             </tr>
@@ -36,33 +36,29 @@
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
-</body>
-<script th:inline="javascript">
-  /*<![CDATA[*/
-  function onLoad() {
-    $(document).ready(function () {
-      $("input[id='tutorAssignmentCheckBox']").click(function (e) {
-        console.log(e)
-        e.preventDefault()
-        e.stopImmediatePropagation()
-        //debugger
-        if (!!e.target.checked) {
-          $.ajax({
-            url: "/tutorAssignment/add",
-            method: "POST",
-            data: {
-              tid: e.target.dataset.tid,
-              cid: e.target.dataset.cid,
-              /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-            },
-            success: function (response) { console.log("success"); e.target.checked = true; },
-            error: function (xhr, ajaxoptions, thrownerror) { console.log("error"); debugger }
-          })
-        }
-      })
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(".tutorAssignmentCheckBox").click(e => {
+      e.preventDefault()
+      e.stopImmediatePropagation()
+
+      if (e.target.checked) {
+        $.ajax({
+          url: "/tutorAssignment/add",
+          method: "POST",
+          data: {
+            tid: e.target.dataset.tid,
+            cid: e.target.dataset.cid,
+            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+          },
+        })
+        .then(() => {
+          e.target.checked = true
+        })
+      }
     })
-  }
-  /*]]>*/
-</script>
+    /*]]>*/
+  </script>
+</body>
 
 </html>
