@@ -2,6 +2,7 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -83,8 +84,13 @@ public class TutorAssignmentController {
   }
 
   @PostMapping("/tutorAssignment/add")
-  @ResponseStatus(value = HttpStatus.OK)
-  public void add(@RequestParam("cid") long cid, @RequestParam("tid") long tid) {
+  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid,
+                               OAuth2AuthenticationToken token) {
+    String role = authControllerAdvice.getRole(token);
+    if (!role.equals("Admin")) {
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
     Tutor tutor = tutorRepository.findById(tid)
         .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
     CourseOffering courseOffering = courseOfferingRepository.findById(cid)
@@ -92,6 +98,8 @@ public class TutorAssignmentController {
 
     TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering);
     tutorAssignmentRepository.save(tutorAssignment);
+
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @GetMapping("/tutorAssignment/delete/{id}")
