@@ -102,12 +102,17 @@ public class TutorAssignmentController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  @GetMapping("/tutorAssignment/delete/{id}")
-  public String delete(@PathVariable("id") long id, Model model) {
-    TutorAssignment tutorAssignment = tutorAssignmentRepository.findById(id)
-    .orElseThrow(() -> new IllegalArgumentException("Invalid tutor assignment Id:" + id));
-    tutorAssignmentRepository.delete(tutorAssignment);
-    return "tutorAssignment";
+  @DeleteMapping("/tutorAssignment/{cid}/{tid}")
+  public ResponseEntity<?> delete(@PathVariable("cid") long cid, @PathVariable("tid") long tid,
+                                  OAuth2AuthenticationToken token) {
+    String role = authControllerAdvice.getRole(token);
+    if (!role.equals("Admin")) {
+      return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    tutorAssignmentRepository.deleteByCourseOfferingIdAndTutorId(cid, tid);
+
+    return new ResponseEntity<>(HttpStatus.OK);
   }
 
 }

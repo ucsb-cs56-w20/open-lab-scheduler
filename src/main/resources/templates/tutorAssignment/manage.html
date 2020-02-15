@@ -51,9 +51,18 @@
             cid: e.target.dataset.cid,
             /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
           },
-        })
-        .then(() => {
+        }).then(() => {
           e.target.checked = true
+        })
+      } else {
+        $.ajax({
+          url: `/tutorAssignment/${e.target.dataset.cid}/${e.target.dataset.tid}`,
+          method: "DELETE",
+          data: {
+            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+          },
+        }).then(() => {
+          e.target.checked = false
         })
       }
     })
