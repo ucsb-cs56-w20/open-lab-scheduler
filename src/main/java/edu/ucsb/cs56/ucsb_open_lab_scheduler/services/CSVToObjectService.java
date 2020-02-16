@@ -17,7 +17,10 @@ public interface CSVToObjectService<T> {
 
     default List<T> parse(MultipartFile file, Class<T> type) {
         try {
-            return parse(new InputStreamReader(file.getInputStream()), type);
+            InputStreamReader reader = new InputStreamReader(file.getInputStream());
+            List<T> result = parse(reader, type);
+            reader.close();
+            return result;
         } catch (IOException e) {
             getLogger().error("CSV could not be parsed", e);
         }
