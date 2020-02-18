@@ -46,6 +46,16 @@
           Admin
         </a>
       </li>
+      <li th:if="${isAdmin}" class="nav-item ">
+        <a
+          class="nav-link"
+          href="/openLabSignup"
+          id="navbarDropdown"
+          role="button"
+        >
+          Open Lab Signup
+        </a>
+      </li>
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
