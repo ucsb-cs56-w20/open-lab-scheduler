@@ -52,7 +52,7 @@ public class TutorAssignmentController {
       return "redirect:/";
     }
     model.addAttribute("courseOfferings", courseOfferingRepository.findAll());
-    return "tutorAssignment";
+    return "tutorAssignment/tutorAssignment";
   }
 
   @GetMapping("/tutorAssignment/courseSelect/{id}")
