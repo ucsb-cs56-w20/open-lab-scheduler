@@ -44,7 +44,7 @@ public class TutorController {
             return "redirect:/";
         }
         model.addAttribute("TutorModel", tutorRepository.findAll());
-        return "tutors";
+        return "tutors/tutors";
     }
 
     @PostMapping("/tutors/upload")
