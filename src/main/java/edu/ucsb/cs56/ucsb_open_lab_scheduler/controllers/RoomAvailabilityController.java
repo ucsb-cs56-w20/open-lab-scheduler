@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,7 +33,6 @@ public class RoomAvailabilityController {
     @Autowired
     CSVToObjectService<RoomAvailability> csvToObjectService;
 
-
     @Autowired
     RoomAvailabilityRepository roomAvailabilityRepository;
 
@@ -47,18 +48,47 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/upload")
-    public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+    public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token,
+            RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!(role.equals("Admin"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        try(Reader reader = new InputStreamReader(csv.getInputStream())){
+        try (Reader reader = new InputStreamReader(csv.getInputStream())) {
             List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
             roomAvailabilityRepository.saveAll(roomAvails);
-        }catch(IOException e){
+        } catch (IOException e) {
             log.error(e.toString());
         }
         return "redirect:/roomAvailability";
     }
+
+    @GetMapping("/roomAvailability/create")
+    public String createEntry(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+        return "roomAvailability/create";
+
+    }
+
+    @PostMapping("/roomAvailability/add")
+    public ResponseEntity<?> add(@RequestParam("quarter") String quarter, @RequestParam("day") String day, @RequestParam("start") String start,
+            @RequestParam("end") String end, @RequestParam("room") String room, OAuth2AuthenticationToken token) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        
+        RoomAvailability roomAvailability = new RoomAvailability(quarter, Integer.parseInt(start), Integer.parseInt(end), day, room);
+        
+        roomAvailabilityRepository.save(roomAvailability);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+
 }

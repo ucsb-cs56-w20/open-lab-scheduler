@@ -44,6 +44,14 @@ public class RoomAvailability{
         this.room = room;
     }
 
+    public RoomAvailability(String quarter, int startTime, int endTime, String day, String room) {
+        this.quarter = quarter;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.day = day;
+        this.room = room;
+    }
+
     public RoomAvailability(){}
 
     public String getQuarter() {

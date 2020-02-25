@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+</head>
+
+<body>
+    <div class="container">
+        <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+        <!--<div class="row">
+            <div class="col-md-6">
+                <h2 th:text="${courseOffering.quarter + ' ' + courseOffering.courseId}"></h2>
+                <table class="table table-striped table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Assigned?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="tutor : ${tutors}">
+                            <td th:text="${tutor.firstName + ' ' + tutor.lastName}"></td>
+                            <td>
+                                <input class="tutorAssignmentCheckBox" type="checkbox"
+                                    th:checked="${shouldBeChecked.test(tutor)}"
+                                    th:attr="data-tid=${tutor.id},data-cid=${courseOffering.id}" />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table-striped table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>Quarter</th>
+                            <th>Day</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Room</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <td><input type="text" id="quarter"></td>
+                        <td><input type="text" id="day"></td>
+                        <td><input type="text" id="start"></td>
+                        <td><input type="text" id="end"></td>
+                        <td><input type="text" id="room"></td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <button type="button" id="save">Save</button>
+
+        <div th:replace="bootstrap/bootstrap_footer.html"></div>
+    </div>
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $("#save").click(e => {
+            console.log(typeof document.getElementById("start").value);
+            $.ajax({
+                url: "/roomAvailability/add",
+                method: "POST",
+                data: {
+                    quarter: document.getElementById("quarter").value,
+                    day: document.getElementById("day").value,
+                    start: document.getElementById("start").value,
+                    end: document.getElementById("end").value,
+                    room: document.getElementById("room").value,
+                    /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/ 
+                },
+            }).done(function() {
+                console.log("saved");
+                window.location.href = "/roomAvailability";
+            }).fail(function(jqXHR, textStatus) {
+                console.log(jqXHR.responseText);
+            })
+            
+        });
+        /*]]>*/
+    </script>
+</body>
+
+</html>
