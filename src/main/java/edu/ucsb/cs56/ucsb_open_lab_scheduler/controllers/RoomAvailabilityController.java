@@ -131,9 +131,8 @@ public class RoomAvailabilityController {
         if (!role.equals("Admin")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
+        
         roomAvailabilityRepository.deleteById(id);
-   
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

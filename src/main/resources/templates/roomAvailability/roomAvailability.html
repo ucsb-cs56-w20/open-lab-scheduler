@@ -51,7 +51,7 @@ W20,Friday,1500,1700,Phelps 2510
               <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
               <td th:text="${ra.room}"></td>
               <td><a th:href="'/roomAvailability/edit/' + ${ra.getId()}">Edit</a></td>
-              <td><a th:href="'/roomAvailability/' + ${ra.getId()}">Delete</a></td>
+              <td><button type="button" class="delete" th:attr="data-raid=${ra.getId()}">Delete</button></td>
             </tr>
           </tbody>
         </table>
@@ -63,7 +63,23 @@ W20,Friday,1500,1700,Phelps 2510
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
-
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(".delete").click(e => {
+      $.ajax({
+          url: `/roomAvailability/${e.target.dataset.raid}`,
+          method: "DELETE",
+          data: {
+            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+          },
+        }).fail(function(jqXHR, textStatus) {
+                console.log(jqXHR.responseText);
+        }).done(function() {
+          window.location.href="/roomAvailability";
+        })
+    })
+    /*]]>*/
+  </script>
 </body>
 
 </html>
