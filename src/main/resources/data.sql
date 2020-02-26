@@ -33,3 +33,6 @@ INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,5);
 INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,6);
 INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,7);
 INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,8);
+INSERT INTO room_availability(quarter, start_time, end_time, day, room) VALUES ('W20', '800', '900', 'W', 'Phelps 2510');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room) VALUES ('W20', '1100', '1215', 'T', 'Phelps 3526');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room) VALUES ('W20', '1200', '1200', 'M', 'Phelps 3525');
