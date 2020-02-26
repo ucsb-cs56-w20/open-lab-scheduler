@@ -26,12 +26,17 @@ public class Tutor{
     @NotBlank(message = "First name is required")
     private String firstName;
 
+    @CsvBindByPosition(position = 3)
+    @NotBlank(message = "Are you a course lead?")
+    private boolean isCourseLead;
+
     public Tutor(){}
 
-    public Tutor(String email, String fname, String lname){
+    public Tutor(String email, String fname, String lname, boolean lead){
         this.email = email;
         this.firstName = fname;
         this.lastName = lname;
+        this.isCourseLead = lead;
     }
 
     public void setEmail(String email){
@@ -66,6 +71,14 @@ public class Tutor{
         return id;
     }
 
+    public void setIsCourseLead(boolean isCourseLead){
+        this.isCourseLead = isCourseLead;
+    }  
+   
+    public boolean getIsCourseLead(){
+        return isCourseLead;
+    }
+
     @Override
     public String toString(){
         return "{"+
@@ -73,6 +86,7 @@ public class Tutor{
             ", email='"+email+"'"+
             ", firstName='"+firstName+"'"+
             ", lastName='"+lastName+"'"+
+            ", isCourseLead='"+isCourseLead+"'"+
             "}";
     }
 
