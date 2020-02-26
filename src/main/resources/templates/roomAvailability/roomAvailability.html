@@ -50,6 +50,7 @@ W20,Friday,1500,1700,Phelps 2510
               <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
               <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
               <td th:text="${ra.room}"></td>
+              <td><a th:href="'/roomAvailability/edit/' + ${ra.getId()}">Edit</a></td>
             </tr>
           </tbody>
         </table>
@@ -61,6 +62,7 @@ W20,Friday,1500,1700,Phelps 2510
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+
 </body>
 
 </html>

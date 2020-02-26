@@ -23,15 +23,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <td><input type="text" id="quarter"></td>
-                        <td><input type="text" id="day"></td>
-                        <td><input type="text" id="start"></td>
-                        <td><input type="text" id="end"></td>
-                        <td><input type="text" id="room"></td>
+                        <td><input type="text" id="quarter" th:value=${ra.getQuarter()}></td>
+                        <td><input type="text" id="day" th:value=${ra.getDay()}></td>
+                        <td><input type="text" id="start" th:value=${ra.getStartTime()}></td>
+                        <td><input type="text" id="end" th:value=${ra.getEndTime()}></td>
+                        <td><input type="text" id="room" th:value=${ra.getRoom()}></td>
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <div id="raid" th:data-value=${ra.getId()}></div> <!--Yikes, find better way-->
 
         <button type="button" id="save">Save</button>
 
@@ -42,10 +44,12 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         $("#save").click(e => {
+            console.log(document.getElementById("raid").getAttribute('data-value'));
             $.ajax({
-                url: "/roomAvailability/add",
+                url: "/roomAvailability/edit/save",
                 method: "POST",
                 data: {
+                    id: document.getElementById("raid").getAttribute('data-value'),
                     quarter: document.getElementById("quarter").value,
                     day: document.getElementById("day").value,
                     start: document.getElementById("start").value,

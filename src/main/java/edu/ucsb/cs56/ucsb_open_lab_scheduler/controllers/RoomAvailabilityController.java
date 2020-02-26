@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -89,6 +90,38 @@ public class RoomAvailabilityController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
+    @GetMapping("/roomAvailability/edit/{id}")
+    public String editEntry(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+        model.addAttribute("ra", roomAvailabilityRepository.findById(id).get());
+        return "roomAvailability/edit";
+    }
+
+    @PostMapping("/roomAvailability/edit/save")
+    public ResponseEntity<?> editSave(@RequestParam("id") String id, @RequestParam("quarter") String quarter, @RequestParam("day") String day, @RequestParam("start") String start,
+            @RequestParam("end") String end, @RequestParam("room") String room, OAuth2AuthenticationToken token) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id)).get();
+        ra.setQuarter(quarter);
+        ra.setDay(day);
+        ra.setStartTime(Integer.parseInt(start));
+        ra.setEndTime(Integer.parseInt(end));
+        ra.setRoom(room);
+        roomAvailabilityRepository.save(ra);
+        
+        
+        
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

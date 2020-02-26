@@ -78,6 +78,14 @@ public class RoomAvailability{
         return room;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setStartTime(int startTime){
         this.startTime = startTime;
     }
