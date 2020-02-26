@@ -21,7 +21,6 @@ public class TimeSlot{
     private int startTime;
     private int duration;
 
-
     public TimeSlot(){
         this.startTime = 0;
         this.duration = 30;
@@ -38,7 +37,6 @@ public class TimeSlot{
     public void setStartTime(int startTime){
         this.startTime = startTime;
     }
-
 
     public void setDuration(int duration){
         this.duration = duration;

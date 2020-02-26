@@ -6,7 +6,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-<<<<<<< HEAD
 public interface CourseOfferingRepository extends CrudRepository<CourseOffering, Long>{
     List<CourseOffering> findAll();
 
@@ -18,9 +17,4 @@ public interface CourseOfferingRepository extends CrudRepository<CourseOffering,
     public List<String> findAllUniqueQuarters();
     @Query(value = "SELECT quarter FROM CourseOffering", nativeQuery=true)
     public List<String> findQuarters();
-=======
-public interface CourseOfferingRepository extends CrudRepository<CourseOffering, Long> {
-    public List<CourseOffering> findByInstructorEmail(String instructorEmail);
-    //List<CourseOffering> getCourseOfferings();
->>>>>>> ys/lr-implemented custom SQL query in RoomAvailabilityRepository
 }
