@@ -1,5 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.services;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +23,11 @@ public class GoogleMembershipService implements MembershipService {
 
     private Logger logger = LoggerFactory.getLogger(GoogleMembershipService.class);
 
-    @Value("${app.admin.email}")
-    private String adminEmail;
+    @Value("${app.admin.email:}")
+    private List<String> adminEmails;
 
-    @Value("${app.instructor.email}")
-    private String instructorEmail;
+    @Value("${app.instructor.email:}")
+    private List<String> instructorEmails;
 
     @Value("${app.member.hosted-domain}")
     private String memberHostedDomain;
@@ -65,7 +67,7 @@ public class GoogleMembershipService implements MembershipService {
 
     public boolean hasRole(OAuth2AuthenticationToken oauthToken, String roleToTest) {
 
-        logger.info("adminEmail=[" + adminEmail + "]");
+        logger.info("adminEmail=[" + adminEmails + "]");
 
         if (oauthToken == null) {
             return false;
@@ -100,10 +102,10 @@ public class GoogleMembershipService implements MembershipService {
     }
 
     private boolean isAdminEmail(String email) {
-        return (!adminRepository.findByEmail(email).isEmpty() || email.equals(adminEmail));
+        return (!adminRepository.findByEmail(email).isEmpty() || adminEmails.contains(email));
     }
 
     private boolean isInstructorEmail(String email) {
-        return (!instructorRepository.findByEmail(email).isEmpty() || email.equals(instructorEmail));
+        return (!instructorRepository.findByEmail(email).isEmpty() || instructorEmails.contains(email));
     }
 }
