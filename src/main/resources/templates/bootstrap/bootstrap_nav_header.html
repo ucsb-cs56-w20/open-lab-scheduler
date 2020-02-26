@@ -42,10 +42,24 @@
         </a>
       </li>
       <li th:if="${isAdmin}" class="nav-item ">
+        <a
+          class="nav-link"
+          href="/instructorMenu"
+          id="navbarDropdown"
+          role="button"
+        >
+          Instructor Menu
+        </a>
+      </li>
+      <li th:if="${isAdmin}" class="nav-item ">
         <a class="nav-link" href="/admin" id="navbarDropdown" role="button">
           Admin
         </a>
       </li>
+        
+
+
+
     </ul>
 
     <ul class="nav navbar-nav navbar-right">
