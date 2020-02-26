@@ -77,22 +77,25 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/add")
-    public ResponseEntity<?> add(@RequestParam("quarter") String quarter, @RequestParam("day") String day, @RequestParam("start") String start,
-            @RequestParam("end") String end, @RequestParam("room") String room, OAuth2AuthenticationToken token) {
+    public ResponseEntity<?> add(@RequestParam("quarter") String quarter, @RequestParam("day") String day,
+            @RequestParam("start") String start, @RequestParam("end") String end, @RequestParam("room") String room,
+            OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        
-        RoomAvailability roomAvailability = new RoomAvailability(quarter, Integer.parseInt(start), Integer.parseInt(end), day, room);
-        
+
+        RoomAvailability roomAvailability = new RoomAvailability(quarter, Integer.parseInt(start),
+                Integer.parseInt(end), day, room);
+
         roomAvailabilityRepository.save(roomAvailability);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/roomAvailability/edit/{id}")
-    public String editEntry(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+    public String editEntry(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
+            RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
@@ -103,8 +106,9 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/edit/save")
-    public ResponseEntity<?> editSave(@RequestParam("id") String id, @RequestParam("quarter") String quarter, @RequestParam("day") String day, @RequestParam("start") String start,
-            @RequestParam("end") String end, @RequestParam("room") String room, OAuth2AuthenticationToken token) {
+    public ResponseEntity<?> editSave(@RequestParam("id") String id, @RequestParam("quarter") String quarter,
+            @RequestParam("day") String day, @RequestParam("start") String start, @RequestParam("end") String end,
+            @RequestParam("room") String room, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -117,11 +121,20 @@ public class RoomAvailabilityController {
         ra.setEndTime(Integer.parseInt(end));
         ra.setRoom(room);
         roomAvailabilityRepository.save(ra);
-        
-        
-        
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping("/roomAvailability/{id}")
+    public ResponseEntity<?> deleteEntry(@PathVariable("id") long id, OAuth2AuthenticationToken token) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        roomAvailabilityRepository.deleteById(id);
+   
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
