@@ -28,7 +28,10 @@
                 <input class="tutorAssignmentCheckBox" type="checkbox" th:checked="${shouldBeChecked.test(tutor)}"
                   th:attr="data-tid=${tutor.id},data-cid=${courseOffering.id}" />
               </td>
-              <td th:text="${tutor.isCourseLead + ' '}"></td>
+              <td>
+                <input class="isCourseLeadCheckBox" type="checkbox" th:checked="${shouldBeChecked.test(tutor)}"
+                  th:attr="data-tid=${tutor.getIsCourseLead(true)}" />
+              </td>
             </tr>
           </tbody>
         </table>

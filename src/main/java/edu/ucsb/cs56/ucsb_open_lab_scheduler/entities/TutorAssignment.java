@@ -15,12 +15,15 @@ public class TutorAssignment{
     private long courseOfferingId;
 
     private long tutorId;
+    
+    private boolean isCourseLead;
 
     public TutorAssignment(){}
 
     public TutorAssignment(Tutor tutor, CourseOffering courseOffering){
         this.tutorId = tutor.getId();
         this.courseOfferingId = courseOffering.getId();
+        this.isCourseLead = false;
     }
 
     public void setId(long id){
@@ -46,5 +49,13 @@ public class TutorAssignment{
     public long getTutorId(){
         return tutorId;
     }
+    
+     public void setIsCourseLead(boolean isCourseLead){
+         this.isCourseLead = isCourseLead;
+     }
+    
+     public boolean getIsCourseLead(){
+         return isCourseLead;
+     }
 
 }
