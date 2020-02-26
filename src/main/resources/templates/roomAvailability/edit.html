@@ -44,7 +44,6 @@
     <script th:inline="javascript">
         /*<![CDATA[*/
         $("#save").click(e => {
-            console.log(document.getElementById("raid").getAttribute('data-value'));
             $.ajax({
                 url: "/roomAvailability/edit/save",
                 method: "POST",
