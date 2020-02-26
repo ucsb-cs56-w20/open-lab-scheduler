@@ -19,8 +19,8 @@ import java.util.List;
 
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Instructor;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.InstructorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 
 @Controller
