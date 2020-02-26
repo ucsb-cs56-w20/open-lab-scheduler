@@ -79,6 +79,10 @@ public class TutorAssignmentController {
     model.addAttribute("shouldBeChecked", shouldBeChecked);
     model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());
+    Predicate<Tutor> shouldBeChecked2 = tutor -> tutorAssignments.stream()
+        .anyMatch((ta) -> ta.getTutorId() == tutor.getId());
+    model.addAttribute("shouldBeChecked2", shouldBeChecked2);
+    model.addAttribute("isCourseLead", true);
 
     return "tutorAssignment/manage";
   }
@@ -96,7 +100,7 @@ public class TutorAssignmentController {
     CourseOffering courseOffering = courseOfferingRepository.findById(cid)
         .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:" + cid));
 
-    TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering);
+    TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering, false);
     tutorAssignmentRepository.save(tutorAssignment);
 
     return new ResponseEntity<>(HttpStatus.OK);

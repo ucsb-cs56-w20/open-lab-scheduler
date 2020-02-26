@@ -26,7 +26,6 @@ public class Tutor{
     @NotBlank(message = "First name is required")
     private String firstName;
 
-
     public Tutor(){}
 
     public Tutor(String email, String fname, String lname){

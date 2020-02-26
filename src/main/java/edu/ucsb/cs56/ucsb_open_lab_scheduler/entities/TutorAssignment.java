@@ -20,10 +20,10 @@ public class TutorAssignment{
 
     public TutorAssignment(){}
 
-    public TutorAssignment(Tutor tutor, CourseOffering courseOffering){
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering, boolean lead){
         this.tutorId = tutor.getId();
         this.courseOfferingId = courseOffering.getId();
-        this.isCourseLead = false;
+        this.isCourseLead = lead;
     }
 
     public void setId(long id){
