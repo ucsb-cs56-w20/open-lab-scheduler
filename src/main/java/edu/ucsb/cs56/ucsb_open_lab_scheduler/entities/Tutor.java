@@ -26,12 +26,22 @@ public class Tutor{
     @NotBlank(message = "First name is required")
     private String firstName;
 
+    private boolean isActive;
+
     public Tutor(){}
 
     public Tutor(String email, String fname, String lname){
         this.email = email;
         this.firstName = fname;
         this.lastName = lname;
+        this.isActive = true;
+    }
+
+    public Tutor(String email, String fname, String lname, boolean isActive){
+        this.email = email;
+        this.firstName = fname;
+        this.lastName = lname;
+        this.isActive = isActive;
     }
 
     public void setEmail(String email){
@@ -58,6 +68,14 @@ public class Tutor{
         return this.lastName;
     }
 
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public boolean getIsActive() {
+        return this.isActive;        
+    }
+
     public void setId(long id){
         this.id = id;
     }  
@@ -73,6 +91,7 @@ public class Tutor{
             ", email='"+email+"'"+
             ", firstName='"+firstName+"'"+
             ", lastName='"+lastName+"'"+
+            ", isActive='"+isActive+"'"+
             "}";
     }
 
@@ -84,11 +103,11 @@ public class Tutor{
             return false;
         }
         Tutor tutor = (Tutor) o;
-        return id == tutor.id && Objects.equals(email, tutor.email) && Objects.equals(firstName, tutor.firstName) && Objects.equals(lastName, tutor.lastName);
+        return id == tutor.id && Objects.equals(email, tutor.email) && Objects.equals(firstName, tutor.firstName) && Objects.equals(lastName, tutor.lastName) && isActive == tutor.isActive;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName);
+        return Objects.hash(id, email, firstName, lastName, isActive);
     }
 }
