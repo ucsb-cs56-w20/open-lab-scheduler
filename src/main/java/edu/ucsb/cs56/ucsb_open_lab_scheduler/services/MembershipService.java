@@ -1,5 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.services;
 
+import java.util.List;
+
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 public interface MembershipService {
@@ -26,5 +28,16 @@ public interface MembershipService {
            return "Member";
         return "Guest";
     }
+
+    public List<String> getAdminEmails();
+
+    public String name(OAuth2AuthenticationToken token);
+
+    public String fname(OAuth2AuthenticationToken token);
+
+    public String lname(OAuth2AuthenticationToken token);
+
+    public String email(OAuth2AuthenticationToken token);
+
 
 }
