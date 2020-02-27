@@ -1,5 +1,9 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.services;
 
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+>>>>>>> ak - added most of the functionality from lab07 which allows multiple admins. Need to work on bug preventing bootstrap from working:
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,8 +27,13 @@ public class GoogleMembershipService implements MembershipService {
 
     private Logger logger = LoggerFactory.getLogger(GoogleMembershipService.class);
 
+<<<<<<< HEAD
     @Value("${app.admin.email:}")
     private List<String> adminEmails;
+=======
+    @Value("${app.admin.emails}")
+    final private List<String> adminEmails = new ArrayList<String>();
+>>>>>>> ak - added most of the functionality from lab07 which allows multiple admins. Need to work on bug preventing bootstrap from working:
 
     @Value("${app.member.hosted-domain}")
     private String memberHostedDomain;
@@ -64,7 +73,7 @@ public class GoogleMembershipService implements MembershipService {
 
     public boolean hasRole(OAuth2AuthenticationToken oauthToken, String roleToTest) {
 
-        logger.info("adminEmail=[" + adminEmails + "]");
+        logger.info("adminEmails=[" + adminEmails + "]");
 
         if (oauthToken == null) {
             return false;
@@ -99,7 +108,31 @@ public class GoogleMembershipService implements MembershipService {
     }
 
     private boolean isAdminEmail(String email) {
-        return (!adminRepository.findByEmail(email).isEmpty() || adminEmails.contains(email));
+        return (!adminRepository.findByEmail(email).isEmpty() || (adminEmails.contains(email)));
+    }
+
+    public List<String> getAdminEmails() {
+        return adminEmails;
+    }
+
+    public String name(OAuth2AuthenticationToken token) {
+        if(token==null) return "";
+        return token.getPrincipal().getAttributes().get("name").toString();
+    }
+
+    public String fname(OAuth2AuthenticationToken token) {
+        if(token==null) return "";
+        return token.getPrincipal().getAttributes().get("given_name").toString();
+    }
+
+    public String lname(OAuth2AuthenticationToken token) {
+        if(token==null) return "";
+        return token.getPrincipal().getAttributes().get("family_name").toString();
+    }
+
+    public String email(OAuth2AuthenticationToken token) {
+        if(token==null) return "";
+        return token.getPrincipal().getAttributes().get("email").toString();
     }
 
     private boolean isInstructorEmail(String email) {
