@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface TutorAssignmentRepository extends CrudRepository<TutorAssignment, Long> {
     List<TutorAssignment> findByCourseOfferingId(long courseOfferingId);
+    List<TutorAssignment> findByTutorId(long tutorId);
 
     @Transactional
     void deleteByCourseOfferingIdAndTutorId(long courseOfferingId, long tutorId);
