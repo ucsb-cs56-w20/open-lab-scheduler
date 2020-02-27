@@ -28,11 +28,11 @@ phtcon@ucsb.edu,Conrad,Phill
           <input type="submit" class="btn btn-primary" value="Submit">
         </form>
         <br/>
-        
+
         <table class="table table-striped table-responsive-md">
           <thead>
             <tr>
-              
+
             </tr>
           </thead>
           <tbody>
@@ -40,7 +40,7 @@ phtcon@ucsb.edu,Conrad,Phill
               <td th:text="${t.email}"></td>
               <td th:text="${t.firstName}"></td>
               <td th:text="${t.lastName}"></td>
-              <td th:text="${t.isActive}"></td>
+              <td th:text="${t.isActive ? 'Active' : 'Inactive'}"></td>
             </tr>
           </tbody>
         </table>

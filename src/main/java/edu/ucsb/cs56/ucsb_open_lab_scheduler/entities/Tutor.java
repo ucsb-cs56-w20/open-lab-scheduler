@@ -46,8 +46,8 @@ public class Tutor{
 
     public void setEmail(String email){
         this.email = email;
-    }  
-   
+    }
+
     public String getEmail(){
         return email;
     }
@@ -73,13 +73,13 @@ public class Tutor{
     }
 
     public boolean getIsActive() {
-        return this.isActive;        
+        return this.isActive;
     }
 
     public void setId(long id){
         this.id = id;
-    }  
-   
+    }
+
     public long getId(){
         return id;
     }
