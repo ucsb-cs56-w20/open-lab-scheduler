@@ -32,8 +32,7 @@ public class InstructorMenuController {
 
     @GetMapping("/instructorMenu")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-        String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Instructor")) {
+        if (!authControllerAdvice.getIsInstructor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
