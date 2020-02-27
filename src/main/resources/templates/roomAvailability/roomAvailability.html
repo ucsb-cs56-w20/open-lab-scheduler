@@ -45,7 +45,7 @@ W20,Friday,1500,1700,Phelps 2510
             </tr>
           </thead>
           <tbody>
-            <tr th:each="ra : ${RoomAvailabilityModel}">
+            <tr th:each="ra : ${RoomAvailabilityModel}">z
               <td th:text="${ra.quarter}"></td>
               <td th:text="${ra.day}"></td>
               <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
