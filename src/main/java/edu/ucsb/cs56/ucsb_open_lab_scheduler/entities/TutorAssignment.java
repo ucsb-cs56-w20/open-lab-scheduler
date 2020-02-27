@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class TutorAssignment{
@@ -12,39 +12,40 @@ public class TutorAssignment{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long courseOfferingId;
+    @ManyToOne
+    private CourseOffering courseOffering;
 
-    private long tutorId;
+    @ManyToOne
+    private Tutor tutor;
 
-    public TutorAssignment(){}
+    public CourseOffering getCourseOffering() {
+        return this.courseOffering;
+    }
 
-    public TutorAssignment(Tutor tutor, CourseOffering courseOffering){
-        this.tutorId = tutor.getId();
-        this.courseOfferingId = courseOffering.getId();
+    public void setCourseOffering(CourseOffering courseOffering) {
+        this.courseOffering = courseOffering;
+    }
+
+    public Tutor getTutor() {
+        return this.tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
     }
 
     public void setId(long id){
         this.id = id;
     }    
 
-    public void setCourseOfferingId(long courseOfferingId){
-        this.courseOfferingId = courseOfferingId;
-    }
-
-    public void setTutorId(long tutorId){
-        this.tutorId = tutorId;
-    }
-
     public long getId(){
         return id;
     }
 
-    public long getCourseOfferingId(){
-        return courseOfferingId;
-    }
+    public TutorAssignment(){}
 
-    public long getTutorId(){
-        return tutorId;
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering) {
+        this.courseOffering = courseOffering;
+        this.tutor = tutor;
     }
-
 }
