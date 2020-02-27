@@ -1,6 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
-import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,8 +11,7 @@ public class Room{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @CsvBindByName(column = "room")
-    @NotBlank(message = "Room name is required")
+    @CsvBindByPosition(position = 4)
     private String name;
 
     public Room(){}
