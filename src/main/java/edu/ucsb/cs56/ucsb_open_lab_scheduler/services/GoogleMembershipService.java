@@ -1,9 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.services;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
->>>>>>> ak - added most of the functionality from lab07 which allows multiple admins. Need to work on bug preventing bootstrap from working:
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -27,13 +24,8 @@ public class GoogleMembershipService implements MembershipService {
 
     private Logger logger = LoggerFactory.getLogger(GoogleMembershipService.class);
 
-<<<<<<< HEAD
-    @Value("${app.admin.email:}")
-    private List<String> adminEmails;
-=======
     @Value("${app.admin.emails}")
     final private List<String> adminEmails = new ArrayList<String>();
->>>>>>> ak - added most of the functionality from lab07 which allows multiple admins. Need to work on bug preventing bootstrap from working:
 
     @Value("${app.member.hosted-domain}")
     private String memberHostedDomain;
