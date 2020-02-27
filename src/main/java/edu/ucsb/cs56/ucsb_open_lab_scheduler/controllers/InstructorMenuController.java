@@ -23,6 +23,15 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Instructor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.InstructorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 
+
+
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
+
+
+
+
+
 @Controller
 public class InstructorMenuController {
     private static Logger log = LoggerFactory.getLogger(TutorController.class);
@@ -30,12 +39,19 @@ public class InstructorMenuController {
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
 
+    private CourseOfferingRepository courseOfferingRepository;
+        
     @GetMapping("/instructorMenu")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         if (!authControllerAdvice.getIsInstructor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+       String email = (String) token.getPrincipal().getAttributes().get("email");  
+       // List<CourseOffering> courseList =
+        //courseOfferingRepository.findByInstructorEmail(token.getPrincipal().getAttributes().get("email"));
+        model.addAttribute("courses",courseOfferingRepository.findByInstructorEmail(email));
+
         return "instructorMenu/instructorMenu";
     }
 
