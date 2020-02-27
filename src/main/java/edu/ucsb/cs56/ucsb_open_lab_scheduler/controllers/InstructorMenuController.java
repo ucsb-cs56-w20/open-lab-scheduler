@@ -25,6 +25,15 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
 
+
+
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
+
+
+
+
+
 @Controller
 public class InstructorMenuController {
     private static Logger log = LoggerFactory.getLogger(TutorController.class);
@@ -35,6 +44,7 @@ public class InstructorMenuController {
     @Autowired
     private CourseOfferingRepository courseOfferingRepository;
 
+
     @GetMapping("/instructorMenu")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         if (!authControllerAdvice.getIsInstructor(token)) {
@@ -42,9 +52,9 @@ public class InstructorMenuController {
             return "redirect:/";
         }
 	
-	String email= (String) token.getPrincipal().getAttributes().get("email");
-	model.addAttribute("courses",courseOfferingRepository.findByInstructorEmail(email));
-        
+        String email= (String) token.getPrincipal().getAttributes().get("email");
+        model.addAttribute("courses",courseOfferingRepository.findByInstructorEmail(email));
+
         return "instructorMenu/instructorMenu";
     }
 
