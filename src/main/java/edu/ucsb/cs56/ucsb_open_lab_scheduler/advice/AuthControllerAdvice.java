@@ -1,19 +1,23 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.advice;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
-
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.User;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.UserRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.MembershipService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
+
+
+//code gets ran after login
 @ControllerAdvice
 public class AuthControllerAdvice {
 
     @Autowired   
     private MembershipService membershipService;
+
+    private UserRepository userRepository;
 
     @ModelAttribute("isLoggedIn")
     public boolean getIsLoggedIn(OAuth2AuthenticationToken token){
@@ -33,6 +37,13 @@ public class AuthControllerAdvice {
         return token.getPrincipal().getAttributes().get("given_name").toString();
     }
 
+    @ModelAttribute("lname")
+    public String getLastName(OAuth2AuthenticationToken token){
+        if (token == null) return "";
+        return token.getPrincipal().getAttributes().get("family_name").toString();
+    }
+
+
     @ModelAttribute("picture")
     public String getPicture(OAuth2AuthenticationToken token){
         // return "stub";
@@ -47,8 +58,17 @@ public class AuthControllerAdvice {
         return token.getName();
     }
 
+    @ModelAttribute("email")
+    public String getEmail(OAuth2AuthenticationToken token){
+        if (token == null) return "";
+        return token.getPrincipal().getAttributes().get("email").toString();
+    }
+
+    //code gets ran after login
     @ModelAttribute("oauth")
     public Object getOauth(OAuth2AuthenticationToken token){
+        // userRepository.save(new User(getEmail(token),getFirstName(token),getLastName(token)));
+        // System.out.println(userRepository);
         return token;
     }
     
