@@ -28,7 +28,9 @@ public class Tutor{
 
     private boolean isActive;
 
-    public Tutor(){}
+    public Tutor() {
+        this.isActive = true;
+    }
 
     public Tutor(String email, String fname, String lname){
         this.email = email;
