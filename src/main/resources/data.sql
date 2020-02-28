@@ -5,8 +5,6 @@ INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 160','F19','Ding', 'ding@ucsb.edu');
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 130A','W20','Koc', 'koc@ucsb.edu');
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 130B','W20','Lokshtanov', 'lokshtanov@ucsb.edu');
-INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC
-130C','W20','Lokshtanov', 'li-el@ucsb.edu');
 INSERT INTO tutor (first_name,last_name,email) VALUES ('Scott','Chow','scottpchow@example.org');
 INSERT INTO tutor (first_name,last_name,email) VALUES ('Zach','Sisco','zachsisco@example.org');
 INSERT INTO tutor (first_name,last_name,email) VALUES ('Yinon','Rousso','yinonRousso@example.org');

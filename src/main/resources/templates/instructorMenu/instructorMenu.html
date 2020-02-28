@@ -23,9 +23,9 @@
               </tr>
             </thead>
           <tbody>
-            <tr th:each "c: ${courses}">
-            <td th:text "${c.instructorEmail}"></td>
-            </tr>
+           <tr th:each="c: ${courses}">
+            <td th:text="${c.courseId}"> <!</td>
+           </tr>
           </tbody>
         </table>
 

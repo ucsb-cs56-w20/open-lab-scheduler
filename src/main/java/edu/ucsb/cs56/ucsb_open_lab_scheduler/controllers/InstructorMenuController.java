@@ -39,6 +39,7 @@ public class InstructorMenuController {
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
 
+    @Autowired
     private CourseOfferingRepository courseOfferingRepository;
         
     @GetMapping("/instructorMenu")
@@ -51,7 +52,7 @@ public class InstructorMenuController {
        // List<CourseOffering> courseList =
         //courseOfferingRepository.findByInstructorEmail(token.getPrincipal().getAttributes().get("email"));
         model.addAttribute("courses",courseOfferingRepository.findByInstructorEmail(email));
-
+//       model.addAttribute("email", email);
         return "instructorMenu/instructorMenu";
     }
 
