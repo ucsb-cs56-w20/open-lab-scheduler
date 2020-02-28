@@ -65,19 +65,20 @@ public class RoomAvailabilityController {
         return "redirect:/roomAvailability";
     }
 
-    @GetMapping("/roomAvailability/create")
-    public String createEntry(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+    @GetMapping("/roomAvailability/new")
+    public String newEntry(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        return "roomAvailability/create";
+        model.addAttribute("raExists", false);
+        return "roomAvailability/edit";
 
     }
 
-    @PostMapping("/roomAvailability/add")
-    public ResponseEntity<?> add(@RequestParam("quarter") String quarter, @RequestParam("day") String day,
+    @PostMapping("/roomAvailability/create")
+    public ResponseEntity<?> create(@RequestParam("quarter") String quarter, @RequestParam("day") String day,
             @RequestParam("start") String start, @RequestParam("end") String end, @RequestParam("room") String room,
             OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
@@ -93,7 +94,7 @@ public class RoomAvailabilityController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/roomAvailability/edit/{id}")
+    @GetMapping("/roomAvailability/{id}/edit")
     public String editEntry(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
             RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
@@ -102,11 +103,13 @@ public class RoomAvailabilityController {
             return "redirect:/";
         }
         model.addAttribute("ra", roomAvailabilityRepository.findById(id).get());
+        model.addAttribute("raExists", true);
+        model.addAttribute("raID", id);
         return "roomAvailability/edit";
     }
 
-    @PostMapping("/roomAvailability/edit/save")
-    public ResponseEntity<?> editSave(@RequestParam("id") String id, @RequestParam("quarter") String quarter,
+    @PutMapping("/roomAvailability/save")
+    public ResponseEntity<?> save(@RequestParam("id") String id, @RequestParam("quarter") String quarter,
             @RequestParam("day") String day, @RequestParam("start") String start, @RequestParam("end") String end,
             @RequestParam("room") String room, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
