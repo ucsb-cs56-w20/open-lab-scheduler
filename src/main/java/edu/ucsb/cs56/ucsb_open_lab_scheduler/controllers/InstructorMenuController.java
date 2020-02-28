@@ -54,7 +54,7 @@ public class InstructorMenuController {
 	
         String email= (String) token.getPrincipal().getAttributes().get("email");
         model.addAttribute("courses",courseOfferingRepository.findByInstructorEmail(email));
-
+//       model.addAttribute("email", email);
         return "instructorMenu/instructorMenu";
     }
 
