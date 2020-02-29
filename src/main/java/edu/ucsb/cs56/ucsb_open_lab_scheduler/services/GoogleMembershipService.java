@@ -44,6 +44,14 @@ public class GoogleMembershipService implements MembershipService {
         return hasRole(oAuth2AuthenticationToken, "admin");
     }
 
+    /** is currently logged in on email not with the domain @ucsb.edu */
+    // TODO: here
+    public boolean isPartOfDomain(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        return hasRole(oAuth2AuthenticationToken, "nodomain");
+    }
+
+    // then restrict access in the controllers, redirect to not part of domain page!!
+
     /**
      * is current logged in user has role
      *
@@ -62,8 +70,10 @@ public class GoogleMembershipService implements MembershipService {
             logger.error(String.format("unable to obtain autowired clientService"));
             return false;
         }
+
         OAuth2AuthorizedClient client = clientService
                 .loadAuthorizedClient(oauthToken.getAuthorizedClientRegistrationId(), oauthToken.getName());
+                
         OAuth2User oAuth2User = oauthToken.getPrincipal();
 
         String email = (String) oAuth2User.getAttributes().get("email");
@@ -78,6 +88,10 @@ public class GoogleMembershipService implements MembershipService {
         }
 
         if (roleToTest.equals("member") && memberHostedDomain.equals(hostedDomain)) {
+            return true;
+        }
+
+        if (roleToTest.equals("nondomain") && !memberHostedDomain.equals(hostedDomain)) {
             return true;
         }
 
