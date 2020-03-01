@@ -59,6 +59,9 @@ public class TutorController {
             tutorRepository.saveAll(tutors);
         }catch(IOException e){
             log.error(e.toString());
+        }catch(RuntimeException a){
+            redirAttrs.addFlashAttribute("alertDanger", "Please enter a file with correct CSV variable types");
+            return "redirect:/tutors";
         }
         return "redirect:/tutors";
     }

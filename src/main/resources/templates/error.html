@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"></html>>
+
+<head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+  </head>
+  
+    <body>
+    <div class="container">
+        <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+        
+        <h1>You input something wrong!</h1>
+        <h2>Please Input again</h2>
+        <div data-controller="customErrorController">
+            
+            <th>Timestamp: </th><p th:text="${timestamp}"></p>
+            <th></th>
+            <th>Status: </th><p2 th:text="${status}"></p2>
+            <th></th>
+            <th>Error: </th><p3 th:text="${error}"></p3>
+            <th></th>
+            <th>Message: </th><p4 th:text="${message}"></p4>
+          </div>
+
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
+    </div>
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+    </body>
+</html>

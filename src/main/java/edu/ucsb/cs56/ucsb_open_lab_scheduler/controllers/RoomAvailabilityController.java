@@ -57,6 +57,8 @@ public class RoomAvailabilityController {
             roomAvailabilityRepository.saveAll(roomAvails);
         }catch(IOException e){
             log.error(e.toString());
+        }catch(RuntimeException a){
+            return "error";
         }
         return "redirect:/roomAvailability";
     }
