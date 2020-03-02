@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,9 @@ public class ApplicationController{
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
+
+    @Autowired
+    private AuthControllerAdvice authControllerAdvice;
 
     @Autowired
     public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository){
@@ -41,6 +46,11 @@ public class ApplicationController{
                 "/oauth2/authorization/" + clientRegistration.getRegistrationId()));
 
         model.addAttribute("urls", urls);
+
+        String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
+        if(role.equals("NotDomain"))
+            return "error";
+        
         return "login";
     }
 }
