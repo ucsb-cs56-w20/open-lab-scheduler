@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import java.util.List;
 
 
 
@@ -17,10 +18,12 @@ public class AuthControllerAdvice {
     @Autowired   
     private MembershipService membershipService;
 
+    @Autowired
     private UserRepository userRepository;
 
     @ModelAttribute("isLoggedIn")
     public boolean getIsLoggedIn(OAuth2AuthenticationToken token){
+        updateLoginTable(token);
         return token != null;
     }
 
@@ -67,8 +70,6 @@ public class AuthControllerAdvice {
     //code gets ran after login
     @ModelAttribute("oauth")
     public Object getOauth(OAuth2AuthenticationToken token){
-        // userRepository.save(new User(getEmail(token),getFirstName(token),getLastName(token)));
-        // System.out.println(userRepository);
         return token;
     }
     
@@ -84,5 +85,23 @@ public class AuthControllerAdvice {
     @ModelAttribute("role")
     public String getRole(OAuth2AuthenticationToken token){
         return membershipService.role(token);
+    }
+
+    private void updateLoginTable(OAuth2AuthenticationToken token) {
+        if (token==null) return;
+        
+        String email = membershipService.email(token);
+        if (email == null) return;
+
+        List<User> appUsers = userRepository.findByEmail(email);
+
+        if (appUsers.size()==0) {
+            // No user with this email is in the AppUsers table yet, so add one
+            User u = new User();
+            u.setEmail(email);
+            u.setFirstName(membershipService.firstName(token));
+            u.setLastName(membershipService.lastName(token));
+            userRepository.save(u);
+        }
     }
 }

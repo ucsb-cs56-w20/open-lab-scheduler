@@ -1,9 +1,11 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 
 @Entity
