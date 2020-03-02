@@ -61,6 +61,11 @@ public class AuthControllerAdvice {
         return membershipService.isAdmin(token);
     }
 
+    @ModelAttribute("isPartOfDomain")
+    public boolean getIsPartOfDomain(OAuth2AuthenticationToken token) {
+        return membershipService.isPartOfDomain(token);
+    }
+
     @ModelAttribute("role")
     public String getRole(OAuth2AuthenticationToken token){
         return membershipService.role(token);

@@ -91,7 +91,7 @@ public class GoogleMembershipService implements MembershipService {
             return true;
         }
 
-        if (roleToTest.equals("nondomain") && !memberHostedDomain.equals(hostedDomain)) {
+        if (roleToTest.equals("nodomain") && !memberHostedDomain.equals(hostedDomain)) {
             return true;
         }
 
