@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+  </head>
+
+  <body>
+    <div class="container">
+      <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+      <h1>Tutor View</h1>
+
+      <h2>Add New Admin</h2>
+
+      <div th:replace="admin/form.html"></div>
+
+      <h2>Current Admins</h2>
+
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="a: ${admins}">
+            <td th:text="${a.email}"></td>
+            <td>
+              <form
+                th:action="@{/admin/delete/{id}(id=${a.id})}"
+                th:method="post"
+              >
+                <input
+                  type="hidden"
+                  th:name="${_csrf.parameterName}"
+                  th:value="${_csrf.token}"
+                />
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div th:replace="bootstrap/bootstrap_footer.html"></div>
+    </div>
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  </body>
+</html>

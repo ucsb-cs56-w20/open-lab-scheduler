@@ -6,7 +6,7 @@
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-      <li th:if="${isAdmin}" class="nav-item ">
+      <li th:if="${isTutor || isAdmin || isMember}" class="nav-item ">
         <a
           class="nav-link"
           href="/roomAvailability"
@@ -16,12 +16,12 @@
           Room Availability
         </a>
       </li>
-      <li th:if="${isAdmin}" class="nav-item ">
+      <li th:if="${isMember}" class="nav-item ">
         <a class="nav-link" href="/tutors" id="navbarDropdown" role="button">
           Tutors
         </a>
       </li>
-      <li th:if="${isAdmin}" class="nav-item ">
+      <li th:if="${isMember}" class="nav-item ">
         <a
           class="nav-link"
           href="/courseOffering"
@@ -31,7 +31,7 @@
           Course Offering
         </a>
       </li>
-      <li th:if="${isAdmin}" class="nav-item ">
+      <li th:if="${isMember}" class="nav-item ">
         <a
           class="nav-link"
           href="/tutorAssignment/courseSelect"
@@ -44,6 +44,11 @@
       <li th:if="${isAdmin}" class="nav-item ">
         <a class="nav-link" href="/admin" id="navbarDropdown" role="button">
           Admin
+        </a>
+      </li>
+      <li th:if="${isTutor}" class="nav-item ">
+        <a class="nav-link" href="/tutors" id="navbarDropdown" role="button">
+          Tutor View
         </a>
       </li>
     </ul>
