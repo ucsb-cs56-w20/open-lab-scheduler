@@ -54,7 +54,7 @@ public class TutorSignUpController{
         return "redirect:/";
       }
     //   System.out.print(tutor);
-      List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutorId(tutor.get().getId());
+      List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
     //   System.out.println("tutor assignments");
     //   for (TutorAssignment t : tutorAssignments){
     //     System.out.print(t.getCourseOfferingId());
@@ -64,14 +64,14 @@ public class TutorSignUpController{
     //   }
       List<CourseOffering> courseOfferings = new ArrayList<>();
 
-      for (int i = 0; i< tutorAssignments.size();i++){
-          Optional<CourseOffering> course = courseOfferingRepository.findById(tutorAssignments.get(i).getCourseOfferingId());
-          if (!course.isPresent()){
-              redirAttrs.addFlashAttribute("alertDanger", "Course offering with id " + tutorAssignments.get(i).getCourseOfferingId() + " not found");
-              return "redirect:/";
-          }
-          courseOfferings.add(course.get());
-          System.out.print(course.get());
+      for (TutorAssignment ta : tutorAssignments){
+        //   Optional<CourseOffering> course = courseOfferingRepository.findById(tutorAssignments.get(i).getCourseOfferingId());
+        //   if (!course.isPresent()){
+        //       redirAttrs.addFlashAttribute("alertDanger", "Course offering with id " + tutorAssignments.get(i).getCourseOfferingId() + " not found");
+        //       return "redirect:/";
+        //   }
+          courseOfferings.add(ta.getCourseOffering());
+          System.out.print(ta.getCourseOffering());
       }
 
       model.addAttribute("courseOffering", courseOfferings);
