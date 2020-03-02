@@ -43,7 +43,7 @@ public class RoomAvailabilityController {
             return "redirect:/";
         }
         model.addAttribute("RoomAvailabilityModel", roomAvailabilityRepository.findAll());
-        return "roomAvailability";
+        return "roomAvailability/roomAvailability";
     }
 
     @PostMapping("/roomAvailability/upload")

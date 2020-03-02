@@ -52,7 +52,7 @@ public class TutorAssignmentController {
       return "redirect:/";
     }
     model.addAttribute("courseOfferings", courseOfferingRepository.findAll());
-    return "tutorAssignment";
+    return "tutorAssignment/tutorAssignment";
   }
 
   @GetMapping("/tutorAssignment/courseSelect/{id}")
@@ -72,10 +72,10 @@ public class TutorAssignmentController {
     }
     Iterable<Tutor> tutors = tutorRepository.findAll();
     List<TutorAssignment> tutorAssignments = tutorAssignmentRepository
-        .findByCourseOfferingId(courseOffering.get().getId());
+        .findByCourseOffering(courseOffering.get());
 
     Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream()
-        .anyMatch((ta) -> ta.getTutorId() == tutor.getId());
+        .anyMatch((ta) -> ta.getTutor().equals(tutor));
     model.addAttribute("shouldBeChecked", shouldBeChecked);
     model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());

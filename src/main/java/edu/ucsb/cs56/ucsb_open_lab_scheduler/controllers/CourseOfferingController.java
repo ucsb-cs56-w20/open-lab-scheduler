@@ -42,7 +42,7 @@ public class CourseOfferingController {
             return "redirect:/";
         }
         model.addAttribute("CourseOfferingModel", courseOfferingRepository.findAll());
-        return "courseOffering";
+        return "courseOffering/courseOffering";
     }
 
     @PostMapping("/courseOffering/upload")
