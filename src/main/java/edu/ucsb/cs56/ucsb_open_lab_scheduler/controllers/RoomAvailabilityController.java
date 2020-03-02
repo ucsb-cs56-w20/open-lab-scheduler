@@ -38,7 +38,7 @@ public class RoomAvailabilityController {
     @GetMapping("/roomAvailability")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -49,7 +49,7 @@ public class RoomAvailabilityController {
     @PostMapping("/roomAvailability/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }

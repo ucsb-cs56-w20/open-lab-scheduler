@@ -24,42 +24,27 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 
 @Controller
-public class TutorController {
-    private static Logger log = LoggerFactory.getLogger(TutorController.class);
+public class TutorViewController {
+    private static Logger log = LoggerFactory.getLogger(TutorViewController.class);
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
-
+    /*
     @Autowired
     CSVToObjectService<Tutor> csvToObjectService;
 
     @Autowired
-    TutorRepository tutorRepository;
+    TutorRepository tutorRepository;*/
 
-    @GetMapping("/tutors")
+    @GetMapping("/tutorView")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("TutorModel", tutorRepository.findAll());
-        return "tutors";
-    }
-
-    @PostMapping("/tutors/upload")
-    public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-        String role = authControllerAdvice.getRole(token);
-        if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
-            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-            return "redirect:/";
-        }
-        try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            List<Tutor> tutors = csvToObjectService.parse(reader, Tutor.class);
-            tutorRepository.saveAll(tutors);
-        }catch(IOException e){
-            log.error(e.toString());
-        }
-        return "redirect:/tutors";
+        /*model.addAttribute("TutorModel", tutorRepository.findAll());
+        return "tutors";*/
+        return "tutorView";
     }
 }

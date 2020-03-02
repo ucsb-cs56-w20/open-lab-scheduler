@@ -10,6 +10,6 @@ INSERT INTO tutor (first_name,last_name,email) VALUES ('Zach','Sisco','zachsisco
 INSERT INTO tutor (first_name,last_name,email) VALUES ('Yinon','Rousso','yinonRousso@example.org');
 INSERT INTO tutor (first_name,last_name,email) VALUES ('Kate','Perkins','kateperkins@example.org');
 INSERT INTO tutor (first_name,last_name,email) VALUES ('George','Kripac','Georgekripac@example.org');
-INSERT INTO tutor (first_name,last_name,email) VALUES ('Aaron', 'Huang', 'aaronhuang@ucsb.edu');
+INSERT INTO tutor (first_name,last_name,email) VALUES ('Aaron', 'Huang', 'huang.aaron185@gmail.com');
 INSERT INTO tutor (first_name,last_name,email) VALUES ('Adarsha', 'Poudel', 'adarsha@ucsb.edu');
 INSERT INTO tutor_assignment(course_offering_id, tutor_id) VALUES (1, 1);
