@@ -39,7 +39,7 @@ public class TutorViewController {
     @GetMapping("/tutorView")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
+        if (!(role.equals("Tutor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }

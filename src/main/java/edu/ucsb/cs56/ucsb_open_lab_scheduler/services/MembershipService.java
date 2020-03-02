@@ -11,10 +11,13 @@ public interface MembershipService {
     /** is current logged in user a member of the github org */
     public boolean isAdmin(OAuth2AuthenticationToken oAuth2AuthenticationToken);
 
+    /** is current logged in user a tutor but NOT an admin */
+    public boolean isTutor(OAuth2AuthenticationToken oAuth2AuthenticationToken);
+
     /** is current logged in user a member or admin of the
      * github org */
-    default public boolean isMemberOrAdmin(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-        return isMember(oAuth2AuthenticationToken) || isAdmin(oAuth2AuthenticationToken);
+    default public boolean isMemberOrAdminOrTutor(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        return isMember(oAuth2AuthenticationToken) || isAdmin(oAuth2AuthenticationToken) || isTutor(oAuth2AuthenticationToken);
     }
 
     default public String role(OAuth2AuthenticationToken token) {
@@ -24,6 +27,8 @@ public interface MembershipService {
            return "Admin";
         if (isMember(token))
            return "Member";
+        if (isTutor(token))
+            return "Tutor";
         return "Guest";
     }
 
