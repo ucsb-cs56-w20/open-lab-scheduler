@@ -61,6 +61,12 @@ public class AuthControllerAdvice {
         return membershipService.isAdmin(token);
     }
 
+    
+    @ModelAttribute("isNotDomain")
+    public boolean getIsNotDomain(OAuth2AuthenticationToken token){
+        return membershipService.isNotDomain(token);
+    }
+
     @ModelAttribute("role")
     public String getRole(OAuth2AuthenticationToken token){
         return membershipService.role(token);

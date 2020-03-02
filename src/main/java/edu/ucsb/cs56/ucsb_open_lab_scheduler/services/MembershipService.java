@@ -12,7 +12,7 @@ public interface MembershipService {
     public boolean isAdmin(OAuth2AuthenticationToken oAuth2AuthenticationToken);
 
     /** is current logged in user part of @ucsb.edu domain */
-    public boolean isPartOfDomain(OAuth2AuthenticationToken oAuth2AuthenticationToken);
+    public boolean isNotDomain(OAuth2AuthenticationToken oAuth2AuthenticationToken);
 
     /** is current logged in user a member or admin of the
      * github org */
@@ -24,9 +24,11 @@ public interface MembershipService {
         if (token==null)
             return "Guest";
         if (isAdmin(token))
-           return "Admin";
+            return "Admin";
         if (isMember(token))
-           return "Member";
+            return "Member";
+        if (isNotDomain(token))
+            return "NotDomain";
         return "Guest";
     }
 

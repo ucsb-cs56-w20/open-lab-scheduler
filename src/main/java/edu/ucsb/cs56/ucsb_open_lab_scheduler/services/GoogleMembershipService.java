@@ -45,12 +45,9 @@ public class GoogleMembershipService implements MembershipService {
     }
 
     /** is currently logged in on email not with the domain @ucsb.edu */
-    // TODO: here
-    public boolean isPartOfDomain(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-        return hasRole(oAuth2AuthenticationToken, "nodomain");
+    public boolean isNotDomain(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        return hasRole(oAuth2AuthenticationToken, "notdomain");
     }
-
-    // then restrict access in the controllers, redirect to not part of domain page!!
 
     /**
      * is current logged in user has role
@@ -91,7 +88,7 @@ public class GoogleMembershipService implements MembershipService {
             return true;
         }
 
-        if (roleToTest.equals("nondomain") && !memberHostedDomain.equals(hostedDomain)) {
+        if (roleToTest.equals("notdomain") && !memberHostedDomain.equals(hostedDomain)) {
             return true;
         }
 
