@@ -15,11 +15,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.List;
+import java.util.*;
 
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 
@@ -36,6 +38,9 @@ public class TutorController {
     @Autowired
     TutorRepository tutorRepository;
 
+    @Autowired
+    TutorAssignmentRepository tutorAssignmentRepository;
+
     @GetMapping("/tutors")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
@@ -43,7 +48,27 @@ public class TutorController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("TutorModel", tutorRepository.findAll());
+
+        HashMap<Long, Tutor> tutorsById = new HashMap<>();
+        for(Tutor tutor: tutorRepository.findAll()){
+            tutorsById.put(tutor.getId(), tutor);
+        }
+
+        Iterable<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAll();
+        for(TutorAssignment tutorAssignment: tutorAssignments){
+            if(tutorsById.containsKey(tutorAssignment.getTutorId())){
+                tutorsById.get(tutorAssignment.getTutorId()).incrementNumberOfCoursesAssigned();
+            }
+        }
+
+        Iterator iterator = tutorsById.entrySet().iterator();
+        ArrayList<Tutor> tutors = new ArrayList<>();
+        while (iterator.hasNext()) { 
+            Map.Entry mapElement = (Map.Entry)iterator.next(); 
+            tutors.add((Tutor)mapElement.getValue()); 
+        }
+
+        model.addAttribute("TutorModel", tutors);
         return "tutors/tutors";
     }
 

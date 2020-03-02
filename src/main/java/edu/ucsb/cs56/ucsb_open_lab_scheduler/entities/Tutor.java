@@ -26,12 +26,15 @@ public class Tutor{
     @NotBlank(message = "First name is required")
     private String firstName;
 
+    private int numberOfCoursesAssigned;
+
     public Tutor(){}
 
     public Tutor(String email, String fname, String lname){
         this.email = email;
         this.firstName = fname;
         this.lastName = lname;
+        this.numberOfCoursesAssigned = 0;
     }
 
     public void setEmail(String email){
@@ -64,6 +67,18 @@ public class Tutor{
    
     public long getId(){
         return id;
+    }
+
+    public void setNumberOfCoursesAssigned(int numberOfCoursesAssigned){
+        this.numberOfCoursesAssigned = numberOfCoursesAssigned;
+    }
+
+    public int getNumberOfCoursesAssigned(){
+        return this.numberOfCoursesAssigned;
+    }
+
+    public void incrementNumberOfCoursesAssigned(){
+        this.numberOfCoursesAssigned++;
     }
 
     @Override
