@@ -48,7 +48,7 @@ public class ApplicationController{
         
         if (role.equals("NotDomain")) {
             // redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-            return "asdfg"; // custom error page prompting user to relog in
+            return "error"; // custom error page prompting user to relog in
         }
         
         // get around an unfortunate limitation of the API
