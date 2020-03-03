@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.*;
 
 @Controller
 public class TutorAssignmentController {
@@ -70,11 +71,14 @@ public class TutorAssignmentController {
       return "redirect:/";
 
     }
-    Iterable<Tutor> tutors = tutorRepository.findAll();
+    Iterable<Tutor> tutors = () -> StreamSupport.stream(tutorRepository.findAll().spliterator(), false)
+        .filter(tutor -> tutor.getIsActive())
+        .iterator();
     List<TutorAssignment> tutorAssignments = tutorAssignmentRepository
         .findByCourseOffering(courseOffering.get());
 
     Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream()
+        .filter((ta) -> ta.getTutor().getIsActive())
         .anyMatch((ta) -> ta.getTutor().equals(tutor));
     model.addAttribute("shouldBeChecked", shouldBeChecked);
     model.addAttribute("tutors", tutors);
