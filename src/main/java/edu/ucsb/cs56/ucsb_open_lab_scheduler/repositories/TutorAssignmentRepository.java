@@ -20,9 +20,6 @@ public interface TutorAssignmentRepository extends CrudRepository<TutorAssignmen
     List<TutorAssignment> findByCourseOffering(CourseOffering courseOffering);
     List<TutorAssignment> findByTutorAndCourseOfferingQuarter(Tutor tutor, String courseOfferingQuarter);
 
-    @Transactional
-    void deleteByCourseOfferingIdAndTutorId(long courseOfferingId, long tutorId);
-
     @Query(value = "SELECT * from TutorAssignment WHERE CourseOffering IN (SELECT CourseOffering from TutorAssignment WHERE courseOfferingId = courseId AND quarter = courseQuarter)", nativeQuery=true)
 	List<TutorAssignment> getTutorAssignmentsByCourseIdAndQuarter(@Param("courseId") String courseId, @Param("courseQuarter") String quarter);
 }
