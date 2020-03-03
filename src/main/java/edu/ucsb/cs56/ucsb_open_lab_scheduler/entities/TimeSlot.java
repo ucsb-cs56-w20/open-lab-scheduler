@@ -19,7 +19,6 @@ public class TimeSlot{
     private RoomAvailability roomAvailability;
 
     private int startTime;
-
     private int duration;
 
     public TimeSlot(){
@@ -55,13 +54,8 @@ public class TimeSlot{
         return startTime;
     }
 
-<<<<<<< HEAD
-    public int getEndTime(){
-        return endTime;
-=======
     public int getDuration(){
         return duration;
->>>>>>> rg - added duration field into TimeSlot.java
     }
 
 }
