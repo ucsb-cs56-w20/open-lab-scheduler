@@ -56,8 +56,8 @@ public class CourseOfferingController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            List<CourseOffering> courseOfferings =  csvToObjectService.parse(reader, CourseOffering.class);
+        try (Reader reader = new InputStreamReader(csv.getInputStream())) {
+            List<CourseOffering> courseOfferings = csvToObjectService.parse(reader, CourseOffering.class);
             courseOfferingRepository.saveAll(courseOfferings);
         } catch (IOException e) {
             log.error(e.toString());
@@ -101,5 +101,17 @@ public class CourseOfferingController {
         }
         return "redirect:/courseOffering/courseOffering";
 
+    }
+
+    @GetMapping("/courseOffering/delete/{id}")
+    public String deleteCourse(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
+            RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+        model.addAttribute("CourseOfferingModel", courseOfferingRepository.findById(id));
+        return "courseOffering/delete";
     }
 }
