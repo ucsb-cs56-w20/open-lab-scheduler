@@ -1,3 +1,9 @@
+#data.sql
+data.sql
+
+#application.properties
+application.properties
+
 # Google JSON Credentials
 
 credentials.json

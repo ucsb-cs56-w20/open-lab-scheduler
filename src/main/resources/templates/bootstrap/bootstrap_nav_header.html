@@ -51,6 +51,11 @@
           Admin
         </a>
       </li>
+      <li th:if="${isTutor || isAdmin}" class="nav-item ">
+        <a class="nav-link" href="/tutorView" id="navbarDropdown" role="button">
+          Tutor View
+        </a>
+      </li>
     </ul>
 
 
