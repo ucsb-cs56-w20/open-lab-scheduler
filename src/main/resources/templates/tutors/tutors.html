@@ -40,7 +40,13 @@ phtcon@ucsb.edu,Conrad,Phill
               <td th:text="${t.email}"></td>
               <td th:text="${t.firstName}"></td>
               <td th:text="${t.lastName}"></td>
-              <td th:text="${t.isActive ? 'Active' : 'Inactive'}"></td>
+              <td style="text-align:center; display:block;">
+                <label>
+                  <span th:text="${t.isActive ? 'Active' : 'Inactive'}"></span><br>
+                  <input id="tutorIsActiveCheckbox" class="tutorIsActiveCheckbox" type="checkbox"
+                  th:checked="${t.isActive}" th:attr="data-tid=${t.id}" />
+                </label>
+              </td>
             </tr>
           </tbody>
         </table>
