@@ -47,7 +47,11 @@ public class TutorAssignmentController {
   @GetMapping("/tutorAssignment/courseSelect")
   public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
+<<<<<<< HEAD
     if (!(role.equals("Admin"))) {
+=======
+    if (!(role.equals("Tutor") || role.equals("Admin"))) {
+>>>>>>> 5d40d2343122c7d25cee25edb7eff61023471212
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -59,7 +63,11 @@ public class TutorAssignmentController {
   public String manageCourse(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
       RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
+<<<<<<< HEAD
     if (!(role.equals("Admin"))) {
+=======
+    if (!(role.equals("Tutor") || role.equals("Admin"))) {
+>>>>>>> 5d40d2343122c7d25cee25edb7eff61023471212
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -87,7 +95,11 @@ public class TutorAssignmentController {
   public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid,
   OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
+<<<<<<< HEAD
     if (!(role.equals("Admin"))) {
+=======
+    if (!(role.equals("Admin") || role.equals("Tutor"))) {
+>>>>>>> 5d40d2343122c7d25cee25edb7eff61023471212
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
@@ -106,7 +118,11 @@ public class TutorAssignmentController {
   public ResponseEntity<?> delete(@PathVariable("cid") long cid, @PathVariable("tid") long tid,
   OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
+<<<<<<< HEAD
     if (!(role.equals("Admin"))) {
+=======
+    if (!(role.equals("Admin") || role.equals("Tutor"))) {
+>>>>>>> 5d40d2343122c7d25cee25edb7eff61023471212
       return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 

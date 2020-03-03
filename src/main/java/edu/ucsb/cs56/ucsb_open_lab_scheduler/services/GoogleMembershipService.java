@@ -50,11 +50,19 @@ public class GoogleMembershipService implements MembershipService {
         return hasRole(oAuth2AuthenticationToken, "admin");
     }
 
+<<<<<<< HEAD
     public boolean isInstructor(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         return hasRole(oAuth2AuthenticationToken, "instructor");
     }
 
 
+=======
+        /** is current logged in user a member of the google org */
+    public boolean isTutor(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        return hasRole(oAuth2AuthenticationToken, "tutor");
+    }
+
+>>>>>>> 5d40d2343122c7d25cee25edb7eff61023471212
     /**
      * is current logged in user has role
      *
