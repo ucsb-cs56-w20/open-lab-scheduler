@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.AdminRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
 /**
  * Service object that wraps the UCSB Academic Curriculum API
@@ -35,6 +36,9 @@ public class GoogleMembershipService implements MembershipService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private CourseOfferingRepository courseOfferingRepository;
+
     /**
      * is current logged in user a member but NOT an admin of the google org
      */
@@ -46,6 +50,11 @@ public class GoogleMembershipService implements MembershipService {
     public boolean isAdmin(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         return hasRole(oAuth2AuthenticationToken, "admin");
     }
+
+    public boolean isInstructor(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        return hasRole(oAuth2AuthenticationToken, "instructor");
+    }
+
 
     /**
      * is current logged in user has role
@@ -84,6 +93,9 @@ public class GoogleMembershipService implements MembershipService {
             return true;
         }
 
+        if (roleToTest.equals("instructor") && isInstructorEmail(email)) {
+            return true;
+        }
         return false;
     }
 
@@ -115,4 +127,7 @@ public class GoogleMembershipService implements MembershipService {
         return token.getPrincipal().getAttributes().get("email").toString();
     }
 
+    private boolean isInstructorEmail(String email) {
+        return (!courseOfferingRepository.findByInstructorEmail(email).isEmpty());
+    }
 }
