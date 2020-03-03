@@ -16,13 +16,14 @@ import java.util.Map;
 
 @Controller
 public class ApplicationController{
+
+    @Autowired
+    private AuthControllerAdvice authControllerAdvice;
+
     private final RoomAvailabilityRepository roomAvailabilityRepository;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
-
-    @Autowired
-    private AuthControllerAdvice authControllerAdvice;
 
     @Autowired
     public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository){
@@ -41,9 +42,15 @@ public class ApplicationController{
 
     @GetMapping("/login")
     public String getLoginPage(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
-
+        String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         Map<String, String> urls = new HashMap<>();
 
+        
+        if (role.equals("NotDomain")) {
+            // redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "asdfg"; // custom error page prompting user to relog in
+        }
+        
         // get around an unfortunate limitation of the API
         @SuppressWarnings("unchecked") Iterable<ClientRegistration> iterable = ((Iterable<ClientRegistration>) clientRegistrationRepository);
         iterable.forEach(clientRegistration -> urls.put(clientRegistration.getClientName(),
@@ -56,8 +63,7 @@ public class ApplicationController{
         //     return "error";
 
         model.addAttribute("urls", urls);
-        
-        return "login";
+        return "login"; // custom error page, placeholder for now
     }
 }
 

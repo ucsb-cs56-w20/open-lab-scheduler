@@ -24,7 +24,7 @@ public interface MembershipService {
         if (token==null)
             return "Guest";
         if (isAdmin(token))
-           return "Admin";
+            return "Admin";
         if (isMember(token))
            return "Member";
         if(isNotDomain(token))

@@ -60,6 +60,7 @@ public class TutorController {
         }catch(IOException e){
             log.error(e.toString());
         }
+        
         return "redirect:/tutors";
     }
 }

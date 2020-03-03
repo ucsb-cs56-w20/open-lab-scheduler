@@ -87,6 +87,7 @@ public class AdminController {
     public String addAdmin(@Valid Admin admin, BindingResult result, Model model, RedirectAttributes redirAttrs,
             OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
+        
         if (!role.equals("Admin")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
