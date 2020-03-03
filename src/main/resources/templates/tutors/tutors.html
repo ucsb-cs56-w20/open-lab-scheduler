@@ -43,8 +43,8 @@ phtcon@ucsb.edu,Conrad,Phill
               <td style="text-align:center; display:block;">
                 <label>
                   <span th:text="${t.isActive ? 'Active' : 'Inactive'}"></span><br>
-                  <input id="tutorIsActiveCheckbox" class="tutorIsActiveCheckbox" type="checkbox"
-                  th:checked="${t.isActive}" th:attr="data-tid=${t.id}" />
+                  <input class="tutorIsActiveCheckbox" type="checkbox"
+                    th:checked="${t.isActive}" th:attr="data-tid=${t.id}" />
                 </label>
               </td>
             </tr>
@@ -56,6 +56,38 @@ phtcon@ucsb.edu,Conrad,Phill
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  <script th:inline="javascript">
+    $(".tutorIsActiveCheckbox").click(e => {
+      console.log("initial check passed")
+      e.preventDefault()
+      e.stopImmediatePropagation()
+
+      if (e.target.checked) {
+        console.log("begin if")
+        $.ajax({
+          url: "/tutors/active",
+          method: "POST",
+          data: {
+            tid: e.target.dataset.tid,
+            [[${_csrf.parameterName}]]: [[${_csrf.token}]]
+          },
+        }).then(() => {
+          e.target.checked = true
+        })
+      } else {
+        console.log("begin else")
+        $.ajax({
+          url: `/tutors/${e.target.dataset.tid}`,
+          method: "DELETE",
+          data: {
+            [[${_csrf.parameterName}]]: [[${_csrf.token}]]
+          },
+        }).then(() => {
+          e.target.checked = false
+        })
+      }
+    })
+  </script>
 </body>
 
 </html>
