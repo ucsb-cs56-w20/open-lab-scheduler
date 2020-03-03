@@ -47,6 +47,9 @@ public class RoomAvailability{
 
     public RoomAvailability(){}
 
+    public long getId(){
+        return this.id;
+    }
     public String getQuarter() {
         return this.quarter;
     }

@@ -2,7 +2,9 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -34,6 +37,9 @@ public class RoomAvailabilityController {
 
     @Autowired
     RoomAvailabilityRepository roomAvailabilityRepository;
+
+    @Autowired
+    TimeSlotRepository timeSlotRepository;
 
     @GetMapping("/roomAvailability")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
@@ -56,6 +62,25 @@ public class RoomAvailabilityController {
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
             List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
             roomAvailabilityRepository.saveAll(roomAvails);
+            List<TimeSlot> timeSlots = new ArrayList<>();
+            for ( RoomAvailability ra: roomAvails){
+                int start = ra.getStartTime();
+                int end = ra.getEndTime();
+                while ( start <= end-30){
+                    TimeSlot ts = new TimeSlot();
+                    ts.setRoomAvailabilityId(ra.getId());
+                    ts.setStartTime(start);
+                    if (start%100 >= 30){
+                        start += 70;
+                        ts.setEndTime(start);
+                    } else {
+                        start+=30;
+                        ts.setEndTime(start);
+                    }
+                    timeSlots.add(ts);
+                }
+            }
+            timeSlotRepository.saveAll(timeSlots);
         }catch(IOException e){
             log.error(e.toString());
         }
