@@ -131,17 +131,12 @@ public class TutorSignUpController{
         return "tutorSignUp/timeSlotAssignment";
     }
     @PostMapping("/tutorSignUp/add")
-    public ResponseEntity<?> add(@RequestParam("cid") long sid, @RequestParam("tid") long tid,
+    public ResponseEntity<?> add(@RequestParam("sid") long sid, @RequestParam("tid") long tid,
                                 OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-        Tutor tutor = tutorRepository.findById(tid)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
-        TimeSlot timeSlot = timeSlotRepository.findById(sid)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:" + sid));
 
         TimeSlotAssignment timeSlotAssignment= new TimeSlotAssignment();
         timeSlotAssignment.setTimeSlotId(sid);
@@ -159,7 +154,7 @@ public class TutorSignUpController{
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        timeSlotAssignmentRepository.deleteByTImeSlotIdAndTutorId(sid, tid);
+        timeSlotAssignmentRepository.deleteByTimeSlotIdAndTutorId(sid, tid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     }
