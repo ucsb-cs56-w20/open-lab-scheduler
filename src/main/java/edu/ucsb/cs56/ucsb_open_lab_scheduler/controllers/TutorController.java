@@ -76,6 +76,7 @@ public class TutorController {
         Tutor tutor = tutorRepository.findById(tid)
             .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
         tutor.setIsActive(true);
+        tutorRepository.save(tutor);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -90,6 +91,7 @@ public class TutorController {
         Tutor tutor = tutorRepository.findById(tid)
             .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
         tutor.setIsActive(false);
+        tutorRepository.save(tutor);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
