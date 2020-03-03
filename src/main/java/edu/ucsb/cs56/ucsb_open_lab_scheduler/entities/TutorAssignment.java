@@ -21,11 +21,15 @@ public class TutorAssignment{
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
+    @NotBlank(message = "Type is required")
+    private String type;
+
     public TutorAssignment(){}
 
-    public TutorAssignment(Tutor tutor, CourseOffering courseOffering){
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering, String type){
         this.tutor = tutor;
         this.courseOffering = courseOffering;
+        this.type = type;
     }
 
     public void setId(long id){
@@ -40,6 +44,10 @@ public class TutorAssignment{
         this.tutor = tutor;
     }
 
+    public void setType(String type)   {
+        this.type = type;
+    }
+
     public long getId(){
         return id;
     }
@@ -50,6 +58,10 @@ public class TutorAssignment{
 
     public Tutor getTutor(){
         return tutor;
+    }
+
+    public String getType() {
+        return type;
     }
 
 }
