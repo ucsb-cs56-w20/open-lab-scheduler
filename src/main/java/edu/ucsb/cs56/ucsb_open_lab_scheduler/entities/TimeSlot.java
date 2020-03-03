@@ -19,9 +19,16 @@ public class TimeSlot{
     private RoomAvailability roomAvailability;
 
     private int startTime;
+<<<<<<< HEAD
     private int endTime;
+=======
+    private int duration;
+>>>>>>> rg - added duration field into TimeSlot.java
 
-    public TimeSlot(){}
+    public TimeSlot(){
+        this.startTime = 0;
+        this.duration = 30;
+    }
 
     public void setId(long id){
         this.id = id;
@@ -35,8 +42,8 @@ public class TimeSlot{
         this.startTime = startTime;
     }
 
-    public void setEndTime(int endTime){
-        this.endTime = endTime;
+    public void setDuration(int duration){
+        this.duration = duration;
     }
 
     public long getId(){
@@ -51,8 +58,13 @@ public class TimeSlot{
         return startTime;
     }
 
+<<<<<<< HEAD
     public int getEndTime(){
         return endTime;
+=======
+    public int getDuration(){
+        return duration;
+>>>>>>> rg - added duration field into TimeSlot.java
     }
 
 }
