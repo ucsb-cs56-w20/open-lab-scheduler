@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.Query;
 
 @Repository
 public interface TimeSlotAssignmentRepository extends CrudRepository<TimeSlotAssignment, Long> {
-   // @Query(value = "SELECT * FROM TimeSlotAssignment WHERE tutor IN (SELECT tutor from (SELECT * from TutorAssignment WHERE CourseOffering IN (SELECT CourseOffering from TutorAssignment WHERE courseOfferingId = courseId AND quarter = courseQuarter)))", nativeQuery=true)
-	//List<TimeSlotAssignment> getTimeSlotAssignmentsByCourseIdAndQuarter(@Param("courseId") String courseId, @Param("courseQuarter") String quarter);
+    @Query(value = "SELECT * FROM TimeSlotAssignment WHERE tutor IN (SELECT tutor from (SELECT * from TutorAssignment WHERE CourseOffering IN (SELECT CourseOffering from TutorAssignment WHERE courseOfferingId = courseId AND quarter = courseQuarter)))", nativeQuery=true)
+	List<TimeSlotAssignment> getTimeSlotAssignmentsByCourseIdAndQuarter(@Param("courseId") String courseId, @Param("courseQuarter") String quarter);
 }

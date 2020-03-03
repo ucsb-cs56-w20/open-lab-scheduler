@@ -11,7 +11,4 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface RoomAvailabilityRepository extends CrudRepository<RoomAvailability, Long> {
     RoomAvailability findById(long id);
-
-    @Query(value = "SELECT * from TimeSlotAssignment WHERE tutorId IN (SELECT tutorId from TutorAssignment WHERE courseOfferingId = id)", nativeQuery=true)
-	List<TimeSlotAssignment> getTimeSlotAssignments(@Param("id") String id);
 }
