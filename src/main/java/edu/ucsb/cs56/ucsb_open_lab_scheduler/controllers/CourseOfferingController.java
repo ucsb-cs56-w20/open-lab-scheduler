@@ -1,5 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
+import javax.validation.Valid;
+
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -114,5 +117,36 @@ public class CourseOfferingController {
         }
         return "redirect:/courseOffering/";
 
+    @GetMapping("/courseOffering/create")
+    public String create(CourseOffering courseOffering) {
+        return "courseOffering/create";
+    }
+
+    public boolean checkIfCourseExists(Iterable<CourseOffering> iter, CourseOffering courseOffering){
+        boolean courseExists = false;
+        for(CourseOffering course : iter) {
+            if(courseOffering.equals(course)){
+                courseExists = true;
+            }
+        }
+        return courseExists;
+
+    }
+
+    @PostMapping("/courseOffering/add")
+    public String add(@Valid CourseOffering courseOffering, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "courseOffering/create";
+        }
+        Iterable<CourseOffering> iter = courseOfferingRepository.findAll();
+        boolean courseExists = checkIfCourseExists(iter, courseOffering);
+        if(courseExists){
+            final String errorCourseExists = "Course already exists for this quarter";
+            model.addAttribute("errorCourseExists", errorCourseExists);
+            return "index";
+        }
+        courseOfferingRepository.save(courseOffering);
+        model.addAttribute("courseOffering", courseOfferingRepository.findAll());
+        return "index";
     }
 }
