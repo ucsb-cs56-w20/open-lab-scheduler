@@ -7,7 +7,7 @@ INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 130B','W20','Lokshtanov', 'lokshtanov@ucsb.edu');
 INSERT INTO tutor (first_name,last_name,email,is_active) VALUES ('Scott','Chow','scottpchow@example.org',1);
 INSERT INTO tutor (first_name,last_name,email,is_active) VALUES ('Zach','Sisco','zachsisco@example.org',1);
-INSERT INTO tutor (first_name,last_name,email,is_active) VALUES ('Yinon','Rousso','yinonRousso@example.org',1);
-INSERT INTO tutor (first_name,last_name,email,is_active) VALUES ('Kate','Perkins','kateperkins@example.org',1);
+INSERT INTO tutor (first_name,last_name,email,is_active) VALUES ('Yinon','Rousso','yinonRousso@example.org',0);
+INSERT INTO tutor (first_name,last_name,email,is_active) VALUES ('Kate','Perkins','kateperkins@example.org',0);
 INSERT INTO tutor (first_name,last_name,email,is_active) VALUES ('George','Kripac','Georgekripac@example.org',1);
 INSERT INTO tutor_assignment(course_offering_id, tutor_id) VALUES (1, 1);
