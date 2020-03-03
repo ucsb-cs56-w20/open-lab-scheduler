@@ -10,6 +10,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.Query;
 
 @Repository
 public interface TutorAssignmentRepository extends CrudRepository<TutorAssignment, Long> {
@@ -22,6 +23,6 @@ public interface TutorAssignmentRepository extends CrudRepository<TutorAssignmen
     @Transactional
     void deleteByCourseOfferingIdAndTutorId(long courseOfferingId, long tutorId);
 
-    @Transactional
-    void deleteByTutorId(long tutorId);
+    @Query(value = "SELECT * from TutorAssignment WHERE CourseOffering IN (SELECT CourseOffering from TutorAssignment WHERE courseOfferingId = courseId AND quarter = courseQuarter)", nativeQuery=true)
+	List<TutorAssignment> getTutorAssignmentsByCourseIdAndQuarter(@Param("courseId") String courseId, @Param("courseQuarter") String quarter);
 }
