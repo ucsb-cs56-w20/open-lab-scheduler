@@ -1,4 +1,6 @@
-
+.gitignore
+data.sql
+application.properties
 # Google JSON Credentials
 
 credentials.json
