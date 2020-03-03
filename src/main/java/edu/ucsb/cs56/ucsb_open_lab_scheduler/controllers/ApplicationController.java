@@ -30,7 +30,11 @@ public class ApplicationController{
     }
 
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken){
+        String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
+        if(role.equals("NotDomain"))
+            return "error";
+
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index";
     }
@@ -45,11 +49,13 @@ public class ApplicationController{
         iterable.forEach(clientRegistration -> urls.put(clientRegistration.getClientName(),
                 "/oauth2/authorization/" + clientRegistration.getRegistrationId()));
 
-        model.addAttribute("urls", urls);
+        
 
-        String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
-        if(role.equals("NotDomain"))
-            return "error";
+        // String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
+        // if(role.equals("NotDomain"))
+        //     return "error";
+
+        model.addAttribute("urls", urls);
         
         return "login";
     }
