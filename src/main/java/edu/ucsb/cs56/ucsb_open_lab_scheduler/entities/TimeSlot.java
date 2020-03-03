@@ -55,8 +55,13 @@ public class TimeSlot{
         return startTime;
     }
 
+<<<<<<< HEAD
+    public int getEndTime(){
+        return endTime;
+=======
     public int getDuration(){
         return duration;
+>>>>>>> rg - added duration field into TimeSlot.java
     }
 
 }
