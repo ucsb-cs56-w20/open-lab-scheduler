@@ -69,6 +69,12 @@ public class AuthControllerAdvice {
     public boolean getIsMember(OAuth2AuthenticationToken token){
         return membershipService.isMember(token);
     }
+
+    @ModelAttribute("isInstructor")
+    public boolean getIsInstructor(OAuth2AuthenticationToken token){
+        return membershipService.isInstructor(token);
+    }
+    
     @ModelAttribute("isAdmin")
     public boolean getIsAdmin(OAuth2AuthenticationToken token){
         return membershipService.isAdmin(token);

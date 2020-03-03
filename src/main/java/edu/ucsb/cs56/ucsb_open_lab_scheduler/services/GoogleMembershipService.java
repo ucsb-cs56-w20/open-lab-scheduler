@@ -1,5 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.services;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.AdminRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
 /**
  * Service object that wraps the UCSB Academic Curriculum API
@@ -21,8 +24,8 @@ public class GoogleMembershipService implements MembershipService {
 
     private Logger logger = LoggerFactory.getLogger(GoogleMembershipService.class);
 
-    @Value("${app.admin.email}")
-    private String adminEmail;
+    @Value("${app.admin.email:}")
+    private List<String> adminEmails;
 
     @Value("${app.member.hosted-domain}")
     private String memberHostedDomain;
@@ -35,6 +38,9 @@ public class GoogleMembershipService implements MembershipService {
 
     @Autowired
     private TutorRepository tutorRepository;
+    
+    @Autowired
+    private CourseOfferingRepository courseOfferingRepository;
 
     /**
      * is current logged in user a member but NOT an admin of the google org
@@ -52,6 +58,11 @@ public class GoogleMembershipService implements MembershipService {
         return hasRole(oAuth2AuthenticationToken, "tutor");
     }
 
+    public boolean isInstructor(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
+        return hasRole(oAuth2AuthenticationToken, "instructor");
+    }
+
+
     /**
      * is current logged in user has role
      *
@@ -61,7 +72,7 @@ public class GoogleMembershipService implements MembershipService {
 
     public boolean hasRole(OAuth2AuthenticationToken oauthToken, String roleToTest) {
 
-        logger.info("adminEmail=[" + adminEmail + "]");
+        logger.info("adminEmail=[" + adminEmails + "]");
 
         if (oauthToken == null) {
             return false;
@@ -93,15 +104,21 @@ public class GoogleMembershipService implements MembershipService {
             return true;
         }
 
+        if (roleToTest.equals("instructor") && isInstructorEmail(email)) {
+            return true;
+        }
         return false;
     }
 
     private boolean isAdminEmail(String email) {
-        return (!adminRepository.findByEmail(email).isEmpty() || email.equals(adminEmail));
+        return (!adminRepository.findByEmail(email).isEmpty() || adminEmails.contains(email));
     }
 
     private boolean isTutorEmail(String email) {
         return (!tutorRepository.findByEmail(email).isEmpty());
     }
 
+    private boolean isInstructorEmail(String email) {
+        return (!courseOfferingRepository.findByInstructorEmail(email).isEmpty());
+    }
 }
