@@ -9,11 +9,18 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
+import java.util.ArrayList;
+
 @ControllerAdvice
 public class AuthControllerAdvice {
 
     @Autowired   
     private MembershipService membershipService;
+
+    @Autowired
+    TutorRepository tutorRepository;
 
     @ModelAttribute("isLoggedIn")
     public boolean getIsLoggedIn(OAuth2AuthenticationToken token){
@@ -66,9 +73,33 @@ public class AuthControllerAdvice {
     public boolean getIsAdmin(OAuth2AuthenticationToken token){
         return membershipService.isAdmin(token);
     }
-
+    @ModelAttribute("isTutor")
+    public boolean getIsTutor(OAuth2AuthenticationToken token){
+        String userEmail;
+        if (token == null){
+            userEmail = "";
+        }else{
+            userEmail = token.getPrincipal().getAttributes().get("email").toString();
+        }
+        Iterable<Tutor> tutor = tutorRepository.findAll();
+        for(Tutor elem : tutor){
+            if(elem.getEmail().equals(userEmail)){
+                return true;
+            }
+        }
+        return false;
+    }
     @ModelAttribute("role")
     public String getRole(OAuth2AuthenticationToken token){
-        return membershipService.role(token);
+        if(getIsAdmin(token)){
+            return "Admin";
+        }else if(getIsTutor(token)){
+            return "Tutor";
+        }else if(getIsMember(token)){
+            return "Member";
+        }else if(getIsLoggedIn(token)){
+            return "Guest";
+        }
+        return "Tutor";
     }
 }
