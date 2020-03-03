@@ -38,7 +38,7 @@ public class TutorAssignmentController {
   private AuthControllerAdvice authControllerAdvice;
 
   public TutorAssignmentController(TutorAssignmentRepository tutorAssignmentRepository, TutorRepository tutorRepository,
-      CourseOfferingRepository courseOfferingRepository) {
+  CourseOfferingRepository courseOfferingRepository) {
     this.tutorAssignmentRepository = tutorAssignmentRepository;
     this.tutorRepository = tutorRepository;
     this.courseOfferingRepository = courseOfferingRepository;
@@ -47,7 +47,7 @@ public class TutorAssignmentController {
   @GetMapping("/tutorAssignment/courseSelect")
   public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
+    if (!(role.equals("Admin"))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -59,7 +59,7 @@ public class TutorAssignmentController {
   public String manageCourse(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
       RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
+    if (!(role.equals("Admin"))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -85,9 +85,9 @@ public class TutorAssignmentController {
 
   @PostMapping("/tutorAssignment/add")
   public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid,
-                               OAuth2AuthenticationToken token) {
+  OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
+    if (!(role.equals("Admin"))) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
@@ -104,9 +104,9 @@ public class TutorAssignmentController {
 
   @DeleteMapping("/tutorAssignment/{cid}/{tid}")
   public ResponseEntity<?> delete(@PathVariable("cid") long cid, @PathVariable("tid") long tid,
-                                  OAuth2AuthenticationToken token) {
+  OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Member") || role.equals("Admin") || role.equals("Tutor"))) {
+    if (!(role.equals("Admin"))) {
       return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
