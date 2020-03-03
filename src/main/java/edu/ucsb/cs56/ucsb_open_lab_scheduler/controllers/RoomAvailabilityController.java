@@ -68,7 +68,7 @@ public class RoomAvailabilityController {
                 int end = ra.getEndTime();
                 while ( start <= end-30){
                     TimeSlot ts = new TimeSlot();
-                    ts.setRoomAvailabilityId(ra.getId());
+                    ts.setRoomAvailability(ra);
                     ts.setStartTime(start);
                     if (start%100 >= 30){
                         start += 70;

@@ -39,7 +39,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 
 @Controller
 public class TutorSignUpController{
-    private Logger logger = LoggerFactory.getLogger(TutorAssignmentController.class);
+    private Logger logger = LoggerFactory.getLogger(TutorSignUpController.class);
     private final TutorRepository tutorRepository;
     private final CourseOfferingRepository courseOfferingRepository;
     private final TutorAssignmentRepository tutorAssignmentRepository;
@@ -118,7 +118,7 @@ public class TutorSignUpController{
         }
 
         Predicate<TimeSlot> shouldBeChecked = t -> timeSlotAssignments.stream()
-            .anyMatch((ta) -> ta.getTimeSlotId() == t.getId());
+            .anyMatch((ta) -> ta.getTimeSlot() == t);
         
     
         model.addAttribute("shouldBeChecked", shouldBeChecked);
@@ -139,8 +139,10 @@ public class TutorSignUpController{
         }
 
         TimeSlotAssignment timeSlotAssignment= new TimeSlotAssignment();
-        timeSlotAssignment.setTimeSlotId(sid);
-        timeSlotAssignment.setTutorId(tid);
+        Optional<TimeSlot> ts = timeSlotRepository.findById(sid);
+        timeSlotAssignment.setTimeSlot(ts.get());
+        Optional<Tutor> tutor = tutorRepository.findById(tid);
+        timeSlotAssignment.setTutor(tutor.get());
         timeSlotAssignmentRepository.save(timeSlotAssignment);
 
         return new ResponseEntity<>(HttpStatus.OK);

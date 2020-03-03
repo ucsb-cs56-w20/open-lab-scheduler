@@ -25,10 +25,10 @@
           </thead>
           <tbody>
             <tr th:each="slot, iStat: ${timeSlots}">
-              <td th:text="${roomAvailability.get(slot.getRoomAvailabilityId()).getRoom()}"></td>
-              <td th:text="${roomAvailability.get(slot.getRoomAvailabilityId()).getDay()}"></td>
-              <td th:text="${roomAvailability.get(slot.getRoomAvailabilityId()).getTime12HrFormat(slot.getStartTime())}"></td>
-              <td th:text="${roomAvailability.get(slot.getRoomAvailabilityId()).getTime12HrFormat(slot.getEndTime())}"></td>
+              <td th:text="${slot.getRoomAvailability().getRoom().getName()}"></td>
+              <td th:text="${slot.getRoomAvailability().getDay()}"></td>
+              <td th:text="${slot.getRoomAvailability().getTime12HrFormat(slot.getStartTime())}"></td>
+              <td th:text="${slot.getRoomAvailability().getTime12HrFormat(slot.getEndTime())}"></td>
               <td>
                 <input class="timeSlotAssignmentCheckBox" type="checkbox" th:checked="${shouldBeChecked.test(slot)}"
                   th:attr="data-tid=${tutor.id},data-sid=${slot.id}" />
