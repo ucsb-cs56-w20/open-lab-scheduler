@@ -58,12 +58,10 @@ phtcon@ucsb.edu,Conrad,Phill
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
   <script th:inline="javascript">
     $(".tutorIsActiveCheckbox").click(e => {
-      console.log("initial check passed")
       e.preventDefault()
       e.stopImmediatePropagation()
 
       if (e.target.checked) {
-        console.log("begin if")
         $.ajax({
           url: "/tutors/active",
           method: "POST",
@@ -75,7 +73,6 @@ phtcon@ucsb.edu,Conrad,Phill
           e.target.checked = true
         })
       } else {
-        console.log("begin else")
         $.ajax({
           url: `/tutors/${e.target.dataset.tid}`,
           method: "DELETE",
