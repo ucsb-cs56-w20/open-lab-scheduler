@@ -25,9 +25,9 @@
                   th:text="${courseOffering.getQuarter() + ' ' + courseOffering.getCourseId()}"
                 ></td>
                 <td>
-                  <a>
-                    <!-- th:href="'/tutorAssignment/courseSelect/' + ${courseOffering.id}" -->
-                    Manage</a
+                  <a
+                    th:href="'/tutorSignUp/courseSelect/' + ${courseOffering.id}"
+                    >Manage</a
                   >
                 </td>
               </tr>
