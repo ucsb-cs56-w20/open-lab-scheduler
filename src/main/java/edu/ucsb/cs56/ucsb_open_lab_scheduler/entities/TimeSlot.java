@@ -3,25 +3,31 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+
 
 @Entity
 public class TimeSlot{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private long roomAvailabilityId;
+
+    @OneToOne
+    @JoinColumn(name = "room_availability_id")
+    private RoomAvailability roomAvailability;
+
     private int startTime;
 
     public TimeSlot(){}
 
     public void setId(long id){
         this.id = id;
-    }    
+    }
 
-    public void setRoomAvailabilityId(long roomAvailabilityId){
-        this.roomAvailabilityId = roomAvailabilityId;
+    public void setRoomAvailability(RoomAvailability roomAvailability){
+        this.roomAvailability = roomAvailability;
     }
 
     public void setStartTime(int startTime){
@@ -32,8 +38,8 @@ public class TimeSlot{
         return id;
     }
 
-    public long getRoomAvailabilityId(){
-        return roomAvailabilityId;
+    public RoomAvailability getRoomAvailability(){
+        return roomAvailability;
     }
 
     public int getStartTime(){
