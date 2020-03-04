@@ -59,8 +59,8 @@ public class TutorController {
 
         Iterable<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findAll();
         for(TutorAssignment tutorAssignment: tutorAssignments){
-            if(tutorsById.containsKey(tutorAssignment.getTutorId())){
-                tutorsById.get(tutorAssignment.getTutorId()).incrementNumberOfCoursesAssigned();
+            if(tutorsById.containsKey(tutorAssignment.getTutor().getId())){
+                tutorsById.get(tutorAssignment.getTutor().getId()).incrementNumberOfCoursesAssigned();
             }
         }
 

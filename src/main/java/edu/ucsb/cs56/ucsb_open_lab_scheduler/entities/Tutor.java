@@ -26,8 +26,8 @@ public class Tutor{
     @NotBlank(message = "First name is required")
     private String firstName;
 
-    private int numberOfCoursesAssigned;
     private boolean isActive;
+    private int numberOfCoursesAssigned;
 
     public Tutor() {
         this.isActive = true;
