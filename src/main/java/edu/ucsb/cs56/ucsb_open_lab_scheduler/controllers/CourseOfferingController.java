@@ -67,7 +67,50 @@ public class CourseOfferingController {
         } catch (IOException e) {
             log.error(e.toString());
         }
-        return "redirect:/courseOffering";
+        return "redirect:/courseOffering/courseOffering";
+    }
+
+    @GetMapping("/courseOffering/delete/{id}")
+    public String deleteConfirm(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
+            RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+
+        Optional<CourseOffering> course = courseOfferingRepository.findById(id);
+        if (!course.isPresent()) {
+            redirAttrs.addFlashAttribute("alertDanger", "Course with that id does not exist.");
+        } else {
+            model.addAttribute("CourseToDelete", courseOfferingRepository.findById(id).get());
+        }
+
+        return "courseOffering/confirmDelete";
+    }
+
+    @PostMapping("/courseOffering/delete/confirm/{id}")
+    public String deleteCourse(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
+            RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+        Optional<CourseOffering> course = courseOfferingRepository.findById(id);
+        if (!course.isPresent()) {
+            redirAttrs.addFlashAttribute("alertDanger", "Course with that id does not exist.");
+        } else {
+
+            List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByCourseOffering(course.get());
+            for (TutorAssignment tutorAssignment : tutorAssignments) {
+                tutorAssignmentRepository.delete(tutorAssignment);
+            }
+            courseOfferingRepository.delete(course.get());
+            redirAttrs.addFlashAttribute("alertSuccess", "Course successfully deleted.");
+        }
+        return "redirect:/courseOffering/";
+
     }
 
     @GetMapping("/courseOffering/delete/{id}")
