@@ -46,7 +46,11 @@
         console.log(raExists)
         if (raExists) {
             $("#save").click(e => {
-                if(isNaN(document.getElementById("start").value) || isNaN(document.getElementById("end").value)) {
+                if(isNaN(document.getElementById("start").value) || 
+                    isNaN(document.getElementById("end").value) ||
+                    parseInt(document.getElementById("start").value) > 2400 ||
+                    parseInt(document.getElementById("end").value) > 2400)
+                    {
                     alert("Please input a valid time (in 24 hour time, with no colon)");
                 }
                 else {

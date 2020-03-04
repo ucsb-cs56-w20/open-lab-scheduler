@@ -107,6 +107,9 @@ public class RoomAvailability{
         String suffix = t < 1200 ? "am" : "pm";
         if (time.length()==2)
         { time = "12" + time;}
+        else if (time.length()==1) {
+            time = "120" + time;
+        }
         return time.substring(0,time.length()-2)+":"+time.substring(time.length()-2)+ " "+ suffix;
     }
 
