@@ -14,7 +14,7 @@ public class TutorAssignment{
     @JoinColumn(name = "course_offering_id")
     private CourseOffering courseOffering;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
     

@@ -12,7 +12,7 @@ public class TimeSlotAssignment{
     @JoinColumn(name = "time_slot_id")
     private TimeSlot timeSlot;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
