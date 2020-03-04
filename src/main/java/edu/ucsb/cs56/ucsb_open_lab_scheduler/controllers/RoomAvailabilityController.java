@@ -31,6 +31,7 @@ public class RoomAvailabilityController {
     @Autowired
     CSVToObjectService<RoomAvailability> csvToObjectService;
 
+
     @Autowired
     RoomAvailabilityRepository roomAvailabilityRepository;
 
@@ -46,17 +47,16 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/upload")
-    public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token,
-            RedirectAttributes redirAttrs) {
+    public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!(role.equals("Admin"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        try (Reader reader = new InputStreamReader(csv.getInputStream())) {
+        try(Reader reader = new InputStreamReader(csv.getInputStream())){
             List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
             roomAvailabilityRepository.saveAll(roomAvails);
-        } catch (IOException e) {
+        }catch(IOException e){
             log.error(e.toString());
         }
         return "redirect:/roomAvailability";

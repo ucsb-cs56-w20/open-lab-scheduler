@@ -13,19 +13,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-public class ApplicationController {
+public class ApplicationController{
     private final RoomAvailabilityRepository roomAvailabilityRepository;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
-    public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository) {
+    public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository){
         this.roomAvailabilityRepository = roomAvailabilityRepository;
     }
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model){
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index";
     }
@@ -36,8 +36,7 @@ public class ApplicationController {
         Map<String, String> urls = new HashMap<>();
 
         // get around an unfortunate limitation of the API
-        @SuppressWarnings("unchecked")
-        Iterable<ClientRegistration> iterable = ((Iterable<ClientRegistration>) clientRegistrationRepository);
+        @SuppressWarnings("unchecked") Iterable<ClientRegistration> iterable = ((Iterable<ClientRegistration>) clientRegistrationRepository);
         iterable.forEach(clientRegistration -> urls.put(clientRegistration.getClientName(),
                 "/oauth2/authorization/" + clientRegistration.getRegistrationId()));
 
