@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface CourseOfferingRepository extends CrudRepository<CourseOffering, Long> {
     //List<CourseOffering> getCourseOfferings();
     public List<CourseOffering> findByInstructorEmail(String instructorEmail);
+
+    //@Query(value = "SELECT quarter FROM CourseOffering", nativeQuery=true)
+    //public List<String> findQuarters();
 }
