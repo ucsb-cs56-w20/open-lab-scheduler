@@ -40,9 +40,9 @@ phtcon@ucsb.edu,Conrad,Phill
               <th>First Name</th>
               <th>Last Name</th>
               <th>Assigned Courses</th>
-                <th>Active</th>
-                <th>Edit</th>
-                <th>Delete</th>
+              <th>Active</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -59,7 +59,7 @@ phtcon@ucsb.edu,Conrad,Phill
                 </label>
               </td>
               <td><a th:href="@{'/tutors/' + ${t.id}}" type="button" class="btn btn-secondary" style="display: block;">Edit</a></td>
-                <td><button type ="button" class="btn btn-danger" th:attr="onclick=|del('${t.email}', ${t.id})|"/>Delete</button></td>
+              <td><button type ="button" class="btn btn-danger" th:attr="onclick=|del('${t.email}', ${t.id})|"/>Delete</button></td>
             </tr>
           </tbody>
         </table>
