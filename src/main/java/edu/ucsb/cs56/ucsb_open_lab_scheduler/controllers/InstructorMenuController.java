@@ -19,7 +19,7 @@ import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
 import java.util.Collections;
->>>>>>> sm/lg added a quarter column to the table and sorted the courses that the instructor teaches by quarter
+import java.util.Comparator; 
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
@@ -52,6 +52,11 @@ public class InstructorMenuController {
     private TutorAssignmentRepository tutorAssignmentRepository;
         
 
+    
+    private Comparator<CourseOffering> byYear=(c1,c2)->Integer.compare(Integer.parseInt(c1.getQuarter().substring(1,3)), Integer.parseInt(c2.getQuarter().substring(1,3)));
+    
+    private Comparator<CourseOffering> byFirstLetter=(c1,c2)->c1.getQuarter().compareTo(c2.getQuarter());
+    
     @GetMapping("/instructorMenu")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         if (!authControllerAdvice.getIsInstructor(token)) {
@@ -61,7 +66,7 @@ public class InstructorMenuController {
 	
 	String email= (String) token.getPrincipal().getAttributes().get("email");
 	List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
-	Collections.sort(courseList);
+	Collections.sort(courseList,byYear.thenComparing(byFirstLetter));
 	model.addAttribute("courses",courseList);
         
         return "instructorMenu/instructorMenu";

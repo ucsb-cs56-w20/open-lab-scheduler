@@ -114,7 +114,7 @@ public class CourseOffering implements Comparable<CourseOffering>{
 
     @Override
     public int compareTo(CourseOffering otherCourse){
-	    return this.quarter.compareTo(otherCourse.quarter);
+	    return this.quarter.substring(0,1).compareTo(otherCourse.quarter.substring(0,1));
     }
 
 }
