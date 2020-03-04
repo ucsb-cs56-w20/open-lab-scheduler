@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CourseOfferingRepository extends CrudRepository<CourseOffering, Long>{
+
     @Query(value = "SELECT DISTINCT course_id FROM course_offering", nativeQuery=true)
     public List<String> findAllUniqueCourses();
     public List<CourseOffering> findByInstructorEmail(String instructorEmail);

@@ -178,7 +178,7 @@ public class RoomAvailabilityController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id)).get();
+        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id));
         ra.setQuarter(quarter);
         ra.setDay(day);
         ra.setStartTime(Integer.parseInt(start));
