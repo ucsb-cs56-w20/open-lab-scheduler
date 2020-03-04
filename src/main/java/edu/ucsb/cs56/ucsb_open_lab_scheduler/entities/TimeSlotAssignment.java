@@ -1,11 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class TimeSlotAssignment{
@@ -17,7 +12,7 @@ public class TimeSlotAssignment{
     @JoinColumn(name = "time_slot_id")
     private TimeSlot timeSlot;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 

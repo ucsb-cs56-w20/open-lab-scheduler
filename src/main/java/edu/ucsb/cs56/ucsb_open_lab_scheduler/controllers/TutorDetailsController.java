@@ -3,6 +3,7 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.formbeans.TutorDetailsForm;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ import java.util.Optional;
 public class TutorDetailsController {
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
+
+    @Autowired
+    private TutorAssignmentRepository tutorAssignmentRepository;
 
     @Autowired
     TutorController tutorController;
@@ -61,10 +65,35 @@ public class TutorDetailsController {
 
     }
 
+    @GetMapping("/tutors/{id}/delete")
+    public void deleteTutor(HttpServletResponse httpServletResponse,
+                            OAuth2AuthenticationToken token, RedirectAttributes redirAttrs,
+                            @PathVariable(value="id") long id) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return;
+        }
+        Optional<Tutor> tutor = tutorRepository.findById(id);
+        if (!tutor.isPresent()) {
+            throw new RuntimeException("Tutor does not exist");
+        }
+        tutorAssignmentRepository.deleteByTutorId(id);
+        tutorRepository.delete(tutor.get());
+        //redirect
+        httpServletResponse.setHeader("Location", "/tutors");
+        httpServletResponse.setStatus(302);
+    }
+
     @PostMapping("/tutor/updatedetails")
     public void greetingSubmit(HttpServletResponse httpServletResponse,
                                @ModelAttribute("tutor") TutorDetailsForm tutorDetails,
                                Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return;
+        }
         if (tutorDetails.getId() == 0) {
             Tutor t = new Tutor();
             tutorDetails.updateTutor(t);
