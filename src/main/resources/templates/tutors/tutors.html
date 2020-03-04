@@ -60,7 +60,7 @@ phtcon@ucsb.edu,Conrad,Phill
                 </label>
               </td>
               <td><a th:href="@{'/tutors/' + ${t.id}}" type="button" class="btn btn-secondary" style="display: block;">Edit</a></td>
-                <td><button type ="button" class="btn btn-danger" th:attr="onclick=|del('${t.email}', ${t.id})|"/>Delete</button></td>
+              <td><button type ="button" class="btn btn-danger" th:attr="onclick=|del('${t.email}', ${t.id})|"/>Delete</button></td>
             </tr>
           </tbody>
         </table>
