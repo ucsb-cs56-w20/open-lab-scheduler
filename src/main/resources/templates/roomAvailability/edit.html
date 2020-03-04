@@ -49,7 +49,7 @@
             </div>
         </div>
         <p>Start and end times should be entered as integers in military time (e.g. "1730 for 5:30 PM")</p>
-        <span>Start and end times should also be an integer multiple of the default duration</span>
+        <span>Start and end times should also be a multiple of the default duration </span>
         <span th:text="${defaultDuration}"></span>
         <p></p>
         <button type="button" id="save">Save</button>
@@ -126,8 +126,15 @@
         })
         /*<![CDATA[*/
 
+        function militaryTimeToMinutes(time) {
+            let minutes = Math.floor(time / 100);
+            minutes *= 60;
+            minutes += time % 100;
+            return minutes;
+
+        }
+
         function validTime(time) {
-            console.log(time.length);
             let intTime = parseInt(time);
             if(isNaN(intTime)) {
                 $('#timeIsNotInteger').modal();
@@ -138,7 +145,8 @@
                 return false;
             }
             let defaultDuration = /*[[${defaultDuration}]]*/30;
-            if(intTime % defaultDuration != 0) {
+            let minutes = militaryTimeToMinutes(intTime);
+            if(minutes % defaultDuration != 0) {
                 $('#notMultipleOfDefaultDuration').modal();
                 return false;
             }
