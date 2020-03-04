@@ -9,8 +9,9 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
+
 @Entity
-public class CourseOffering{
+public class CourseOffering implements Comparable<CourseOffering>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -109,6 +110,11 @@ public class CourseOffering{
     @Override
     public int hashCode() {
         return Objects.hash(id, quarter, instructorName, instructorEmail);
+    }
+
+    @Override
+    public int compareTo(CourseOffering otherCourse){
+	    return this.quarter.compareTo(otherCourse.quarter);
     }
 
 }
