@@ -10,6 +10,8 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,8 +46,13 @@ public class RoomAvailabilityController {
     @Autowired
     RoomAvailabilityRepository roomAvailabilityRepository;
 
+<<<<<<< HEAD
     @Autowired
     TimeSlotRepository timeSlotRepository;
+=======
+    @Value("${app.timeSlotDefaultDuration}")
+    private int defaultDuration;
+>>>>>>> bq - added app.timeSlotDefaultDuration to application.properties and accessed it in roomAvailabilityController.java
 
     @GetMapping("/roomAvailability")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
@@ -105,6 +112,7 @@ public class RoomAvailabilityController {
             return "redirect:/";
         }
         model.addAttribute("raExists", false);
+        model.addAttribute("defaultDuration", defaultDuration);
         return "roomAvailability/edit";
 
     }

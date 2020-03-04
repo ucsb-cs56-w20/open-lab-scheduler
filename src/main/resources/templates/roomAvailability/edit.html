@@ -39,7 +39,10 @@
                             </div>
                           </div>
                         </td>
-                        <td><input type="text" id="start" th:attr="value=${(raExists)? ra.getStartTime() : ''}"></td>
+                        <td>
+                            <input type="text" id="start" th:attr="value=${(raExists)? ra.getStartTime() : ''}">
+                            <p>Time should be entered as integers in military time (e.g. "1730 for 5:30 PM")</p>
+                        </td>
                         <td><input type="text" id="end" th:attr="value=${(raExists)? ra.getEndTime() : ''}"></td>
                         <td><input type="text" id="room" th:attr="value=${(raExists)? ra.getRoom() : ''}"></td>
                     </tbody>
