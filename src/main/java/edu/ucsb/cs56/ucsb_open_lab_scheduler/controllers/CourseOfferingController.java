@@ -67,7 +67,7 @@ public class CourseOfferingController {
         } catch (IOException e) {
             log.error(e.toString());
         }
-        return "redirect:/courseOffering/courseOffering";
+        return "redirect:/courseOffering";
     }
 
     @GetMapping("/courseOffering/delete/{id}")
