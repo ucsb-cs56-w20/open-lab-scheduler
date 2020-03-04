@@ -134,7 +134,9 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+
         model.addAttribute("ra", roomAvailabilityRepository.findById(id));
+
         model.addAttribute("raDay", roomAvailabilityRepository.findById(id).getDay());
         model.addAttribute("raExists", true);
         model.addAttribute("raID", id);
