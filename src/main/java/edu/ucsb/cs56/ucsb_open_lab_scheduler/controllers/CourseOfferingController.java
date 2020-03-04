@@ -37,6 +37,8 @@ public class CourseOfferingController {
     @Autowired
     CourseOfferingRepository courseOfferingRepository;
 
+    @Autowired
+
     @GetMapping("/courseOffering")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
@@ -65,7 +67,7 @@ public class CourseOfferingController {
         return "redirect:/courseOffering/courseOffering";
     }
 
-    @GetMapping("/courseOffering/confirmDelete/{id}")
+    @GetMapping("/courseOffering/delete/{id}")
     public String deleteConfirm(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
             RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
@@ -84,7 +86,7 @@ public class CourseOfferingController {
         return "courseOffering/confirmDelete";
     }
 
-    @PostMapping("/courseOffering/delete/{id}")
+    @PostMapping("/courseOffering/delete/confirm/{id}")
     public String deleteCourse(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
             RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
@@ -99,7 +101,7 @@ public class CourseOfferingController {
             courseOfferingRepository.delete(course.get());
             redirAttrs.addFlashAttribute("alertSuccess", "Course successfully deleted.");
         }
-        return "redirect:/courseOffering/courseOffering";
+        return "redirect:/courseOffering/";
 
     }
 }
