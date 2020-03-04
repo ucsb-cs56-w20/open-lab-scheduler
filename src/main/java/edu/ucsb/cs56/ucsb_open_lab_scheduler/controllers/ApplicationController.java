@@ -8,6 +8,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 
@@ -31,10 +32,12 @@ public class ApplicationController{
     }
 
     @GetMapping("/")
-    public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken){
+    public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken, RedirectAttributes redirAttrs){
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
-        if(role.equals("NotDomain"))
-            return "error";
+        if(role.equals("NotDomain")){
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page. Please log out and log back in with a @ucsb.edu email.");
+            return "redirect:/login";
+        }
 
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index";

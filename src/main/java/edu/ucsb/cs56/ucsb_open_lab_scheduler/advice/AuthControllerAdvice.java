@@ -120,7 +120,7 @@ public class AuthControllerAdvice {
             return "Tutor";
         }else if(getIsMember(token)){
             return "Member";
-        }else if(getIsNotDomain(token)) {
+        }else if(getIsNotDomain(token)){
             return "NotDomain";
         }else if(getIsLoggedIn(token)){
             return "Guest";
