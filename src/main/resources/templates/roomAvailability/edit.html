@@ -49,38 +49,110 @@
             </div>
         </div>
         <p>Start and end times should be entered as integers in military time (e.g. "1730 for 5:30 PM")</p>
-        <span>Start and end times should also be an integer multiple of </span>
+        <span>Start and end times should also be an integer multiple of the default duration</span>
         <span th:text="${defaultDuration}"></span>
         <p></p>
-    
         <button type="button" id="save">Save</button>
-
         <div th:replace="bootstrap/bootstrap_footer.html"></div>
+
+        <div class="modal fade" id="timeIsNotInteger" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Invalid Time Format</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Time must be an integer
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="notMultipleOfDefaultDuration" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Invalid Time Format</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Time must be a multiple of the default duration
+                  <span th:text=${defaultDuration}></span>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="invalidTime" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Invalid Time Format</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Time is invalid
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
     </div>
     <div th:replace="bootstrap/bootstrap_scripts.html"></div>
 
     <script th:inline="javascript">
 
-        function validTime(time) {
-            
-        }
         $(".dropdown-item").click(e => {
             document.getElementById("dropdownMenuButton").textContent = e.target.textContent;
         })
         /*<![CDATA[*/
+
+        function validTime(time) {
+            console.log(time.length);
+            let intTime = parseInt(time);
+            if(isNaN(intTime)) {
+                $('#timeIsNotInteger').modal();
+                return false;
+            }
+            if(intTime % 100 >= 59 || intTime < 0 || intTime > 2400) {
+                $('#invalidTime').modal();
+                return false;
+            }
+            let defaultDuration = /*[[${defaultDuration}]]*/30;
+            if(intTime % defaultDuration != 0) {
+                $('#notMultipleOfDefaultDuration').modal();
+                return false;
+            }
+            return true;
+        }
+        
         var raExists = /*[[${raExists}]]*/false;
+        
         if (raExists) {
             var raDay = /*[[${raDay}]]*/"Monday";
             document.getElementById("dropdownMenuButton").textContent = raDay;
             $("#save").click(e => {
-                if(isNaN(document.getElementById("start").value) || 
-                    isNaN(document.getElementById("end").value) ||
-                    parseInt(document.getElementById("start").value) > 2400 ||
-                    parseInt(document.getElementById("end").value) > 2400)
-                    {
-                    alert("Please input a valid time (in 24 hour time, with no colon)");
-                }
-                else {
+                var valid = validTime(document.getElementById("start").value) && validTime(document.getElementById("end").value);
+                if(valid) {
                     $.ajax({
                         url: "/roomAvailability/save",
                         method: "PUT",
@@ -105,10 +177,8 @@
         } else {
             document.getElementById("dropdownMenuButton").textContent = "Monday";
             $("#save").click(e => {
-                if(isNaN(document.getElementById("start").value) || isNaN(document.getElementById("end").value)) {
-                    alert("Please input a valid time (in 24 hour time, with no colon)");
-                }
-                else {
+                var valid = validTime(document.getElementById("start").value) && validTime(document.getElementById("end").value);
+                if(valid) {
                     $.ajax({
                         url: "/roomAvailability/create",
                         method: "POST",
