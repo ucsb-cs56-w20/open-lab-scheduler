@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -14,9 +15,11 @@ public class TutorAssignment{
     private long id;
     
     @ManyToOne
+    @JoinColumn(name = "course_offering_id")
     private CourseOffering courseOffering;
     
     @ManyToOne
+    @JoinColumn(name = "tutor_id")
     private Tutor tutor;
     
     private boolean isCourseLead;
@@ -27,6 +30,10 @@ public class TutorAssignment{
         this.tutor = tutor;
         this.courseOffering = courseOffering;
         this.isCourseLead = lead;
+    }
+
+    public void setId(long id){
+        this.id = id;
     }
 
     public void setCourseOffering(CourseOffering courseOffering){

@@ -4,7 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class TimeSlotAssignment{
@@ -12,34 +13,38 @@ public class TimeSlotAssignment{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long timeSlotId;
+    @ManyToOne
+    @JoinColumn(name = "time_slot_id")
+    private TimeSlot timeSlot;
 
-    private long tutorId;
+    @ManyToOne
+    @JoinColumn(name = "tutor_id")
+    private Tutor tutor;
 
     public TimeSlotAssignment(){}
 
     public void setId(long id){
         this.id = id;
-    }    
-
-    public void setTimeSlotId(long timeSlotId){
-        this.timeSlotId = timeSlotId;
     }
 
-    public void setTutorId(long tutorId){
-        this.tutorId = tutorId;
+    public void setTimeSlot(TimeSlot timeSlot){
+        this.timeSlot = timeSlot;
+    }
+
+    public void setTutor(Tutor tutor){
+        this.tutor = tutor;
     }
 
     public long getId(){
         return id;
     }
 
-    public long getTimeSlotId(){
-        return timeSlotId;
+    public TimeSlot getTimeSlot(){
+        return timeSlot;
     }
 
-    public long getTutorId(){
-        return tutorId;
+    public Tutor getTutor(){
+        return tutor;
     }
 
 }

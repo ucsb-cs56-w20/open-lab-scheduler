@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.*;
 
 @Controller
 public class TutorAssignmentController {
@@ -38,7 +39,7 @@ public class TutorAssignmentController {
   private AuthControllerAdvice authControllerAdvice;
 
   public TutorAssignmentController(TutorAssignmentRepository tutorAssignmentRepository, TutorRepository tutorRepository,
-      CourseOfferingRepository courseOfferingRepository) {
+  CourseOfferingRepository courseOfferingRepository) {
     this.tutorAssignmentRepository = tutorAssignmentRepository;
     this.tutorRepository = tutorRepository;
     this.courseOfferingRepository = courseOfferingRepository;
@@ -47,7 +48,7 @@ public class TutorAssignmentController {
   @GetMapping("/tutorAssignment/courseSelect")
   public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!role.equals("Admin")) {
+    if (!(role.equals("Admin"))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -59,7 +60,7 @@ public class TutorAssignmentController {
   public String manageCourse(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
       RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!role.equals("Admin")) {
+    if (!(role.equals("Admin"))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -70,26 +71,31 @@ public class TutorAssignmentController {
       return "redirect:/";
 
     }
-    Iterable<Tutor> tutors = tutorRepository.findAll();
-    List<TutorAssignment> tutorAssignments = tutorAssignmentRepository
-      .findByCourseOfferingId(courseOffering.get().getId());
+    Iterable<Tutor> tutors = () -> StreamSupport.stream(tutorRepository.findAll().spliterator(), false)
+        .filter(tutor -> tutor.getIsActive())
+        .iterator();
+    List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByCourseOffering(courseOffering.get());
+
+    Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream().anyMatch((ta) -> ta.getTutor() == tutor);
 
     Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream()
-      .anyMatch((ta) -> ta.getTutor() == tutor);
+        .filter((ta) -> ta.getTutor().getIsActive())
+        .anyMatch((ta) -> ta.getTutor().equals(tutor));
+
     model.addAttribute("shouldBeChecked", shouldBeChecked);
     model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());
-      Predicate<TutorAssignments> shouldBeChecked2 = tutor -> tutorAssignments.stream().anyMatch(tutorAssignments.getIsCourseLead());
+    
+    Predicate<TutorAssignments> shouldBeChecked2 = tutor -> tutorAssignments.stream().anyMatch(tutorAssignments.getIsCourseLead());
     model.addAttribute("shouldBeChecked2", shouldBeChecked2);
 
     return "tutorAssignment/manage";
   }
 
   @PostMapping("/tutorAssignment/add")
-  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid, @RequestParam("lead") boolean lead,
-                               OAuth2AuthenticationToken token) {
+  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid, OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
-    if (!role.equals("Admin")) {
+    if (!(role.equals("Admin"))) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
@@ -127,9 +133,9 @@ public class TutorAssignmentController {
 
   @DeleteMapping("/tutorAssignment/{cid}/{tid}")
   public ResponseEntity<?> delete(@PathVariable("cid") long cid, @PathVariable("tid") long tid,
-                                  OAuth2AuthenticationToken token) {
+  OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
-    if (!role.equals("Admin")) {
+    if (!(role.equals("Admin"))) {
       return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
