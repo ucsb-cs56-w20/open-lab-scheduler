@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+</head>
+
+<body>
+    <div class="container">
+        <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table-striped table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>Quarter</th>
+                            <th>Day</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Room</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <td><input type="text" id="quarter" th:attr="value=${(raExists)? ra.getQuarter() : ''}"></td>
+                        <td><input type="text" id="day" th:attr="value=${(raExists)? ra.getDay() : ''}"></td>
+                        <td><input type="text" id="start" th:attr="value=${(raExists)? ra.getStartTime() : ''}"></td>
+                        <td><input type="text" id="end" th:attr="value=${(raExists)? ra.getEndTime() : ''}"></td>
+                        <td><input type="text" id="room" th:attr="value=${(raExists)? ra.getRoom() : ''}"></td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <button type="button" id="save">Save</button>
+
+        <div th:replace="bootstrap/bootstrap_footer.html"></div>
+    </div>
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+
+    <script th:inline="javascript">
+        console.log("hello");
+        /*<![CDATA[*/
+        var raExists = /*[[${raExists}]]*/false;
+        console.log(raExists)
+        if (raExists) {
+            $("#save").click(e => {
+                if(isNaN(document.getElementById("start").value) || 
+                    isNaN(document.getElementById("end").value) ||
+                    parseInt(document.getElementById("start").value) > 2400 ||
+                    parseInt(document.getElementById("end").value) > 2400)
+                    {
+                    alert("Please input a valid time (in 24 hour time, with no colon)");
+                }
+                else {
+                    $.ajax({
+                        url: "/roomAvailability/save",
+                        method: "PUT",
+                        data: {
+                            id: /*[[${raID}]]*/0,
+                            quarter: document.getElementById("quarter").value,
+                            day: document.getElementById("day").value,
+                            start: document.getElementById("start").value,
+                            end: document.getElementById("end").value,
+                            room: document.getElementById("room").value,
+                            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+                        },
+                    }).done(function () {
+                        console.log("saved");
+                        window.location.href = "/roomAvailability";
+                    }).fail(function (jqXHR, textStatus) {
+                        console.log(jqXHR.responseText);
+                    })
+                }
+
+            });
+        } else {
+            $("#save").click(e => {
+                if(isNaN(document.getElementById("start").value) || isNaN(document.getElementById("end").value)) {
+                    alert("Please input a valid time (in 24 hour time, with no colon)");
+                }
+                else {
+                    $.ajax({
+                        url: "/roomAvailability/create",
+                        method: "POST",
+                        data: {
+                            quarter: document.getElementById("quarter").value,
+                            day: document.getElementById("day").value,
+                            start: document.getElementById("start").value,
+                            end: document.getElementById("end").value,
+                            room: document.getElementById("room").value,
+                            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+                        },
+                    }).done(function () {
+                        console.log("saved");
+                        window.location.href = "/roomAvailability";
+                    }).fail(function (jqXHR, textStatus) {
+                        console.log(jqXHR.responseText);
+                    })
+                }
+            });
+        }
+        
+        /*]]>*/
+    </script>
+</body>
+
+</html>
