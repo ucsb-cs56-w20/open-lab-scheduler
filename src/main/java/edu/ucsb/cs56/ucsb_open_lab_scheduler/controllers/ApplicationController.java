@@ -56,7 +56,6 @@ public class ApplicationController{
         iterable.forEach(clientRegistration -> urls.put(clientRegistration.getClientName(),
                 "/oauth2/authorization/" + clientRegistration.getRegistrationId()));
 
-        
 
         // String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         // if(role.equals("NotDomain"))

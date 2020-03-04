@@ -111,6 +111,7 @@ public class AuthControllerAdvice {
         }
         return false;
     }
+
     @ModelAttribute("role")
     public String getRole(OAuth2AuthenticationToken token){
         if(getIsAdmin(token)){
@@ -119,9 +120,12 @@ public class AuthControllerAdvice {
             return "Tutor";
         }else if(getIsMember(token)){
             return "Member";
+        }else if(getIsNotDomain(token)) {
+            return "NotDomain";
         }else if(getIsLoggedIn(token)){
             return "Guest";
         }
+
         return "Tutor";
     }
 
