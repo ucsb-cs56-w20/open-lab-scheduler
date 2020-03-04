@@ -60,7 +60,14 @@ public class TutorAssignmentController {
   public String manageCourse(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
       RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Admin"))) {
+    String email= (String) token.getPrincipal().getAttributes().get("email");
+    List<CourseOffering> instructorCourses=courseOfferingRepository.findByInstructorEmail(email);
+    boolean n=false;
+    for(int i=0;i<instructorCourses.size();i++){
+      if(instructorCourses.get(i).getId()==id)
+        n=true;
+    }
+    if (!((role.equals("Admin")) || (n))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
