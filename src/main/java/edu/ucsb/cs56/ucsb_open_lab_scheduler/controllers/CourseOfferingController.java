@@ -3,7 +3,7 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToCourseOfferingServiceImpl;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class CourseOfferingController {
     private AuthControllerAdvice authControllerAdvice;
 
     @Autowired
-    CSVToCourseOfferingServiceImpl csvToCourseOfferingServiceImpl ;
+    CSVToObjectService<CourseOffering> csvToObjectService;
 
     @Autowired
     CourseOfferingRepository courseOfferingRepository;
@@ -37,23 +37,23 @@ public class CourseOfferingController {
     @GetMapping("/courseOffering")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!(role.equals("Admin"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
         model.addAttribute("CourseOfferingModel", courseOfferingRepository.findAll());
-        return "courseOffering";
+        return "courseOffering/courseOffering";
     }
 
     @PostMapping("/courseOffering/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!(role.equals("Admin"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
         try(Reader reader = new InputStreamReader(csv.getInputStream())){
-            List<CourseOffering> courseOfferings =  csvToCourseOfferingServiceImpl .parse(reader);
+            List<CourseOffering> courseOfferings =  csvToObjectService.parse(reader, CourseOffering.class);
             courseOfferingRepository.saveAll(courseOfferings);
         }catch(IOException e){
             log.error(e.toString());
