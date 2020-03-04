@@ -67,6 +67,9 @@ W20,Friday,1500,1700,Phelps 2510
     /*<![CDATA[*/
     $(".delete").click(e => {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> lr/bn: confirmed that code works with cancel
       if(confirm("Are you sure you want to delete?")) {
           $.ajax({
               url: `/roomAvailability/${e.target.dataset.raid}`,
@@ -80,6 +83,7 @@ W20,Friday,1500,1700,Phelps 2510
               window.location.href="/roomAvailability";
             })
       }
+<<<<<<< HEAD
 =======
       confirm("Are you sure you want to delete?")
       $.ajax({
@@ -94,6 +98,8 @@ W20,Friday,1500,1700,Phelps 2510
           window.location.href="/roomAvailability";
         })
 >>>>>>> lr/bn created warning popup when deleting
+=======
+>>>>>>> lr/bn: confirmed that code works with cancel
     })
     $(".edit").click(e => {
       window.location.href=`roomAvailability/${e.target.dataset.raid}/edit`;
