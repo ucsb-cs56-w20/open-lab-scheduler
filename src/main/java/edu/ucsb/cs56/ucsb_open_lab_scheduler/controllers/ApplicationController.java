@@ -1,6 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -15,18 +16,22 @@ import java.util.Map;
 @Controller
 public class ApplicationController{
     private final RoomAvailabilityRepository roomAvailabilityRepository;
+    private final CourseOfferingRepository courseOfferingRepository;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
-    public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository){
+    public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository, CourseOfferingRepository courseOfferingRepository){
         this.roomAvailabilityRepository = roomAvailabilityRepository;
+        this.courseOfferingRepository = courseOfferingRepository;
     }
+
 
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
+        model.addAttribute("courseOfferingModel", courseOfferingRepository.findAll());
         return "index";
     }
 
