@@ -26,7 +26,7 @@
             <option value="" th:disabled="disabled" th:selected="selected">
               Choose A Course
           </option>
-            <option th:each="co : ${courseOfferingModel}" th:value="${co.courseId}"th:text="${co.courseId}"></option>
+            <option th:each="co : ${uniqueCourseOfferingModel}" th:value="${co}"th:text="${co}"></option>
           </select>
 
         <table class="table table-striped table-responsive-md">
