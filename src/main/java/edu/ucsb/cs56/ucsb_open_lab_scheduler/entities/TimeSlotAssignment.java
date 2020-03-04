@@ -21,6 +21,10 @@ public class TimeSlotAssignment{
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
+    @ManyToOne
+    @JoinColumn(name = "course_offering_id")
+    private CourseOffering courseOffering;
+
     public TimeSlotAssignment(){}
 
     public void setId(long id){
