@@ -35,18 +35,9 @@ public class AdminController {
 
     private AdminRepository adminRepository;
 
-    @Value("${app.admin.email}")
-    private String adminEmail;
-
     @Autowired
     public AdminController(AdminRepository repo) {
         this.adminRepository = repo;
-    }
-
-    private void addOGAdmin() {
-        if (adminRepository.findByEmail(adminEmail).isEmpty()) {
-            adminRepository.save(new Admin(adminEmail));
-        }
     }
 
     @GetMapping("/admin")
@@ -56,7 +47,7 @@ public class AdminController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        addOGAdmin();
+        addOGAdmins();
         model.addAttribute("admins", adminRepository.findAll());
         model.addAttribute("newAdmin", new Admin());
         return "admin/create";
@@ -113,4 +104,11 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    private void addOGAdmins() {
+        authControllerAdvice.getAdminEmails().forEach((email) -> {
+            if(adminRepository.findByEmail(email).isEmpty()) {
+                adminRepository.save(new Admin(email));
+            }
+        });
+    }
 }
