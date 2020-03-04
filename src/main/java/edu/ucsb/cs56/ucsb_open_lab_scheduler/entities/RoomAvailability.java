@@ -1,11 +1,9 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
 import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvRecurse;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -32,11 +30,12 @@ public class RoomAvailability{
     @NotBlank(message = "Day is required")
     private String day;
 
-    @CsvBindByPosition(position = 4)
-    @NotBlank(message = "Room is required")
-    private String room;
+    @CsvRecurse
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "room_id")
+    private Room room;
 
-    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
+    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, Room room) {
         this.id = id;
         this.quarter = quarter;
         this.startTime = startTime;
@@ -67,7 +66,7 @@ public class RoomAvailability{
         return day;
     }
 
-    public String getRoom(){
+    public Room getRoom(){
         return room;
     }
 
@@ -83,7 +82,7 @@ public class RoomAvailability{
         this.day = day;
     }
 
-    public void setRoom(String room){
+    public void setRoom(Room room){
         this.room = room;
     }
 

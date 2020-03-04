@@ -44,7 +44,7 @@ public class TutorController {
     @GetMapping("/tutors")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!(role.equals("Admin"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -75,7 +75,7 @@ public class TutorController {
     @PostMapping("/tutors/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!(role.equals("Admin"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
