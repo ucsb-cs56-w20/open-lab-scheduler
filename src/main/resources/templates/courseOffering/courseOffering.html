@@ -34,7 +34,8 @@ CMPSC 48,F19,Richert Wang,richert@ucsb.edu
               <th>Quarter</th>
               <th>Instructor Name</th>
               <th>Instructor Email</th>
-              <th>Delete Course</th>
+              <th>Id</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -43,6 +44,7 @@ CMPSC 48,F19,Richert Wang,richert@ucsb.edu
               <td th:text="${co.quarter}"></td>
               <td th:text="${co.instructorName}"></td>
               <td th:text="${co.instructorEmail}"></td>
+              <td th:text="${co.id}"></td>
               <td>
                 <form th:action="@{/courseOffering/confirmDelete/{id}(id=${co.id})}" th:method="get">
                   <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
