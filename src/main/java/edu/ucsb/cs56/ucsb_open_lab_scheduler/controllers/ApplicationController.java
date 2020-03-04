@@ -35,8 +35,7 @@ public class ApplicationController{
     public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken, RedirectAttributes redirAttrs){
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         if(role.equals("NotDomain")){
-            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-            
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page. Please log out and log back in with a @ucsb.edu email.");
             return "redirect:/login";
         }
 
