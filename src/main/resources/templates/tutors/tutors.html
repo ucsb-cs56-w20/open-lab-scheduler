@@ -28,11 +28,11 @@ phtcon@ucsb.edu,Conrad,Phill
           <input type="submit" class="btn btn-primary" value="Submit">
         </form>
         <br/>
-        
+
         <table class="table table-striped table-responsive-md">
           <thead>
             <tr>
-              
+
             </tr>
           </thead>
           <tbody>
@@ -40,6 +40,13 @@ phtcon@ucsb.edu,Conrad,Phill
               <td th:text="${t.email}"></td>
               <td th:text="${t.firstName}"></td>
               <td th:text="${t.lastName}"></td>
+              <td style="text-align:center; display:block;">
+                <label>
+                  <span th:text="${t.isActive ? 'Active' : 'Inactive'}"></span><br>
+                  <input class="tutorIsActiveCheckbox" type="checkbox"
+                    th:checked="${t.isActive}" th:attr="data-tid=${t.id}" />
+                </label>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -49,6 +56,42 @@ phtcon@ucsb.edu,Conrad,Phill
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(".tutorIsActiveCheckbox").click(e => {
+      e.preventDefault()
+      e.stopImmediatePropagation()
+
+      if (e.target.checked) {
+        $.ajax({
+          url: "/tutors/active",
+          method: "POST",
+          data: {
+            tid: e.target.dataset.tid,
+            [[${_csrf.parameterName}]]: [[${_csrf.token}]]
+          },
+        }).then(() => {
+          e.target.checked = true
+          console.log(e.target)
+          console.log(e.target.parentNode)
+          console.log(e.target.parentNode.childNodes[1])
+          e.target.parentNode.childNodes[1].innerHTML = "Active"
+        })
+      } else {
+        $.ajax({
+          url: `/tutors/${e.target.dataset.tid}`,
+          method: "DELETE",
+          data: {
+            [[${_csrf.parameterName}]]: [[${_csrf.token}]]
+          },
+        }).then(() => {
+          e.target.checked = false
+          e.target.parentNode.childNodes[1].innerHTML = "Inactive"
+        })
+      }
+    })
+    /*]]>*/
+  </script>
 </body>
 
 </html>
