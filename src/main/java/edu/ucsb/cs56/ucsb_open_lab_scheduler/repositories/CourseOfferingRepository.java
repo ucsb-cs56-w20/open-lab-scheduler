@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CourseOfferingRepository extends CrudRepository<CourseOffering, Long> {
+public interface CourseOfferingRepository extends CrudRepository<CourseOffering, Long>{
     //List<CourseOffering> getCourseOfferings();
     public List<CourseOffering> findByInstructorEmail(String instructorEmail);
 
