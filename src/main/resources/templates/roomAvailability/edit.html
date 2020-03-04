@@ -24,7 +24,21 @@
                     </thead>
                     <tbody>
                         <td><input type="text" id="quarter" th:attr="value=${(raExists)? ra.getQuarter() : ''}"></td>
-                        <td><input type="text" id="day" th:attr="value=${(raExists)? ra.getDay() : ''}"></td>
+                        <td>
+                            <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <button class="dropdown-item" type="button">Monday</button>
+                                <button class="dropdown-item" type="button">Tuesday</button>
+                                <button class="dropdown-item" type="button">Wednesday</button>
+                                <button class="dropdown-item" type="button">Thursday</button>
+                                <button class="dropdown-item" type="button">Friday</button>
+                                <button class="dropdown-item" type="button">Saturday</button>
+                                <button class="dropdown-item" type="button">Sunday</button>
+                            </div>
+                          </div>
+                        </td>
                         <td><input type="text" id="start" th:attr="value=${(raExists)? ra.getStartTime() : ''}"></td>
                         <td><input type="text" id="end" th:attr="value=${(raExists)? ra.getEndTime() : ''}"></td>
                         <td><input type="text" id="room" th:attr="value=${(raExists)? ra.getRoom() : ''}"></td>
@@ -40,11 +54,14 @@
     <div th:replace="bootstrap/bootstrap_scripts.html"></div>
 
     <script th:inline="javascript">
-        console.log("hello");
+        $(".dropdown-item").click(e => {
+            document.getElementById("dropdownMenuButton").textContent = e.target.textContent;
+        })
         /*<![CDATA[*/
         var raExists = /*[[${raExists}]]*/false;
-        console.log(raExists)
         if (raExists) {
+            var raDay = /*[[${raDay}]]*/"Monday";
+            document.getElementById("dropdownMenuButton").textContent = raDay;
             $("#save").click(e => {
                 if(isNaN(document.getElementById("start").value) || 
                     isNaN(document.getElementById("end").value) ||
@@ -60,7 +77,7 @@
                         data: {
                             id: /*[[${raID}]]*/0,
                             quarter: document.getElementById("quarter").value,
-                            day: document.getElementById("day").value,
+                            day: document.getElementById("dropdownMenuButton").textContent,
                             start: document.getElementById("start").value,
                             end: document.getElementById("end").value,
                             room: document.getElementById("room").value,
@@ -76,6 +93,7 @@
 
             });
         } else {
+            document.getElementById("dropdownMenuButton").textContent = "Monday";
             $("#save").click(e => {
                 if(isNaN(document.getElementById("start").value) || isNaN(document.getElementById("end").value)) {
                     alert("Please input a valid time (in 24 hour time, with no colon)");
@@ -86,7 +104,7 @@
                         method: "POST",
                         data: {
                             quarter: document.getElementById("quarter").value,
-                            day: document.getElementById("day").value,
+                            day: document.getElementById("dropdownMenuButton").textContent,
                             start: document.getElementById("start").value,
                             end: document.getElementById("end").value,
                             room: document.getElementById("room").value,
