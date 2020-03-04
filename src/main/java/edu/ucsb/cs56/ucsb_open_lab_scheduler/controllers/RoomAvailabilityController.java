@@ -148,6 +148,7 @@ public class RoomAvailabilityController {
         model.addAttribute("raDay", roomAvailabilityRepository.findById(id).getDay());
         model.addAttribute("raExists", true);
         model.addAttribute("raID", id);
+        model.addAttribute("defaultDuration", defaultDuration);
         return "roomAvailability/edit";
     }
 
