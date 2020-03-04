@@ -19,11 +19,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
@@ -70,9 +72,9 @@ public class TutorController {
 
         Iterator iterator = tutorsById.entrySet().iterator();
         ArrayList<Tutor> tutors = new ArrayList<>();
-        while (iterator.hasNext()) { 
-            Map.Entry mapElement = (Map.Entry)iterator.next(); 
-            tutors.add((Tutor)mapElement.getValue()); 
+        while (iterator.hasNext()) {
+            Map.Entry mapElement = (Map.Entry)iterator.next();
+            tutors.add((Tutor)mapElement.getValue());
         }
 
         model.addAttribute("TutorModel", tutors);
