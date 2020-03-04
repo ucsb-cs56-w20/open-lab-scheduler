@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
@@ -25,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.*;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class TutorAssignmentController {
@@ -92,7 +96,7 @@ public class TutorAssignmentController {
 
     return "tutorAssignment/manage";
   }
-
+                           
   @PostMapping("/tutorAssignment/add")
   public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid,  @RequestParam("lead") boolean lead,
                                OAuth2AuthenticationToken token) {
