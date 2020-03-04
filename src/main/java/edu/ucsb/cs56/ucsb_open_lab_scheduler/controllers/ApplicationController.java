@@ -36,7 +36,8 @@ public class ApplicationController{
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         if(role.equals("NotDomain")){
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-            return "redirect:/";
+            
+            return "redirect:/login";
         }
 
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
