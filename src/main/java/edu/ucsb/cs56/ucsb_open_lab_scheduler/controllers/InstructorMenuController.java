@@ -38,7 +38,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentReposit
 
 @Controller
 public class InstructorMenuController {
-    private static Logger log = LoggerFactory.getLogger(TutorController.class);
+    private static Logger log = LoggerFactory.getLogger(InstructorMenuController.class);
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
