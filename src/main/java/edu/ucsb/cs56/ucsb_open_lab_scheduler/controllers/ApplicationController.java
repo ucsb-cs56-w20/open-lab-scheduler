@@ -25,9 +25,10 @@ public class ApplicationController{
     }
 
     @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
-        return "index";
+    public String home(Model model) throws Exception{
+        throw new Exception("nice");
+        //model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
+        //return "index";
     }
 
     @GetMapping("/login")

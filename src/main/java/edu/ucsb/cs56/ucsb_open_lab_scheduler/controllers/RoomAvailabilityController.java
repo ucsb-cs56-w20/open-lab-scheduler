@@ -58,7 +58,8 @@ public class RoomAvailabilityController {
         }catch(IOException e){
             log.error(e.toString());
         }catch(RuntimeException a){
-            return "error";
+            redirAttrs.addFlashAttribute("message", "Please enter a file with correct CSV variable types");
+            return "redirect:/roomavailability";
         }
         return "redirect:/roomAvailability";
     }
