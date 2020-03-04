@@ -16,4 +16,7 @@ public interface TutorAssignmentRepository extends CrudRepository<TutorAssignmen
 
     @Transactional
     void deleteByCourseOfferingIdAndTutorId(long courseOfferingId, long tutorId);
+
+    @Transactional
+    void deleteByTutorId(long tutorId);
 }
