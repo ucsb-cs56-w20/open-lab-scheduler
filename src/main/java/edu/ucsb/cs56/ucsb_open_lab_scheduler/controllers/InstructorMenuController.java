@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
+import java.util.Collections;
+>>>>>>> sm/lg added a quarter column to the table and sorted the courses that the instructor teaches by quarter
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
@@ -57,10 +59,11 @@ public class InstructorMenuController {
             return "redirect:/";
         }
 	
-        String email= (String) token.getPrincipal().getAttributes().get("email");
-
-        model.addAttribute("courses",courseOfferingRepository.findByInstructorEmail(email));
-        //model.addAttribute("email", email);
+	String email= (String) token.getPrincipal().getAttributes().get("email");
+	List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
+	Collections.sort(courseList);
+	model.addAttribute("courses",courseList);
+        
         return "instructorMenu/instructorMenu";
     }
 
