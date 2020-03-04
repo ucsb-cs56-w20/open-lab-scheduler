@@ -17,6 +17,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomRepository;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
@@ -43,6 +44,9 @@ public class HomePageTest {
 	
 	@MockBean
     private RoomAvailabilityRepository rar;
+
+    @MockBean
+    private CourseOfferingRepository cor;
 
     @Test
     public void getHomePage_ContentType() throws Exception {

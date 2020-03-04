@@ -20,7 +20,6 @@
               Choose A Quarter
           </option>
             <option th:each="co : ${courseOfferingModel}" th:value="${co.quarter}"th:text="${co.quarter}"></option>
-            </optgroup>
           </select>
         <div>Courses</div>
           <select th:field="*{courseOfferingModel}">
@@ -28,7 +27,6 @@
               Choose A Course
           </option>
             <option th:each="co : ${courseOfferingModel}" th:value="${co.courseId}"th:text="${co.courseId}"></option>
-            </optgroup>
           </select>
 
         <table class="table table-striped table-responsive-md">
