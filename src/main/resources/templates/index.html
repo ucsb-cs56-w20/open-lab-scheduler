@@ -19,7 +19,7 @@
             <option value="" th:disabled="disabled" th:selected="selected">
               Choose A Quarter
           </option>
-            <option th:each="co : ${courseOfferingModel}" th:value="${co.quarter}"th:text="${co.quarter}"></option>
+            <option th:each="q : ${uniqueQuartersModel}" th:value="${q}"th:text="${q}"></option>
           </select>
         <div>Courses</div>
           <select th:field="*{courseOfferingModel}">

@@ -32,6 +32,7 @@ public class ApplicationController{
     public String home(Model model) {
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         model.addAttribute("courseOfferingModel", courseOfferingRepository.findAll());
+        model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
         return "index";
     }
 
