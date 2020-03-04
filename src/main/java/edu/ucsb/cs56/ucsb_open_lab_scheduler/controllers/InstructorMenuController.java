@@ -21,6 +21,9 @@ import java.util.List;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
+
 
 @Controller
 public class InstructorMenuController {
@@ -38,6 +41,9 @@ public class InstructorMenuController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+	
+	String email= (String) token.getPrincipal().getAttributes().get("email");
+	model.addAttribute("courses",courseOfferingRepository.findByInstructorEmail(email));
         
         return "instructorMenu/instructorMenu";
     }
