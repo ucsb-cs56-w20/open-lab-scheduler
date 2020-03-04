@@ -2,7 +2,10 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
 import com.opencsv.bean.CsvBindByPosition;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Entity
