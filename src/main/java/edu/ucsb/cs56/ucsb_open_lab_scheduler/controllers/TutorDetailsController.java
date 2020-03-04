@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Controller
@@ -28,10 +29,18 @@ public class TutorDetailsController {
     @Autowired
     TutorRepository tutorRepository;
 
-    @GetMapping("/greeting")
-    public String greetingForm(Model model) {
-        model.addAttribute("tutor", new Tutor());
+    @GetMapping("/tutors/add")
+    public String addTutor(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+
+        model.addAttribute("tutor", new TutorDetailsForm());
         return "tutors/details";
+
     }
 
     @GetMapping("/tutors/{id}")
@@ -52,10 +61,14 @@ public class TutorDetailsController {
 
     }
 
-    @PostMapping("/greeting")
-    public String greetingSubmit(@ModelAttribute("tutor") TutorDetailsForm tutorDetails, Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+    @PostMapping("/tutor/updatedetails")
+    public void greetingSubmit(HttpServletResponse httpServletResponse,
+                               @ModelAttribute("tutor") TutorDetailsForm tutorDetails,
+                               Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         if (tutorDetails.getId() == 0) {
-            // TODO: create new tutor
+            Tutor t = new Tutor();
+            tutorDetails.updateTutor(t);
+            tutorRepository.save(t);
         } else {
             // update existing tutor
             Optional<Tutor> tutor = tutorRepository.findById(tutorDetails.getId());
@@ -66,6 +79,8 @@ public class TutorDetailsController {
             tutorDetails.updateTutor(tutor.get());
             tutorRepository.save(tutor.get());
         }
-        return tutorController.dashboard(model, token, redirAttrs);
+        //redirect
+        httpServletResponse.setHeader("Location", "/tutors");
+        httpServletResponse.setStatus(302);
     }
 }

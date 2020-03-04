@@ -9,9 +9,10 @@ public class TutorDetailsForm implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
+    public String title;
 
     public TutorDetailsForm() {
-
+        title = "Create New Tutor";
     }
 
     public TutorDetailsForm(Tutor t) {
@@ -20,6 +21,7 @@ public class TutorDetailsForm implements Serializable {
         this.lastName = t.getLastName();
         this.email = t.getEmail();
         this.id = t.getId();
+        title = "Update Tutor Details";
     }
 
     public long getId() {
@@ -58,5 +60,13 @@ public class TutorDetailsForm implements Serializable {
         t.setLastName(lastName);
         t.setFirstName(firstName);
         t.setEmail(email);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

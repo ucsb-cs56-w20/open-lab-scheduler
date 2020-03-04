@@ -11,8 +11,10 @@
 <div class="container">
     <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
 
-    <br><br><br>
-<form action="#" th:action="@{/greeting}" th:object="${tutor}" method="post">
+    <br><br>
+    <h2 th:text="${tutor.title}"></h2>
+    <br>
+<form action="#" th:action="@{/tutor/updatedetails}" th:object="${tutor}" method="post">
     <input type="text" class="form-control" th:field="*{id}" hidden />
 
     <div class="form-group">
