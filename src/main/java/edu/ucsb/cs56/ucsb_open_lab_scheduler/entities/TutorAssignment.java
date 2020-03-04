@@ -1,13 +1,15 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class TutorAssignment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
+    
     @ManyToOne
     @JoinColumn(name = "course_offering_id")
     private CourseOffering courseOffering;
@@ -15,12 +17,15 @@ public class TutorAssignment{
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
+    
+    private boolean isCourseLead;
 
     public TutorAssignment(){}
 
-    public TutorAssignment(Tutor tutor, CourseOffering courseOffering){
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering, boolean lead){
         this.tutor = tutor;
         this.courseOffering = courseOffering;
+        this.isCourseLead = lead;
     }
 
     public void setId(long id){
@@ -46,5 +51,13 @@ public class TutorAssignment{
     public Tutor getTutor(){
         return tutor;
     }
+    
+     public void setIsCourseLead(boolean isCourseLead){
+         this.isCourseLead = isCourseLead;
+     }
+
+     public boolean getIsCourseLead(){
+         return isCourseLead;
+     }
 
 }
