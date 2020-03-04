@@ -57,6 +57,7 @@ phtcon@ucsb.edu,Conrad,Phill
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
   <script th:inline="javascript">
+    /*<![CDATA[*/
     $(".tutorIsActiveCheckbox").click(e => {
       e.preventDefault()
       e.stopImmediatePropagation()
@@ -71,6 +72,10 @@ phtcon@ucsb.edu,Conrad,Phill
           },
         }).then(() => {
           e.target.checked = true
+          console.log(e.target)
+          console.log(e.target.parentNode)
+          console.log(e.target.parentNode.childNodes[1])
+          e.target.parentNode.childNodes[1].innerHTML = "Active"
         })
       } else {
         $.ajax({
@@ -81,9 +86,11 @@ phtcon@ucsb.edu,Conrad,Phill
           },
         }).then(() => {
           e.target.checked = false
+          e.target.parentNode.childNodes[1].innerHTML = "Inactive"
         })
       }
     })
+    /*]]>*/
   </script>
 </body>
 
