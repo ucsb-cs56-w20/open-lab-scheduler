@@ -16,5 +16,4 @@ public interface CourseOfferingRepository extends CrudRepository<CourseOffering,
 
     @Query(value = "SELECT DISTINCT quarter FROM course_offering", nativeQuery=true)
     public List<String> findAllUniqueQuarters();
-
 }
