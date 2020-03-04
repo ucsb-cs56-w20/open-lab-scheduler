@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.MembershipService;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -29,9 +31,9 @@ public class AuthControllerAdvice {
 
     @ModelAttribute("id")
     public String getUid(OAuth2AuthenticationToken token){
-        return "stub";
-        // if (token == null) return "";
-        // return token.getPrincipal().getAttributes().get("given_name").toString();
+        // return "stub";
+        if (token == null) return "";
+        return token.getPrincipal().getAttributes().get("given_name").toString();
     }
 
     @ModelAttribute("email")
@@ -42,8 +44,22 @@ public class AuthControllerAdvice {
 
     @ModelAttribute("fname")
     public String getFirstName(OAuth2AuthenticationToken token){
-        if (token == null) return "";
-        return token.getPrincipal().getAttributes().get("given_name").toString();
+        return membershipService.fname(token);
+    }
+
+    @ModelAttribute("lname")
+    public String getLastName(OAuth2AuthenticationToken token) {
+        return membershipService.lname(token);
+    }
+
+    @ModelAttribute("name")
+    public String getName(OAuth2AuthenticationToken token) {
+        return membershipService.name(token);
+    }
+
+    @ModelAttribute("email")
+    public String getEmail(OAuth2AuthenticationToken token) {
+        return membershipService.email(token);
     }
 
     @ModelAttribute("picture")
@@ -96,5 +112,9 @@ public class AuthControllerAdvice {
             return "Guest";
         }
         return "Tutor";
+    }
+
+    public List<String> getAdminEmails() {
+        return membershipService.getAdminEmails();
     }
 }

@@ -3,7 +3,13 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvRecurse;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
@@ -44,6 +50,14 @@ public class RoomAvailability{
         this.room = room;
     }
 
+    public RoomAvailability(String quarter, int startTime, int endTime, String day, Room room) {
+        this.quarter = quarter;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.day = day;
+        this.room = room;
+    }
+
     public RoomAvailability(){}
 
     public long getId(){
@@ -73,6 +87,14 @@ public class RoomAvailability{
         return room;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setStartTime(int startTime){
         this.startTime = startTime;
     }
@@ -94,6 +116,9 @@ public class RoomAvailability{
         String suffix = t < 1200 ? "am" : "pm";
         if (time.length()==2)
         { time = "12" + time;}
+        else if (time.length()==1) {
+            time = "120" + time;
+        }
         return time.substring(0,time.length()-2)+":"+time.substring(time.length()-2)+ " "+ suffix;
     }
 

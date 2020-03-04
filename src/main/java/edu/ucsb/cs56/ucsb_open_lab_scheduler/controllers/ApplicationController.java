@@ -25,7 +25,7 @@ public class ApplicationController{
     }
 
     @GetMapping("/")
-    public String home(Model model){
+    public String home(Model model) {
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index";
     }
@@ -44,4 +44,3 @@ public class ApplicationController{
         return "login";
     }
 }
-

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"></html>>
+
+<head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+  </head>
+  
+    <body>
+    <div class="container">
+        <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+        
+        <h1>Opps. Somthing is wrong!</h1>
+        <h2>Here is the error information below:</h2>
+        <style> 
+            p {  
+                white-space: pre-line; 
+            } 
+        </style> 
+        <div data-controller="customErrorController">
+           <p>
+            <th>Timestamp: </th><p1 th:text="${timestamp}"></p1>
+            <th>Status: </th><p2 th:text="${status}"></p2>
+            <th>Error: </th><p3 th:text="${error}"></p3>
+            <th>Message: </th><p4 th:text="${message}"></p4>
+            </p>
+        </div>
+
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
+    </div>
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+    </body>
+</html>
