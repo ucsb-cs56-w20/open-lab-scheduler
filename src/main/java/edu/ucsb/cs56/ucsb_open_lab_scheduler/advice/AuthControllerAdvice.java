@@ -122,4 +122,8 @@ public class AuthControllerAdvice {
     public List<String> getAdminEmails() {
         return membershipService.getAdminEmails();
     }
+
+    public List<String> getAdminEmails() {
+        return membershipService.getAdminEmails();
+    }
 }
