@@ -76,9 +76,6 @@ phtcon@ucsb.edu,Conrad,Phill
           },
         }).then(() => {
           e.target.checked = true
-          console.log(e.target)
-          console.log(e.target.parentNode)
-          console.log(e.target.parentNode.childNodes[1])
           e.target.parentNode.childNodes[1].innerHTML = "Active"
         })
       } else {
