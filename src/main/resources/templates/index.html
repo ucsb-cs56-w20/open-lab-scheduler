@@ -19,11 +19,7 @@
             <option value="" th:disabled="disabled" th:selected="selected">
               Choose A Quarter
           </option>
-<<<<<<< HEAD
             <option th:each="q : ${uniqueQuartersModel}" th:value="${q}"th:text="${q}"></option>
-=======
-            <option th:each="co : ${courseOfferingModel}" th:value="${co.quarter}"th:text="${co.quarter}"></option>
->>>>>>> rg - fixed index.html and now tests should pass
           </select>
         <div>Courses</div>
           <select th:field="*{courseOfferingModel}">
