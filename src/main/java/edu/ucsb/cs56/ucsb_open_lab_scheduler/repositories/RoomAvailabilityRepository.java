@@ -10,5 +10,5 @@ import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface RoomAvailabilityRepository extends CrudRepository<RoomAvailability, Long> {
-    RoomAvailability findById(long id);
+    //RoomAvailability findById(long id);
 }
