@@ -5,55 +5,54 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class TutorAssignment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
-    private long courseOfferingId;
-
-    private long tutorId;
+    
+    @ManyToOne
+    private CourseOffering courseOffering;
+    
+    @ManyToOne
+    private Tutor tutor;
     
     private boolean isCourseLead;
 
     public TutorAssignment(){}
 
     public TutorAssignment(Tutor tutor, CourseOffering courseOffering, boolean lead){
-        this.tutorId = tutor.getId();
-        this.courseOfferingId = courseOffering.getId();
+        this.tutor = tutor;
+        this.courseOffering = courseOffering;
         this.isCourseLead = lead;
     }
 
-    public void setId(long id){
-        this.id = id;
-    }    
-
-    public void setCourseOfferingId(long courseOfferingId){
-        this.courseOfferingId = courseOfferingId;
+    public void setCourseOffering(CourseOffering courseOffering){
+        this.courseOffering = courseOffering;
     }
 
-    public void setTutorId(long tutorId){
-        this.tutorId = tutorId;
+    public void setTutor(Tutor tutor){
+        this.tutor = tutor;
     }
 
     public long getId(){
         return id;
     }
 
-    public long getCourseOfferingId(){
-        return courseOfferingId;
+    public CourseOffering getCourseOffering(){
+        return courseOffering;
     }
 
-    public long getTutorId(){
-        return tutorId;
+    public Tutor getTutor(){
+        return tutor;
     }
     
      public void setIsCourseLead(boolean isCourseLead){
          this.isCourseLead = isCourseLead;
      }
-    
+
      public boolean getIsCourseLead(){
          return isCourseLead;
      }

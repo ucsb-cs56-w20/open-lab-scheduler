@@ -72,23 +72,21 @@ public class TutorAssignmentController {
     }
     Iterable<Tutor> tutors = tutorRepository.findAll();
     List<TutorAssignment> tutorAssignments = tutorAssignmentRepository
-        .findByCourseOfferingId(courseOffering.get().getId());
+      .findByCourseOfferingId(courseOffering.get().getId());
 
     Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream()
-        .anyMatch((ta) -> ta.getTutorId() == tutor.getId());
+      .anyMatch((ta) -> ta.getTutor() == tutor);
     model.addAttribute("shouldBeChecked", shouldBeChecked);
     model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());
-    Predicate<Tutor> shouldBeChecked2 = tutor -> tutorAssignments.stream()
-        .anyMatch((ta) -> ta.getTutorId() == tutor.getId());
+      Predicate<TutorAssignments> shouldBeChecked2 = tutor -> tutorAssignments.stream().anyMatch(tutorAssignments.getIsCourseLead());
     model.addAttribute("shouldBeChecked2", shouldBeChecked2);
-    model.addAttribute("isCourseLead", true);
 
     return "tutorAssignment/manage";
   }
 
   @PostMapping("/tutorAssignment/add")
-  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid,
+  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid, @RequestParam("lead") boolean lead,
                                OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
     if (!role.equals("Admin")) {
@@ -100,11 +98,32 @@ public class TutorAssignmentController {
     CourseOffering courseOffering = courseOfferingRepository.findById(cid)
         .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:" + cid));
 
-    TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering, false);
+    TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering, lead);
     tutorAssignmentRepository.save(tutorAssignment);
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
+    
+    @PostMapping("/tutorAssignment/update")
+    public ResponseEntity<?> update(@RequestParam("cid") long cid, @RequestParam("tid") long tid, @RequestParam("lead") boolean lead,
+                                 OAuth2AuthenticationToken token) {
+      String role = authControllerAdvice.getRole(token);
+      if (!role.equals("Admin")) {
+          return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+      }
+
+      Tutor tutor = tutorRepository.findById(tid)
+          .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
+      CourseOffering courseOffering = courseOfferingRepository.findById(cid)
+          .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:" + cid));
+        
+        tutorAssignmentRepository.deleteByCourseOfferingIdAndTutorId(cid, tid);
+        
+        TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering, lead);
+        tutorAssignmentRepository.save(tutorAssignment);
+
+      return new ResponseEntity<>(HttpStatus.OK);
+    }
 
   @DeleteMapping("/tutorAssignment/{cid}/{tid}")
   public ResponseEntity<?> delete(@PathVariable("cid") long cid, @PathVariable("tid") long tid,
