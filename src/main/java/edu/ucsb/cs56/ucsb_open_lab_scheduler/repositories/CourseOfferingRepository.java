@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CourseOfferingRepository extends CrudRepository<CourseOffering, Long>{
-    List<CourseOffering> getCourseOfferings();
+    List<CourseOffering> findAll();
+
     public List<CourseOffering> findByInstructorEmail(String instructorEmail);
 
     @Query(value = "SELECT quarter FROM CourseOffering", nativeQuery=true)
