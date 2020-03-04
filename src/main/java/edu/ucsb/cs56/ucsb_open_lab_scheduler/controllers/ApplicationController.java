@@ -46,10 +46,10 @@ public class ApplicationController{
         Map<String, String> urls = new HashMap<>();
 
         
-        if (role.equals("NotDomain")) {
-            // redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-            return "error"; // custom error page prompting user to relog in
-        }
+        // if (role.equals("NotDomain")) {
+        //     // redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+        //     return "error"; // custom error page prompting user to relog in
+        // }
         
         // get around an unfortunate limitation of the API
         @SuppressWarnings("unchecked") Iterable<ClientRegistration> iterable = ((Iterable<ClientRegistration>) clientRegistrationRepository);
