@@ -27,7 +27,7 @@ public class TutorAssignment {
     public TutorAssignment() {
     }
 
-    public TutorAssignment(Tutor tutor, CourseOffering courseOffering) {
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering, boolean lead) {
         this.tutor = tutor;
         this.courseOffering = courseOffering;
     }
