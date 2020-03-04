@@ -27,23 +27,18 @@ public class Tutor{
     private String firstName;
 
     private boolean isActive;
+    private int numberOfCoursesAssigned;
 
     public Tutor() {
         this.isActive = true;
     }
-
-    public Tutor(String email, String fname, String lname){
-        this.email = email;
-        this.firstName = fname;
-        this.lastName = lname;
-        this.isActive = true;
-    }
-
+    
     public Tutor(String email, String fname, String lname, boolean isActive){
         this.email = email;
         this.firstName = fname;
         this.lastName = lname;
         this.isActive = isActive;
+        this.numberOfCoursesAssigned = 0;
     }
 
     public void setEmail(String email){
@@ -84,6 +79,18 @@ public class Tutor{
 
     public long getId(){
         return id;
+    }
+
+    public void setNumberOfCoursesAssigned(int numberOfCoursesAssigned){
+        this.numberOfCoursesAssigned = numberOfCoursesAssigned;
+    }
+
+    public int getNumberOfCoursesAssigned(){
+        return this.numberOfCoursesAssigned;
+    }
+
+    public void incrementNumberOfCoursesAssigned(){
+        this.numberOfCoursesAssigned++;
     }
 
     @Override
