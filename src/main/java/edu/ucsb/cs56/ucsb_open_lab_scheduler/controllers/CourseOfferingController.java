@@ -2,7 +2,9 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,7 @@ public class CourseOfferingController {
     CourseOfferingRepository courseOfferingRepository;
 
     @Autowired
+    TutorAssignmentRepository tutorAssignmentRepository;
 
     @GetMapping("/courseOffering")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
@@ -98,6 +101,11 @@ public class CourseOfferingController {
         if (!course.isPresent()) {
             redirAttrs.addFlashAttribute("alertDanger", "Course with that id does not exist.");
         } else {
+
+            List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByCourseOffering(course.get());
+            for (TutorAssignment tutorAssignment : tutorAssignments) {
+                tutorAssignmentRepository.delete(tutorAssignment);
+            }
             courseOfferingRepository.delete(course.get());
             redirAttrs.addFlashAttribute("alertSuccess", "Course successfully deleted.");
         }
