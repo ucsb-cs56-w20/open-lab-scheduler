@@ -46,46 +46,55 @@
         console.log(raExists)
         if (raExists) {
             $("#save").click(e => {
-                $.ajax({
-                    url: "/roomAvailability/save",
-                    method: "PUT",
-                    data: {
-                        id: /*[[${raID}]]*/0,
-                        quarter: document.getElementById("quarter").value,
-                        day: document.getElementById("day").value,
-                        start: document.getElementById("start").value,
-                        end: document.getElementById("end").value,
-                        room: document.getElementById("room").value,
-                        /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-                    },
-                }).done(function () {
-                    console.log("saved");
-                    window.location.href = "/roomAvailability";
-                }).fail(function (jqXHR, textStatus) {
-                    console.log(jqXHR.responseText);
-                })
+                if(isNaN(document.getElementById("start").value) || isNaN(document.getElementById("end").value)) {
+                    alert("Please input a valid time (in 24 hour time, with no colon)");
+                }
+                else {
+                    $.ajax({
+                        url: "/roomAvailability/save",
+                        method: "PUT",
+                        data: {
+                            id: /*[[${raID}]]*/0,
+                            quarter: document.getElementById("quarter").value,
+                            day: document.getElementById("day").value,
+                            start: document.getElementById("start").value,
+                            end: document.getElementById("end").value,
+                            room: document.getElementById("room").value,
+                            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+                        },
+                    }).done(function () {
+                        console.log("saved");
+                        window.location.href = "/roomAvailability";
+                    }).fail(function (jqXHR, textStatus) {
+                        console.log(jqXHR.responseText);
+                    })
+                }
 
             });
         } else {
             $("#save").click(e => {
-                $.ajax({
-                    url: "/roomAvailability/create",
-                    method: "POST",
-                    data: {
-                        quarter: document.getElementById("quarter").value,
-                        day: document.getElementById("day").value,
-                        start: document.getElementById("start").value,
-                        end: document.getElementById("end").value,
-                        room: document.getElementById("room").value,
-                        /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-                    },
-                }).done(function () {
-                    console.log("saved");
-                    window.location.href = "/roomAvailability";
-                }).fail(function (jqXHR, textStatus) {
-                    console.log(jqXHR.responseText);
-                })
-
+                if(isNaN(document.getElementById("start").value) || isNaN(document.getElementById("end").value)) {
+                    alert("Please input a valid time (in 24 hour time, with no colon)");
+                }
+                else {
+                    $.ajax({
+                        url: "/roomAvailability/create",
+                        method: "POST",
+                        data: {
+                            quarter: document.getElementById("quarter").value,
+                            day: document.getElementById("day").value,
+                            start: document.getElementById("start").value,
+                            end: document.getElementById("end").value,
+                            room: document.getElementById("room").value,
+                            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+                        },
+                    }).done(function () {
+                        console.log("saved");
+                        window.location.href = "/roomAvailability";
+                    }).fail(function (jqXHR, textStatus) {
+                        console.log(jqXHR.responseText);
+                    })
+                }
             });
         }
         
