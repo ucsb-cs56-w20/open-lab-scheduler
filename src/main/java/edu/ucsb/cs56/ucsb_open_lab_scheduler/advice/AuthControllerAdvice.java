@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import java.util.List;
@@ -62,7 +63,6 @@ public class AuthControllerAdvice {
         return membershipService.email(token);
     }
 
-
     @ModelAttribute("picture")
     public String getPicture(OAuth2AuthenticationToken token){
         // return "stub";
@@ -77,7 +77,6 @@ public class AuthControllerAdvice {
         return token.getName();
     }
 
-    //code gets ran after login
     @ModelAttribute("oauth")
     public Object getOauth(OAuth2AuthenticationToken token){
         return token;
@@ -151,4 +150,3 @@ public class AuthControllerAdvice {
         }
     }
 }
-
