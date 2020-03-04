@@ -1,5 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.advice;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.User;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.UserRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.MembershipService;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import java.util.List;
 
 
