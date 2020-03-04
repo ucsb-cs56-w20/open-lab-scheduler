@@ -1,14 +1,17 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
-public class TutorAssignment{
+public class TutorAssignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -21,34 +24,35 @@ public class TutorAssignment{
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
-    public TutorAssignment(){}
+    public TutorAssignment() {
+    }
 
-    public TutorAssignment(Tutor tutor, CourseOffering courseOffering){
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering) {
         this.tutor = tutor;
         this.courseOffering = courseOffering;
     }
 
-    public void setId(long id){
+    public void setId(long id) {
         this.id = id;
     }
 
-    public void setCourseOffering(CourseOffering courseOffering){
+    public void setCourseOffering(CourseOffering courseOffering) {
         this.courseOffering = courseOffering;
     }
 
-    public void setTutor(Tutor tutor){
+    public void setTutor(Tutor tutor) {
         this.tutor = tutor;
     }
 
-    public long getId(){
+    public long getId() {
         return id;
     }
 
-    public CourseOffering getCourseOffering(){
+    public CourseOffering getCourseOffering() {
         return courseOffering;
     }
 
-    public Tutor getTutor(){
+    public Tutor getTutor() {
         return tutor;
     }
 
