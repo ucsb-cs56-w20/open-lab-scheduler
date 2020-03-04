@@ -76,8 +76,6 @@ public class TutorAssignmentController {
         .iterator();
     List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByCourseOffering(courseOffering.get());
 
-    Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream().anyMatch((ta) -> ta.getTutor() == tutor);
-
     Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream()
         .filter((ta) -> ta.getTutor().getIsActive())
         .anyMatch((ta) -> ta.getTutor().equals(tutor));
@@ -86,14 +84,18 @@ public class TutorAssignmentController {
     model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());
     
-    Predicate<TutorAssignments> shouldBeChecked2 = tutor -> tutorAssignments.stream().anyMatch(tutorAssignments.getIsCourseLead());
+    Predicate<Tutor> shouldBeChecked2 = tutor -> tutorAssignments.stream()
+      .filter((ta) -> ta.getIsCourseLead())
+      .anyMatch((ta) -> ta.getTutor().equals(tutor));
+      
     model.addAttribute("shouldBeChecked2", shouldBeChecked2);
 
     return "tutorAssignment/manage";
   }
 
   @PostMapping("/tutorAssignment/add")
-  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid, OAuth2AuthenticationToken token) {
+  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid,  @RequestParam("lead") boolean lead,
+                               OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
     if (!(role.equals("Admin"))) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
