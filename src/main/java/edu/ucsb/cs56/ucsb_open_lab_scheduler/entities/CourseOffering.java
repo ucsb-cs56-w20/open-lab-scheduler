@@ -31,7 +31,6 @@ public class CourseOffering{
     @NotBlank(message = "Instructor Email is required")
     private String instructorEmail;
 
-
     public CourseOffering(){}
     public CourseOffering(long id, String courseId, String quarter, String instructorName, String instructorEmail){
         this.id = id;
