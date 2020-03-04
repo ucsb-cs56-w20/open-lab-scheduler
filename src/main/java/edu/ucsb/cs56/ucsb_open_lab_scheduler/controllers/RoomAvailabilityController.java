@@ -134,7 +134,7 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("ra", roomAvailabilityRepository.findById(id).get());
+        model.addAttribute("ra", roomAvailabilityRepository.findById(id));
         model.addAttribute("raExists", true);
         model.addAttribute("raID", id);
         return "roomAvailability/edit";
@@ -149,7 +149,7 @@ public class RoomAvailabilityController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id)).get();
+        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id));
         ra.setQuarter(quarter);
         ra.setDay(day);
         ra.setStartTime(Integer.parseInt(start));

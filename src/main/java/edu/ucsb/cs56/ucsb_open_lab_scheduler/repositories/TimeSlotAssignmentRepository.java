@@ -14,7 +14,6 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import java.util.List;
 
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
