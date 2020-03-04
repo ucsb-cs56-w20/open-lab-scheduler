@@ -1,6 +1,13 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories;
 
 import java.util.List;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> rg - added dropdwon menus for Quarters and Courses to homepage, need to fix Quarter menu
+>>>>>>> rg - added dropdwon menus for Quarters and Courses to homepage, need to fix Quarter menu
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
