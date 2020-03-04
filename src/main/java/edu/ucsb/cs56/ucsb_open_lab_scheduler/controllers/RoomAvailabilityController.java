@@ -1,6 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -87,7 +89,7 @@ public class RoomAvailabilityController {
         }
 
         RoomAvailability roomAvailability = new RoomAvailability(quarter, Integer.parseInt(start),
-                Integer.parseInt(end), day, room);
+                Integer.parseInt(end), day, new Room(room));
 
         roomAvailabilityRepository.save(roomAvailability);
 
@@ -122,7 +124,7 @@ public class RoomAvailabilityController {
         ra.setDay(day);
         ra.setStartTime(Integer.parseInt(start));
         ra.setEndTime(Integer.parseInt(end));
-        ra.setRoom(room);
+        ra.setRoom(new Room(room));
         roomAvailabilityRepository.save(ra);
 
         return new ResponseEntity<>(HttpStatus.OK);
