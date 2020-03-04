@@ -1,0 +1,40 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+</head>
+
+<body>
+<div class="container">
+    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+    <br><br><br>
+<form action="#" th:action="@{/greeting}" th:object="${tutor}" method="post">
+    <input type="text" class="form-control" th:field="*{id}" hidden />
+
+    <div class="form-group">
+        <label>Email address</label>
+        <input type="email" class="form-control" th:field="*{email}" />
+    </div>
+
+    <div class="form-group">
+        <label >First Name</label>
+        <input type="text" class="form-control" th:field="*{firstName}" />
+    </div>
+
+    <div class="form-group">
+        <label>Last Name</label>
+        <input type="text" class="form-control" th:field="*{lastName}" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
+</div>
+<div th:replace="bootstrap/bootstrap_scripts.html"></div>
+</body>
+
+</html>

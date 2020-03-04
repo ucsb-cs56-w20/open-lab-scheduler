@@ -36,6 +36,8 @@ phtcon@ucsb.edu,Conrad,Phill
               <th>First Name</th>
               <th>Last Name</th>
               <th>Assigned Courses</th>
+                <th>Active</th>
+                <th>Edit</th>
             </tr>
           </thead>
           <tbody>
@@ -51,6 +53,7 @@ phtcon@ucsb.edu,Conrad,Phill
                     th:checked="${t.isActive}" th:attr="data-tid=${t.id}" />
                 </label>
               </td>
+              <td><a th:href="@{'/tutors/' + ${t.id}}" type="button" class="btn btn-primary" style="display: block;">Edit</a></td>
             </tr>
           </tbody>
         </table>
