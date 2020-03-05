@@ -53,38 +53,38 @@ public class TutorSignUpController{
     public TutorSignUpController(TutorAssignmentRepository tutorAssignmentRepository, TutorRepository tutorRepository,
         CourseOfferingRepository courseOfferingRepository,RoomAvailabilityRepository roomAvailabilityRepository,
         TimeSlotAssignmentRepository timeSlotAssignmentRepository, TimeSlotRepository timeSlotRepository) {
-      this.tutorAssignmentRepository = tutorAssignmentRepository;
-      this.tutorRepository = tutorRepository;
-      this.courseOfferingRepository = courseOfferingRepository;
-      this.roomAvailabilityRepository = roomAvailabilityRepository;
-      this.timeSlotAssignmentRepository = timeSlotAssignmentRepository;
-      this.timeSlotRepository = timeSlotRepository;
+        this.tutorAssignmentRepository = tutorAssignmentRepository;
+        this.tutorRepository = tutorRepository;
+        this.courseOfferingRepository = courseOfferingRepository;
+        this.roomAvailabilityRepository = roomAvailabilityRepository;
+        this.timeSlotAssignmentRepository = timeSlotAssignmentRepository;
+        this.timeSlotRepository = timeSlotRepository;
     }
   
     @GetMapping("/tutorSignUp/courseSelect")
     public String signUpTable(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-      String role = authControllerAdvice.getRole(token);
-      if (!role.equals("Tutor")) {
-        redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-        return "redirect:/";
-      }
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Tutor")) {
+          redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+          return "redirect:/";
+        }
 
-      Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
-      if (!tutor.isPresent()) {
-        redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
-        return "redirect:/";
-      }
-      List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
+        Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
+        if (!tutor.isPresent()) {
+          redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
+          return "redirect:/";
+        }
+        List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
 
-      List<CourseOffering> courseOfferings = new ArrayList<>();
+        List<CourseOffering> courseOfferings = new ArrayList<>();
 
-      for (TutorAssignment ta : tutorAssignments){
-          courseOfferings.add(ta.getCourseOffering());
-          System.out.print(ta.getCourseOffering());
-      }
+        for (TutorAssignment ta : tutorAssignments){
+            courseOfferings.add(ta.getCourseOffering());
+            System.out.print(ta.getCourseOffering());
+        }
 
-      model.addAttribute("courseOffering", courseOfferings);
-      return "tutorSignUp/tutorSignUp";
+        model.addAttribute("courseOffering", courseOfferings);
+        return "tutorSignUp/tutorSignUp";
     }
 
     @GetMapping("/tutorSignUp/courseSelect/{id}")
