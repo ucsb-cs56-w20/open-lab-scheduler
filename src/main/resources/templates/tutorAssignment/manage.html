@@ -18,6 +18,7 @@
             <tr>
               <th>Name</th>
               <th>Assigned?</th>
+              <th>isCourseLead?</th>
             </tr>
           </thead>
           <tbody>
@@ -26,6 +27,10 @@
               <td>
                 <input class="tutorAssignmentCheckBox" type="checkbox" th:checked="${shouldBeChecked.test(tutor)}"
                   th:attr="data-tid=${tutor.id},data-cid=${courseOffering.id}" />
+              </td>
+              <td>
+                <input class="isCourseLeadCheckBox" type="checkbox" th:checked="${shouldBeChecked2.test(tutor)}"
+                th:attr="data-tid=${tutor.id},data-cid=${courseOffering.id}"/>
               </td>
             </tr>
           </tbody>
@@ -49,6 +54,7 @@
           data: {
             tid: e.target.dataset.tid,
             cid: e.target.dataset.cid,
+            lead: false,
             /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
           },
         }).then(() => {
@@ -64,6 +70,42 @@
         }).then(() => {
           e.target.checked = false
         })
+      }
+    })
+    /*]]>*/
+
+    /*<![CDATA[*/
+    $(".isCourseLeadCheckBox").click(e => {
+      e.preventDefault()
+      e.stopImmediatePropagation()
+
+      if (e.target.checked) {
+        $.ajax({
+          url: "/tutorAssignment/update",
+          method: "POST",
+          data: {
+            tid: e.target.dataset.tid,
+            cid: e.target.dataset.cid,
+            lead: true,
+            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+          },
+        }).then(() => {
+          e.target.checked = true
+        })
+      } else {
+        $.ajax({
+           url: `/tutorAssignment/update`,
+           method: "POST",
+           data: {
+             tid: e.target.dataset.tid,
+             cid: e.target.dataset.cid,
+             lead: false,
+             /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+           },
+         }).then(() => {
+             e.target.checked = false
+         })
+
       }
     })
     /*]]>*/
