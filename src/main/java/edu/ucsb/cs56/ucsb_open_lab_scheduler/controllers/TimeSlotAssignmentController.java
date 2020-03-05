@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlotAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
@@ -29,6 +30,9 @@ public class TimeSlotAssignmentController {
 
     @Autowired
     TimeSlotAssignmentRepository timeSlotAssignmentRepository;
+
+    @Autowired
+    private AuthControllerAdvice authControllerAdvice;
 
     private Comparator<TimeSlotAssignment> byRoom = (a, b) -> a.getTimeSlot().getRoomAvailability().getRoom().getName()
             .compareTo(b.getTimeSlot().getRoomAvailability().getRoom().getName());
@@ -57,9 +61,25 @@ public class TimeSlotAssignmentController {
     private Comparator<TimeSlotAssignment> byTime = (a, b) -> Integer.compare(a.getTimeSlot().getStartTime(),
             b.getTimeSlot().getStartTime());
 
+ 
     @GetMapping("/timeSlotAssignment")
-    public String quarterSearch(@PathVariable("quarter") String quarter, Model model, OAuth2AuthenticationToken token,
+    public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+        return "/timeSlotAssignment/timeSlotAssignment";
+    }
+
+    @GetMapping("/timeSlotAssignment/search/{quarter}")
+    public String dashboard(@PathVariable("quarter") String quarter, Model model, OAuth2AuthenticationToken token,
             RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
         List<CourseOffering> courses = courseOfferingRepository.findByQuarter(quarter);
         List<TimeSlotAssignment> timeSlots = new ArrayList<TimeSlotAssignment>();
         for (CourseOffering course : courses) {

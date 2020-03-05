@@ -12,56 +12,16 @@
 
         <h2 class="my-5">Time Slot Assignment Search</h2>
         <h4>Search by quarter:</h4>
-
-        <table class="table table-striped table-responsive-md">
-            <thead>
-                <tr>
-                    <th>Quarter</th>
-                    <th>Day</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Room</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="ra : ${RoomAvailabilityModel}">
-                    <td th:text="${ra.quarter}"></td>
-                    <td th:text="${ra.day}"></td>
-                    <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
-                    <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
-                    <td th:text="${ra.room}"></td>
-                    <td><button type="button" class="edit" th:attr="data-raid=${ra.getId()}">Edit</button></td>
-                    <td><button type="button" class="delete" th:attr="data-raid=${ra.getId()}">Delete</button></td>
-                </tr>
-            </tbody>
-        </table>
-        <button onclick="window.location.href = '/roomAvailability/new';">Create a New Entry</button>
-
-    </div>
-    </div>
+        <input type="text" id="quarter">
+        <button type="button" id="searchButton">Search</button>
 
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
     </div>
     <div th:replace="bootstrap/bootstrap_scripts.html"></div>
     <script th:inline="javascript">
-        /*<![CDATA[*/
-        $(".delete").click(e => {
-            $.ajax({
-                url: `/roomAvailability/${e.target.dataset.raid}`,
-                method: "DELETE",
-                data: {
-                    /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-                },
-            }).fail(function (jqXHR, textStatus) {
-                console.log(jqXHR.responseText);
-            }).done(function () {
-                window.location.href = "/roomAvailability";
-            })
+        $("#searchButton").click(e => {
+            window.location.href = '/timeSlotAssignment/search/' + document.getElementById("quarter").value;
         })
-        $(".edit").click(e => {
-            window.location.href = `roomAvailability/${e.target.dataset.raid}/edit`;
-        })
-    /*]]>*/
     </script>
 </body>
 
