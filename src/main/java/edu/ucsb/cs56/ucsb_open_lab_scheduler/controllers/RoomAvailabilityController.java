@@ -3,7 +3,9 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,6 +43,9 @@ public class RoomAvailabilityController {
 
     @Autowired
     RoomAvailabilityRepository roomAvailabilityRepository;
+
+    @Autowired
+    TimeSlotRepository timeSlotRepository;
 
     @GetMapping("/roomAvailability")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
@@ -63,7 +69,26 @@ public class RoomAvailabilityController {
         try (Reader reader = new InputStreamReader(csv.getInputStream())) {
             List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
             roomAvailabilityRepository.saveAll(roomAvails);
-        }catch (IOException e) {
+            List<TimeSlot> timeSlots = new ArrayList<>();
+            for ( RoomAvailability ra: roomAvails){
+                int start = ra.getStartTime();
+                int end = ra.getEndTime();
+                while ( start <= end-30){
+                    TimeSlot ts = new TimeSlot();
+                    ts.setRoomAvailability(ra);
+                    ts.setStartTime(start);
+                    if (start%100 >= 30){
+                        start += 70;
+                        ts.setEndTime(start);
+                    } else {
+                        start+=30;
+                        ts.setEndTime(start);
+                    }
+                    timeSlots.add(ts);
+                }
+            }
+            timeSlotRepository.saveAll(timeSlots);
+        } catch (IOException e) {
             log.error(e.toString());
         }catch(RuntimeException a){
             redirAttrs.addFlashAttribute("alertDanger", "Please enter the correct csv files.");
@@ -109,7 +134,7 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("ra", roomAvailabilityRepository.findById(id).get());
+        model.addAttribute("ra", roomAvailabilityRepository.findById(id));
         model.addAttribute("raExists", true);
         model.addAttribute("raID", id);
         return "roomAvailability/edit";
@@ -124,7 +149,7 @@ public class RoomAvailabilityController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id)).get();
+        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id));
         ra.setQuarter(quarter);
         ra.setDay(day);
         ra.setStartTime(Integer.parseInt(start));
