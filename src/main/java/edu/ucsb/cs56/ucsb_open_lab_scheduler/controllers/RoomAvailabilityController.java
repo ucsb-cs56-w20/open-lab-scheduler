@@ -66,9 +66,10 @@ public class RoomAvailabilityController {
         }catch (IOException e) {
             log.error(e.toString());
         }catch(RuntimeException a){
-            redirAttrs.addAttribute("alertDanger", "Please enter the correct csv files");
+            redirAttrs.addFlashAttribute("alertDanger", "Please enter the correct csv files.");
+            return "redirect:/roomAvailability";
         }
-        return "redirect:/error";
+        return "redirect:/roomAvailability";
     }
 
     @GetMapping("/roomAvailability/new")
