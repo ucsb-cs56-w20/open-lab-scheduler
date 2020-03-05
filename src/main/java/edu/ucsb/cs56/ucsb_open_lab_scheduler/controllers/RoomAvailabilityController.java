@@ -63,13 +63,12 @@ public class RoomAvailabilityController {
         try (Reader reader = new InputStreamReader(csv.getInputStream())) {
             List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
             roomAvailabilityRepository.saveAll(roomAvails);
-        } catch (IOException e) {
+        }catch (IOException e) {
             log.error(e.toString());
         }catch(RuntimeException a){
-            redirAttrs.addFlashAttribute("message", "Please enter a file with correct CSV variable types");
-            return "redirect:/roomavailability";
+            redirAttrs.addAttribute("alertDanger", "Please enter the correct csv files");
         }
-        return "redirect:/roomAvailability";
+        return "redirect:/error";
     }
 
     @GetMapping("/roomAvailability/new")
