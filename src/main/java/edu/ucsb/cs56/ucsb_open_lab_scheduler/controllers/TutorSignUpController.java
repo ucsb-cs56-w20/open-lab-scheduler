@@ -118,7 +118,7 @@ public class TutorSignUpController{
         }
 
         Predicate<TimeSlot> shouldBeChecked = t -> timeSlotAssignments.stream()
-            .anyMatch((ta) -> ta.getTimeSlot() == t);
+            .anyMatch((ta) -> ta.getTimeSlot() == t && ta.getCourseOffering().equals(courseOffering.get()));
         
     
         model.addAttribute("shouldBeChecked", shouldBeChecked);
@@ -132,7 +132,7 @@ public class TutorSignUpController{
     }
     @PostMapping("/tutorSignUp/add")
     public ResponseEntity<?> add(@RequestParam("sid") long sid, @RequestParam("tid") long tid,
-                                OAuth2AuthenticationToken token) {
+                                 @RequestParam("cid") long cid, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Tutor")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -143,20 +143,23 @@ public class TutorSignUpController{
         timeSlotAssignment.setTimeSlot(ts.get());
         Optional<Tutor> tutor = tutorRepository.findById(tid);
         timeSlotAssignment.setTutor(tutor.get());
+        Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(cid);
+        timeSlotAssignment.setCourseOffering(courseOffering.get());
+         
         timeSlotAssignmentRepository.save(timeSlotAssignment);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/tutorSignUp/{sid}/{tid}")
+    @DeleteMapping("/tutorSignUp/{sid}/{tid}/{cid}")
     public ResponseEntity<?> delete(@PathVariable("sid") long sid, @PathVariable("tid") long tid,
-                                    OAuth2AuthenticationToken token) {
+                                    @PathVariable("cid") long cid,OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Tutor")) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        timeSlotAssignmentRepository.deleteByTimeSlotIdAndTutorId(sid, tid);
+        timeSlotAssignmentRepository.deleteByTimeSlotIdAndTutorIdAndCourseOfferingId(sid, tid, cid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     }
