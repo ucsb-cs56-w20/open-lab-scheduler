@@ -22,6 +22,12 @@ public class TimeSlotAssignment{
 
     public TimeSlotAssignment(){}
 
+    public TimeSlotAssignment(TimeSlot timeSlot, Tutor tutor, CourseOffering courseOffering) {
+        this.timeSlot = timeSlot;
+        this.tutor = tutor;
+        this.courseOffering = courseOffering;
+    }
+
     public void setId(long id){
         this.id = id;
     }

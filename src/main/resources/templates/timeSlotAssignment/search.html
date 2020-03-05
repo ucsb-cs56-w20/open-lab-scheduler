@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <div th:replace="bootstrap/title.html"></div>
+  <div th:replace="bootstrap/bootstrap_head.html"></div>
+</head>
+
+<body>
+  <div class="container">
+    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+    <div class="row">
+      <div class="col-md-6">
+
+        <h2 class="my-5" id="header"></h2>
+        <table class="table table-striped table-responsive-md">
+          <thead>
+            <tr>
+              <th>Room</th>
+              <th>Day</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="tsa : ${TimeSlotAssignmentModel}">
+              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getRoom().getName()}"></td>
+              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getDay()}"></td>
+              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime()}"></td>
+              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getEndTime()}"></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
+  </div>
+  <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    let quarter = /*[[${quarter}]]*/W20;
+    let header = document.getElementById("header");
+    header.textContent = "Time Slot Assignments for " + quarter;
+    /*]]>*/
+  </script>
+</body>
+
+</html>

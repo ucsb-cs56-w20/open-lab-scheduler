@@ -18,7 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlotAssignment;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotAssignmentRepository;
 
@@ -73,13 +77,14 @@ public class TimeSlotAssignmentController {
     }
 
     @GetMapping("/timeSlotAssignment/search/{quarter}")
-    public String dashboard(@PathVariable("quarter") String quarter, Model model, OAuth2AuthenticationToken token,
+    public String quarterSearch(@PathVariable("quarter") String quarter, Model model, OAuth2AuthenticationToken token,
             RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+        timeSlotAssignmentRepository.save(t0);
         List<CourseOffering> courses = courseOfferingRepository.findByQuarter(quarter);
         List<TimeSlotAssignment> timeSlots = new ArrayList<TimeSlotAssignment>();
         for (CourseOffering course : courses) {
@@ -87,6 +92,7 @@ public class TimeSlotAssignmentController {
         }
         java.util.Collections.sort(timeSlots, byRoom.thenComparing(byDay).thenComparing(byTime));
         model.addAttribute("TimeSlotAssignmentModel", timeSlots);
-        return "";
+        model.addAttribute("quarter", quarter);
+        return "timeSlotAssignment/search";
     }
 }
