@@ -24,11 +24,12 @@
             </tr>
           </thead>
           <tbody>
+            
             <tr th:each="tsa : ${TimeSlotAssignmentModel}">
               <td th:text="${tsa.getTimeSlot().getRoomAvailability().getRoom().getName()}"></td>
               <td th:text="${tsa.getTimeSlot().getRoomAvailability().getDay()}"></td>
-              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime()}"></td>
-              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getEndTime()}"></td>
+              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime())}"></td>
+              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getEndTime())}"></td>
             </tr>
           </tbody>
         </table>
