@@ -57,4 +57,3 @@ public class ApplicationController{
         return "login"; // custom error page, placeholder for now
     }
 }
-
