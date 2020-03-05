@@ -79,13 +79,13 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title">Invalid Time Format</h5>
+                  <h5 class="modal-title">Invalid Time Slot</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  Time must be a multiple of the default duration
+                  Time slot must be a multiple of the default duration
                   <span th:text=${defaultDuration}></span>
                 </div>
                 <div class="modal-footer">
@@ -144,13 +144,23 @@
                 $('#invalidTime').modal();
                 return false;
             }
-            let defaultDuration = /*[[${defaultDuration}]]*/30;
-            let minutes = militaryTimeToMinutes(intTime);
-            if(minutes % defaultDuration != 0) {
-                $('#notMultipleOfDefaultDuration').modal();
-                return false;
-            }
             return true;
+        }
+
+        function validTimeSlot() {
+            let startTime = document.getElementById("start").value;
+            let endTime = document.getElementById("end").value;
+            let defaultDuration = /*[[${defaultDuration}]]*/30;
+            if(validTime(startTime) && validTime(endTime)) {
+                    let start = militaryTimeToMinutes(parseInt(startTime));
+                    let end = militaryTimeToMinutes(parseInt(endTime));
+                    if((start - end) % defaultDuration != 0) {
+                        $('#notMultipleOfDefaultDuration').modal();
+                        return false;
+                    } 
+                    return true;
+            }
+            return false;
         }
         
         var raExists = /*[[${raExists}]]*/false;
@@ -159,8 +169,7 @@
             var raDay = /*[[${raDay}]]*/"Monday";
             document.getElementById("dropdownMenuButton").textContent = raDay;
             $("#save").click(e => {
-                var valid = validTime(document.getElementById("start").value) && validTime(document.getElementById("end").value);
-                if(valid) {
+                if(validTimeSlot()) {
                     $.ajax({
                         url: "/roomAvailability/save",
                         method: "PUT",
@@ -185,8 +194,7 @@
         } else {
             document.getElementById("dropdownMenuButton").textContent = "Monday";
             $("#save").click(e => {
-                var valid = validTime(document.getElementById("start").value) && validTime(document.getElementById("end").value);
-                if(valid) {
+                if(validTimeSlot()) {
                     $.ajax({
                         url: "/roomAvailability/create",
                         method: "POST",
