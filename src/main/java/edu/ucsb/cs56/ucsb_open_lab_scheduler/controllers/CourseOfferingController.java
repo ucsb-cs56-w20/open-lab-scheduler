@@ -67,7 +67,7 @@ public class CourseOfferingController {
         } catch (IOException e) {
             log.error(e.toString());
         }catch(RuntimeException a){
-            redirAttrs.addFlashAttribute("message", "Please enter a file with correct CSV variable types for Course Offering Information.");
+            redirAttrs.addFlashAttribute("alertDanger", "Please enter the correct csv files");
             return "redirect:/courseOffering";
         }
         return "redirect:/courseOffering";
