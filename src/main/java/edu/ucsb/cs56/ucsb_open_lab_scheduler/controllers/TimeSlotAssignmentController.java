@@ -84,7 +84,6 @@ public class TimeSlotAssignmentController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        timeSlotAssignmentRepository.save(t0);
         List<CourseOffering> courses = courseOfferingRepository.findByQuarter(quarter);
         List<TimeSlotAssignment> timeSlots = new ArrayList<TimeSlotAssignment>();
         for (CourseOffering course : courses) {
