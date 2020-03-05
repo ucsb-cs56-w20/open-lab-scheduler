@@ -47,20 +47,11 @@ public class ApplicationController{
     public String getLoginPage(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         Map<String, String> urls = new HashMap<>();
-
-        // if (role.equals("NotDomain")) {
-        //     // redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-        //     return "error"; // custom error page prompting user to relog in
-        // }
         
         // get around an unfortunate limitation of the API
         @SuppressWarnings("unchecked") Iterable<ClientRegistration> iterable = ((Iterable<ClientRegistration>) clientRegistrationRepository);
         iterable.forEach(clientRegistration -> urls.put(clientRegistration.getClientName(),
                 "/oauth2/authorization/" + clientRegistration.getRegistrationId()));
-
-        // String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
-        // if(role.equals("NotDomain"))
-        //     return "error";
 
         model.addAttribute("urls", urls);
         return "login"; // custom error page, placeholder for now
