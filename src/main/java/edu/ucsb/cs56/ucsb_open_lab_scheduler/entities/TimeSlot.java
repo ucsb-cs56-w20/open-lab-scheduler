@@ -26,6 +26,12 @@ public class TimeSlot{
         this.endTime = 0;
     }
 
+    public TimeSlot(RoomAvailability ra, int start, int end) {
+        roomAvailability = ra;
+        startTime = start;
+        endTime = end;
+    }
+
     public void setId(long id){
         this.id = id;
     }

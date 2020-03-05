@@ -41,6 +41,13 @@ public class CourseOffering implements Comparable<CourseOffering>{
         this.instructorEmail = instructorEmail;
     }
 
+    public CourseOffering(String courseId, String quarter, String instructorName, String instructorEmail){
+        this.courseId = courseId;
+        this.quarter = quarter;
+        this.instructorName = instructorName;
+        this.instructorEmail = instructorEmail;
+    }
+
     public void setId(long id){
         this.id = id;
     }  
