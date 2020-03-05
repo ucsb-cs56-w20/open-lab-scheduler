@@ -134,7 +134,12 @@ public class CourseOfferingController {
     }
 
     @PostMapping("/courseOffering/add")
-    public String add(@Valid CourseOffering courseOffering, BindingResult result, Model model) {
+    public String add(@Valid CourseOffering courseOffering, BindingResult result, Model model, RedirectAttributes redirAttrs, OAuth2AuthenticationToken token) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
         if (result.hasErrors()) {
             return "courseOffering/create";
         }
@@ -143,10 +148,10 @@ public class CourseOfferingController {
         if(courseExists){
             final String errorCourseExists = "Course already exists for this quarter";
             model.addAttribute("errorCourseExists", errorCourseExists);
-            return "index";
+            return "redirect:/courseOffering";
         }
         courseOfferingRepository.save(courseOffering);
         model.addAttribute("courseOffering", courseOfferingRepository.findAll());
-        return "index";
+        return "redirect:/courseOffering";
     }
 }
