@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.formbeans.courseSchedule;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,5 +50,11 @@ public class ApplicationController{
 
         model.addAttribute("urls", urls);
         return "login";
+    }
+
+    @GetMapping("/display")
+    public String home(Model model, courseSchedule courseSchedule) {
+        String s = courseSchedule.getQuarter() + " " + courseSchedule.getCourseId();
+        return s;
     }
 }

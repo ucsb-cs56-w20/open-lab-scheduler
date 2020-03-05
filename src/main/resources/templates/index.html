@@ -13,8 +13,8 @@
     <div class="row">
       <div class="col-md-6">
 
-        <h2 class="my-5">CS56 W20 Open Lab Hours</h2>
-        <div>Quarter</div>
+    <!--    <h2 class="my-5">CS56 W20 Open Lab Hours</h2>
+       <div>Quarter</div>
           <select th:field="*{courseOfferingModel}">
             <option value="" th:disabled="disabled" th:selected="selected">
               Choose A Quarter
@@ -28,6 +28,27 @@
           </option>
             <option th:each="co : ${uniqueCourseOfferingModel}" th:value="${co}"th:text="${co}"></option>
           </select>
+        -->
+          <form action="#" th:action="@{/display}" th:object="${courseSchedule}" method="get">
+            <table>
+              <div>Quarter</div>
+                <select th:field="*{quarter}">
+                  <option value="" th:disabled="disabled" th:selected="selected">
+                    Choose A Quarter
+                </option>
+                  <option th:each="q : ${uniqueQuartersModel}" th:value="${q}"th:text="${q}"></option>
+                </select>
+                <div>Courses</div>
+                <select th:field="*{courseId}">
+                  <option value="" th:disabled="disabled" th:selected="selected">
+                    Choose A Course
+                </option>
+                  <option th:each="co : ${uniqueCourseOfferingModel}" th:value="${co}"th:text="${co}"></option>
+                </select>
+            </table>
+      
+            <input type="submit" class="btn btn-primary" value="Search">
+          </form>
 
         <table class="table table-striped table-responsive-md">
           <thead>
