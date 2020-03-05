@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+  </head>
+
+  <body>
+    <div class="container">
+      <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="my-5">CS56 Quarter Selection</h2>
+          <table class="table table-striped table-responsive-md">
+            <thead>
+              <tr>
+                <th>Quarter</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="quarter : ${quarters}">
+                <td
+                  th:text="${quarter}"
+                ></td>
+                <td>
+                  <a
+                    th:href="'/quarter/' + ${quarter} + 'courseLeads'"
+                    >Course Leads</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div th:replace="bootstrap/bootstrap_footer.html"></div>
+    </div>
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  </body>
+</html>
+
