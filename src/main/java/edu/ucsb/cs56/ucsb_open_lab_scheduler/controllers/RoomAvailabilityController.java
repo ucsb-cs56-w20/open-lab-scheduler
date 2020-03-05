@@ -33,6 +33,13 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import org.springframework.http.HttpHeaders;
+
 @Controller
 public class RoomAvailabilityController {
     private static Logger log = LoggerFactory.getLogger(RoomAvailabilityController.class);
@@ -61,6 +68,37 @@ public class RoomAvailabilityController {
         model.addAttribute("RoomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "roomAvailability/roomAvailability";
     }
+
+
+    @GetMapping("/roomAvailability/export-CSV")
+    public void exportCSV(HttpServletResponse response) throws Exception{
+        String[] header = {"quarter","day","Start Time","End Time", "Room"};
+        String filename = "roomAvailability.csv";
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
+        CSVWriter CsvWriter = new CSVWriter(response.getWriter(),
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END);
+        CsvWriter.writeNext(header);
+        List<RoomAvailability> rooms = (List<RoomAvailability>)roomAvailabilityRepository.findAll();
+        for (RoomAvailability room: rooms){
+            String data[] = {
+                room.getQuarter(),
+                room.getDay(),
+                ((Integer)room.getStartTime()).toString(),
+                ((Integer)room.getEndTime()).toString(),
+                room.getRoom().toString()
+            };
+            CsvWriter.writeNext(data);
+        }
+
+    }
+
+
+
 
     @PostMapping("/roomAvailability/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token,
