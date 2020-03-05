@@ -116,6 +116,26 @@
           </div>
         </div>
 
+        <div class="modal fade" id="blankField" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Invalid Input</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Fields cannot be blank
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
     </div>
     <div th:replace="bootstrap/bootstrap_scripts.html"></div>
 
@@ -162,6 +182,21 @@
             }
             return false;
         }
+
+        function validInput() {
+            let quarter = document.getElementById("quarter").value;
+            let room = document.getElementById("room").value;
+            let validTime = validTimeSlot();
+            if(quarter == '' || room == '' || !validTime) {
+                if(validTime) {
+                    $('#blankField').modal();
+                    return false;
+                } 
+                return false;
+                
+            }
+            return true;
+        }
         
         var raExists = /*[[${raExists}]]*/false;
         
@@ -169,7 +204,7 @@
             var raDay = /*[[${raDay}]]*/"Monday";
             document.getElementById("dropdownMenuButton").textContent = raDay;
             $("#save").click(e => {
-                if(validTimeSlot()) {
+                if(validInput()) {
                     $.ajax({
                         url: "/roomAvailability/save",
                         method: "PUT",
@@ -194,7 +229,7 @@
         } else {
             document.getElementById("dropdownMenuButton").textContent = "Monday";
             $("#save").click(e => {
-                if(validTimeSlot()) {
+                if(validInput()) {
                     $.ajax({
                         url: "/roomAvailability/create",
                         method: "POST",
