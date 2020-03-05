@@ -1,10 +1,14 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
 import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvRecurse;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,12 +36,21 @@ public class RoomAvailability{
     @NotBlank(message = "Day is required")
     private String day;
 
-    @CsvBindByPosition(position = 4)
-    @NotBlank(message = "Room is required")
-    private String room;
+    @CsvRecurse
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "room_id")
+    private Room room;
 
-    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
+    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, Room room) {
         this.id = id;
+        this.quarter = quarter;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.day = day;
+        this.room = room;
+    }
+
+    public RoomAvailability(String quarter, int startTime, int endTime, String day, Room room) {
         this.quarter = quarter;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -67,8 +80,16 @@ public class RoomAvailability{
         return day;
     }
 
-    public String getRoom(){
+    public Room getRoom(){
         return room;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setStartTime(int startTime){
@@ -83,7 +104,7 @@ public class RoomAvailability{
         this.day = day;
     }
 
-    public void setRoom(String room){
+    public void setRoom(Room room){
         this.room = room;
     }
 
@@ -92,6 +113,9 @@ public class RoomAvailability{
         String suffix = t < 1200 ? "am" : "pm";
         if (time.length()==2)
         { time = "12" + time;}
+        else if (time.length()==1) {
+            time = "120" + time;
+        }
         return time.substring(0,time.length()-2)+":"+time.substring(time.length()-2)+ " "+ suffix;
     }
 
