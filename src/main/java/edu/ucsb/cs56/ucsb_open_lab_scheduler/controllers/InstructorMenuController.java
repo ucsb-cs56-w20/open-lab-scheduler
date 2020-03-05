@@ -32,6 +32,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingReposito
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 
@@ -88,5 +89,35 @@ public class InstructorMenuController {
         model.addAttribute("courseOffering", courseOffering.get());
         return "instructorMenu/getTutors";
     }
+    @GetMapping("/instructorMenu/{id}/export-CSV")
+    public void exportCSV(@PathVariable("id") long id,HttpServletResponse response) throws Exception{
+        Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(id);
+        if (!courseOffering.isPresent()) {
+            redirAttrs.addFlashAttribute("alertDanger", "Course offering with id " + id + " not found");
+            return "redirect:/";
 
+        }
+        String[] header = {"firstName","lastName","email"};
+        String filename = "tutors.csv";
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
+        CSVWriter CsvWriter = new CSVWriter(response.getWriter(),
+                CSVWriter.DEFAULT_SEPARATOR,
+                CSVWriter.NO_QUOTE_CHARACTER,
+                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                CSVWriter.DEFAULT_LINE_END);
+        CsvWriter.writeNext(header);
+        List<TutorAssignment> tutorAssignmentList = (List<TutorAssignment>)tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
+        for (TutorAssignment tutorAssignment: tutorAssignmentList){
+            Tutor tutor=ta.getTutor();
+            String data[] = {
+                    tutor.getFirstName(),
+                    tutor.getLastName(),
+                    tutor.getEmail()
+            };
+            CsvWriter.writeNext(data);
+        }
+
+    }
 }
