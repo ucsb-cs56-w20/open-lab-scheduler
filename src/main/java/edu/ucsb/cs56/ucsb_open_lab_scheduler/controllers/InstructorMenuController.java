@@ -78,6 +78,7 @@ public class InstructorMenuController {
 
         }
         model.addAttribute("tutors",tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
+        model.addAttribute("courseOffering", courseOffering.get());
         return "instructorMenu/getTutors";
     }
 
