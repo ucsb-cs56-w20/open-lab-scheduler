@@ -53,8 +53,7 @@ public class InstructorMenuController {
         
 
     
-    private Comparator<CourseOffering> byYear=(c1,c2)->Integer.compare(Integer.parseInt(c1.getQuarter().substring(1,3)), Integer.parseInt(c2.getQuarter().substring(1,3)));
-    
+    private Comparator<CourseOffering> byYear=(c1,c2)->Integer.compare(Integer.parseInt(c2.getQuarter().substring(1,3)), Integer.parseInt(c1.getQuarter().substring(1,3)));
     private Comparator<CourseOffering> byFirstLetter=(c1,c2)->c1.getQuarter().compareTo(c2.getQuarter());
     
     @GetMapping("/instructorMenu")
