@@ -4,7 +4,9 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.RoomAvailabilityDownloadCSV;
@@ -12,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -53,6 +53,7 @@ public class RoomAvailabilityController {
 
     @Autowired
     TimeSlotRepository timeSlotRepository;
+
     @Value("${app.timeSlotDefaultDuration}")
     private int defaultDuration;
 
@@ -202,4 +203,5 @@ public class RoomAvailabilityController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

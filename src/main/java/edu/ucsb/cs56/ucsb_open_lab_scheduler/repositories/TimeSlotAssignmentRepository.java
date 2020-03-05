@@ -25,5 +25,8 @@ public interface TimeSlotAssignmentRepository extends CrudRepository<TimeSlotAss
 
     @Transactional
     void deleteByTimeSlotIdAndTutorIdAndCourseOfferingId(long timeSlotId, long tutorId, long courseOfferingId);
+    @Transactional
+    void deleteByTimeSlotIdAndTutorId(long timeSlotId, long tutorId);
+
 }
 
