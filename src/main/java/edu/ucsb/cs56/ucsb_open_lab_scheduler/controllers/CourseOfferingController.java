@@ -116,6 +116,7 @@ public class CourseOfferingController {
             redirAttrs.addFlashAttribute("alertSuccess", "Course successfully deleted.");
         }
         return "redirect:/courseOffering/";
+    }
 
     @GetMapping("/courseOffering/create")
     public String create(CourseOffering courseOffering) {
