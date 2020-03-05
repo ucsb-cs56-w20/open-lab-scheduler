@@ -31,20 +31,24 @@
         -->
           <form action="#" th:action="@{/display}" th:object="${courseSchedule}" method="get">
             <table>
-              <div>Quarter</div>
-                <select th:field="*{quarter}">
+              <th><label for="quarter" class="col-form-label">Quarter</label></th>
+              <th><label for="courseId" class="col-form-label">Course</label></th>
+              <tr class="form-group">
+                <select td:field="*{quarter}">
                   <option value="" th:disabled="disabled" th:selected="selected">
                     Choose A Quarter
                 </option>
-                  <option th:each="q : ${uniqueQuartersModel}" th:value="${q}"th:text="${q}"></option>
+                  <option td:each="q : ${uniqueQuartersModel}" th:value="${q}"th:text="${q}"></option>
                 </select>
-                <div>Courses</div>
-                <select th:field="*{courseId}">
+                </tr>
+                <tr class="form-group">
+                <select td:field="*{courseId}">
                   <option value="" th:disabled="disabled" th:selected="selected">
                     Choose A Course
                 </option>
-                  <option th:each="co : ${uniqueCourseOfferingModel}" th:value="${co}"th:text="${co}"></option>
+                  <option td:each="co : ${uniqueCourseOfferingModel}" th:value="${co}"th:text="${co}"></option>
                 </select>
+              </tr>
             </table>
       
             <input type="submit" class="btn btn-primary" value="Search">
