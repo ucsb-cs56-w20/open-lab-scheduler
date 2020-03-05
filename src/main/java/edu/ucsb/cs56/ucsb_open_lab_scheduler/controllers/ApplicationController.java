@@ -31,16 +31,16 @@ public class ApplicationController{
         this.roomAvailabilityRepository = roomAvailabilityRepository;
     }
 
-    @GetMapping("/")
+    @GetMapping("/") // takes get request
     public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken, RedirectAttributes redirAttrs){
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         if(role.equals("NotDomain")){
-            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page. Please log out and log back in with a @ucsb.edu email.");
-            return "redirect:/login";
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access this website. Please log in with a @ucsb.edu email.");
+            return "autoLogOut";
         }
 
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
-        return "index";
+        return "index"; // returns a view to display
     }
 
     @GetMapping("/login")
@@ -48,7 +48,6 @@ public class ApplicationController{
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         Map<String, String> urls = new HashMap<>();
 
-        
         // if (role.equals("NotDomain")) {
         //     // redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
         //     return "error"; // custom error page prompting user to relog in
@@ -58,7 +57,6 @@ public class ApplicationController{
         @SuppressWarnings("unchecked") Iterable<ClientRegistration> iterable = ((Iterable<ClientRegistration>) clientRegistrationRepository);
         iterable.forEach(clientRegistration -> urls.put(clientRegistration.getClientName(),
                 "/oauth2/authorization/" + clientRegistration.getRegistrationId()));
-
 
         // String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         // if(role.equals("NotDomain"))

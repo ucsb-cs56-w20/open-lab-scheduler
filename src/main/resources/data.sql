@@ -11,3 +11,4 @@ INSERT INTO tutor (first_name,last_name,email,is_active,number_of_courses_assign
 INSERT INTO tutor (first_name,last_name,email,is_active,number_of_courses_assigned) VALUES ('Kate','Perkins','kateperkins@example.org',0,0);
 INSERT INTO tutor (first_name,last_name,email,is_active,number_of_courses_assigned) VALUES ('George','Kripac','Georgekripac@example.org',1,0);
 INSERT INTO tutor_assignment(course_offering_id, tutor_id) VALUES (1, 1);
+
