@@ -99,19 +99,7 @@ public class AuthControllerAdvice {
 
     @ModelAttribute("isTutor")
     public boolean getIsTutor(OAuth2AuthenticationToken token){
-        String userEmail;
-        if (token == null){
-            userEmail = "";
-        }else{
-            userEmail = token.getPrincipal().getAttributes().get("email").toString();
-        }
-        Iterable<Tutor> tutor = tutorRepository.findAll();
-        for(Tutor elem : tutor){
-            if(elem.getEmail().equals(userEmail)){
-                return true;
-            }
-        }
-        return false;
+        return membershipService.isTutor(token);
     }
 
     @ModelAttribute("role")

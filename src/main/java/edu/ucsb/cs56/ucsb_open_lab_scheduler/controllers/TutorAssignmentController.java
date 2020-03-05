@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
@@ -25,7 +29,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
-import java.util.stream.*;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class TutorAssignmentController {
@@ -74,22 +78,28 @@ public class TutorAssignmentController {
     Iterable<Tutor> tutors = () -> StreamSupport.stream(tutorRepository.findAll().spliterator(), false)
         .filter(tutor -> tutor.getIsActive())
         .iterator();
-    List<TutorAssignment> tutorAssignments = tutorAssignmentRepository
-        .findByCourseOffering(courseOffering.get());
+    List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByCourseOffering(courseOffering.get());
 
     Predicate<Tutor> shouldBeChecked = tutor -> tutorAssignments.stream()
         .filter((ta) -> ta.getTutor().getIsActive())
         .anyMatch((ta) -> ta.getTutor().equals(tutor));
+
     model.addAttribute("shouldBeChecked", shouldBeChecked);
     model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());
+    
+    Predicate<Tutor> shouldBeChecked2 = tutor -> tutorAssignments.stream()
+      .filter((ta) -> ta.getIsCourseLead())
+      .anyMatch((ta) -> ta.getTutor().equals(tutor));
+      
+    model.addAttribute("shouldBeChecked2", shouldBeChecked2);
 
     return "tutorAssignment/manage";
   }
-
+                           
   @PostMapping("/tutorAssignment/add")
-  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid,
-  OAuth2AuthenticationToken token) {
+  public ResponseEntity<?> add(@RequestParam("cid") long cid, @RequestParam("tid") long tid,  @RequestParam("lead") boolean lead,
+                               OAuth2AuthenticationToken token) {
     String role = authControllerAdvice.getRole(token);
     if (!(role.equals("Admin"))) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -100,11 +110,32 @@ public class TutorAssignmentController {
     CourseOffering courseOffering = courseOfferingRepository.findById(cid)
         .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:" + cid));
 
-    TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering);
+    TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering, lead);
     tutorAssignmentRepository.save(tutorAssignment);
 
     return new ResponseEntity<>(HttpStatus.OK);
   }
+    
+    @PostMapping("/tutorAssignment/update")
+    public ResponseEntity<?> update(@RequestParam("cid") long cid, @RequestParam("tid") long tid, @RequestParam("lead") boolean lead,
+                                 OAuth2AuthenticationToken token) {
+      String role = authControllerAdvice.getRole(token);
+      if (!role.equals("Admin")) {
+          return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+      }
+
+      Tutor tutor = tutorRepository.findById(tid)
+          .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + tid));
+      CourseOffering courseOffering = courseOfferingRepository.findById(cid)
+          .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:" + cid));
+        
+        tutorAssignmentRepository.deleteByCourseOfferingIdAndTutorId(cid, tid);
+        
+        TutorAssignment tutorAssignment = new TutorAssignment(tutor, courseOffering, lead);
+        tutorAssignmentRepository.save(tutorAssignment);
+
+      return new ResponseEntity<>(HttpStatus.OK);
+    }
 
   @DeleteMapping("/tutorAssignment/{cid}/{tid}")
   public ResponseEntity<?> delete(@PathVariable("cid") long cid, @PathVariable("tid") long tid,

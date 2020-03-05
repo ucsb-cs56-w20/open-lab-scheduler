@@ -19,6 +19,7 @@ public class TimeSlot{
     private RoomAvailability roomAvailability;
 
     private int startTime;
+    private int endTime;
 
     public TimeSlot(){}
 
@@ -34,6 +35,10 @@ public class TimeSlot{
         this.startTime = startTime;
     }
 
+    public void setEndTime(int endTime){
+        this.endTime = endTime;
+    }
+
     public long getId(){
         return id;
     }
@@ -44,6 +49,10 @@ public class TimeSlot{
 
     public int getStartTime(){
         return startTime;
+    }
+
+    public int getEndTime(){
+        return endTime;
     }
 
 }

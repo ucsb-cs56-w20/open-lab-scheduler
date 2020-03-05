@@ -6,6 +6,11 @@
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li th:if="${isTutor}" class="nav-item ">
+        <a class="nav-link" href="/tutorSignUp/courseSelect" id="navbarDropdown" role="button">
+          Tutor Sign-Up
+        </a>
+      </li>
       <li th:if="${isAdmin}" class="nav-item ">
         <a
           class="nav-link"
@@ -67,6 +72,7 @@
         </a>
       </li>
     </ul>
+
 
     <ul class="nav navbar-nav navbar-right">
       <li th:if="${isLoggedIn}">
