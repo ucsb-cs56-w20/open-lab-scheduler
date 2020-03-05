@@ -72,7 +72,7 @@ public class RoomAvailabilityController {
 
     @GetMapping("/roomAvailability/export-CSV")
     public void exportCSV(HttpServletResponse response) throws Exception{
-        String[] header = {"quarter","day","Start Time","End Time", "Room"};
+        String[] header = {"quarter","day","startTime","endTime", "room"};
         String filename = "roomAvailability.csv";
         response.setContentType("text/csv");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
