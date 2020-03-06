@@ -79,7 +79,7 @@ public class InstructorMenuController {
         List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
         Collections.sort(courseList,byYear.thenComparing(byFirstLetter));
         model.addAttribute("courses",courseList);
-        return "instructorMenu/instructorMenu";
+        return "instructorMenu/instructorMenu";x
     }
 
     @GetMapping("/instructorMenu/{id}")
