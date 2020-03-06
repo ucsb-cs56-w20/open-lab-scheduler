@@ -35,7 +35,7 @@ public class GoogleMembershipService implements MembershipService {
     private OAuth2AuthorizedClientService clientService;
 
     @Autowired
-    private AdminRepository adminRepository;
+    private AdminRepository adminRepository
 
     @Autowired
     private TutorRepository tutorRepository;
