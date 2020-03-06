@@ -2,257 +2,267 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head>
-    <div th:replace="bootstrap/title.html"></div>
-    <div th:replace="bootstrap/bootstrap_head.html"></div>
+  <div th:replace="bootstrap/title.html"></div>
+  <div th:replace="bootstrap/bootstrap_head.html"></div>
 </head>
 
 <body>
-    <div class="container">
-        <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
-        
-        <div class="row">
-            <div class="col-md-6">
-                <table class="table-striped table-responsive-md">
-                    <thead>
-                        <tr>
-                            <th>Quarter</th>
-                            <th>Day</th>
-                            <th>Start Time</th>
-                            <th>End Time</th>
-                            <th>Room</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <td><input type="text" id="quarter" th:attr="value=${(raExists)? ra.getQuarter() : ''}"></td>
-                        <td>
-                            <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" 
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <button class="dropdown-item" type="button">Monday</button>
-                                <button class="dropdown-item" type="button">Tuesday</button>
-                                <button class="dropdown-item" type="button">Wednesday</button>
-                                <button class="dropdown-item" type="button">Thursday</button>
-                                <button class="dropdown-item" type="button">Friday</button>
-                                <button class="dropdown-item" type="button">Saturday</button>
-                                <button class="dropdown-item" type="button">Sunday</button>
-                            </div>
-                          </div>
-                        </td>
-                        <td>
-                            <input type="text" id="start" th:attr="value=${(raExists)? ra.getStartTime() : ''}">
-                        </td>
-                        <td><input type="text" id="end" th:attr="value=${(raExists)? ra.getEndTime() : ''}"></td>
-                        <td><input type="text" id="room" th:attr="value=${(raExists)? ra.getRoom() : ''}"></td>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <p>Start and end times should be entered as integers in military time (e.g. "1730 for 5:30 PM")</p>
-        <span>Start and end times should also be a multiple of the default duration </span>
-        <span th:text="${defaultDuration}"></span>
-        <p></p>
-        <button type="button" id="save">Save</button>
-        <div th:replace="bootstrap/bootstrap_footer.html"></div>
+  <div class="container">
+    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
 
-        <div class="modal fade" id="timeIsNotInteger" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Invalid Time Format</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Time must be an integer
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
+    <h2 class="my-5" th:inline="text">[[${raExists} ? 'Editing' : 'Creating']] a Room Availability</h2>
+    <form>
+      <div class="form-group">
+        <label for="quarter">Quarter</label>
+        <input type="text" class="form-control" id="quarter" aria-describedby="quarterInput"
+          th:attr="value=${(raExists)? ra.getQuarter() : ''}">
+      </div>
+      <div class="form-group">
+        <label for="day">Day</label>
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="day" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false"></button>
+          <div class="dropdown-menu" aria-labelledby="day">
+            <button class="dropdown-item" type="button">Monday</button>
+            <button class="dropdown-item" type="button">Tuesday</button>
+            <button class="dropdown-item" type="button">Wednesday</button>
+            <button class="dropdown-item" type="button">Thursday</button>
+            <button class="dropdown-item" type="button">Friday</button>
+            <button class="dropdown-item" type="button">Saturday</button>
+            <button class="dropdown-item" type="button">Sunday</button>
           </div>
         </div>
+      </div>
+      <div class="form-group">
+        <label for="start">Start Time</label>
+        <input type="text" class="form-control" id="start" aria-describedby="startInput"
+          th:attr="value=${(raExists)? ra.getStartTime() : ''}">
+        <small class="form-text text-muted">Start time should be entered as an integer in military time (e.g. "1730 for
+          5:30 PM").</small>
+        <small class="form-text text-muted">Start time should also be a multiple of the default duration <span
+            th:inline="text">[[${defaultDuration}]]</span> minutes.</small>
+      </div>
+      <div class="form-group">
+        <label for="end">End Time</label>
+        <input type="text" class="form-control" id="end" aria-describedby="endInput"
+          th:attr="value=${(raExists)? ra.getEndTime() : ''}">
+        <small class="form-text text-muted">End time should be entered as an integer in military time (e.g. "1730 for
+          5:30 PM").</small>
+        <small class="form-text text-muted">End time should also be a multiple of the default duration <span
+            th:inline="text">[[${defaultDuration}]]</span> minutes.</small>
+      </div>
+      <div class="form-group">
+        <label for="room">Room</label>
+        <input type="text" class="form-control" id="room" aria-describedby="roomInput"
+          th:attr="value=${(raExists)? ra.getRoom() : ''}">
+      </div>
+      <button type="button" class="btn btn-primary" id="save">Save</button>
+    </form>
 
-        <div class="modal fade" id="notMultipleOfDefaultDuration" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Invalid Time Slot</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Time slot must be a multiple of the default duration
-                  <span th:text=${defaultDuration}></span>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
+
+    <div class="modal fade" id="timeIsNotInteger" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Invalid Time Format</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Time must be an integer
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
           </div>
         </div>
-
-        <div class="modal fade" id="invalidTime" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Invalid Time Format</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Time is invalid
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal fade" id="blankField" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Invalid Input</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  Fields cannot be blank
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+      </div>
     </div>
-    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  </div>
 
-    <script th:inline="javascript">
+  <div class="modal fade" id="notMultipleOfDefaultDuration" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Invalid Time Slot</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Time slot must be a multiple of the default duration
+          <span th:text=${defaultDuration}></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 
-        $(".dropdown-item").click(e => {
-            document.getElementById("dropdownMenuButton").textContent = e.target.textContent;
-        })
-        /*<![CDATA[*/
+  <div class="modal fade" id="invalidTime" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Invalid Time Format</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Time is invalid
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 
-        function militaryTimeToMinutes(time) {
-            let minutes = Math.floor(time / 100);
-            minutes *= 60;
-            minutes += time % 100;
-            return minutes;
+  <div class="modal fade" id="blankField" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Invalid Input</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Fields cannot be blank
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 
+  </div>
+  <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+
+  <script th:inline="javascript">
+
+    $(".dropdown-item").click(e => {
+      document.getElementById("day").textContent = e.target.textContent;
+    })
+    /*<![CDATA[*/
+
+    function militaryTimeToMinutes(time) {
+      let minutes = Math.floor(time / 100);
+      minutes *= 60;
+      minutes += time % 100;
+      return minutes;
+
+    }
+
+    function validTime(time) {
+      let intTime = parseInt(time);
+      if (isNaN(intTime)) {
+        $('#timeIsNotInteger').modal();
+        return false;
+      }
+      if (intTime % 100 >= 59 || intTime < 0 || intTime > 2400) {
+        $('#invalidTime').modal();
+        return false;
+      }
+      return true;
+    }
+
+    function validTimeSlot() {
+      let startTime = document.getElementById("start").value;
+      let endTime = document.getElementById("end").value;
+      let defaultDuration = /*[[${defaultDuration}]]*/30;
+      if (validTime(startTime) && validTime(endTime)) {
+        let start = militaryTimeToMinutes(parseInt(startTime));
+        let end = militaryTimeToMinutes(parseInt(endTime));
+        if ((start - end) % defaultDuration != 0) {
+          $('#notMultipleOfDefaultDuration').modal();
+          return false;
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function validInput() {
+      let quarter = document.getElementById("quarter").value;
+      let room = document.getElementById("room").value;
+      let validTime = validTimeSlot();
+      if (quarter == '' || room == '' || !validTime) {
+        if (validTime) {
+          $('#blankField').modal();
+          return false;
+        }
+        return false;
+
+      }
+      return true;
+    }
+
+    var raExists = /*[[${raExists}]]*/false;
+
+    if (raExists) {
+      var raDay = /*[[${raDay}]]*/"Monday";
+      document.getElementById("day").textContent = raDay;
+      $("#save").click(e => {
+        if (validInput()) {
+          $.ajax({
+            url: "/roomAvailability/save",
+            method: "PUT",
+            data: {
+              id: /*[[${raID}]]*/0,
+              quarter: document.getElementById("quarter").value,
+              day: document.getElementById("day").textContent,
+              start: document.getElementById("start").value,
+              end: document.getElementById("end").value,
+              room: document.getElementById("room").value,
+              /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+            },
+          }).done(function () {
+            console.log("saved");
+            window.location.href = "/roomAvailability";
+          }).fail(function (jqXHR, textStatus) {
+            console.log(jqXHR.responseText);
+          })
         }
 
-        function validTime(time) {
-            let intTime = parseInt(time);
-            if(isNaN(intTime)) {
-                $('#timeIsNotInteger').modal();
-                return false;
-            }
-            if(intTime % 100 >= 59 || intTime < 0 || intTime > 2400) {
-                $('#invalidTime').modal();
-                return false;
-            }
-            return true;
+      });
+    } else {
+      document.getElementById("day").textContent = "Monday";
+      $("#save").click(e => {
+        if (validInput()) {
+          $.ajax({
+            url: "/roomAvailability/create",
+            method: "POST",
+            data: {
+              quarter: document.getElementById("quarter").value,
+              day: document.getElementById("day").textContent,
+              start: document.getElementById("start").value,
+              end: document.getElementById("end").value,
+              room: document.getElementById("room").value,
+              /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+            },
+          }).done(function () {
+            console.log("saved");
+            window.location.href = "/roomAvailability";
+          }).fail(function (jqXHR, textStatus) {
+            console.log(jqXHR.responseText);
+          })
         }
+      });
+    }
 
-        function validTimeSlot() {
-            let startTime = document.getElementById("start").value;
-            let endTime = document.getElementById("end").value;
-            let defaultDuration = /*[[${defaultDuration}]]*/30;
-            if(validTime(startTime) && validTime(endTime)) {
-                    let start = militaryTimeToMinutes(parseInt(startTime));
-                    let end = militaryTimeToMinutes(parseInt(endTime));
-                    if((start - end) % defaultDuration != 0) {
-                        $('#notMultipleOfDefaultDuration').modal();
-                        return false;
-                    } 
-                    return true;
-            }
-            return false;
-        }
-
-        function validInput() {
-            let quarter = document.getElementById("quarter").value;
-            let room = document.getElementById("room").value;
-            let validTime = validTimeSlot();
-            if(quarter == '' || room == '' || !validTime) {
-                if(validTime) {
-                    $('#blankField').modal();
-                    return false;
-                } 
-                return false;
-                
-            }
-            return true;
-        }
-        
-        var raExists = /*[[${raExists}]]*/false;
-        
-        if (raExists) {
-            var raDay = /*[[${raDay}]]*/"Monday";
-            document.getElementById("dropdownMenuButton").textContent = raDay;
-            $("#save").click(e => {
-                if(validInput()) {
-                    $.ajax({
-                        url: "/roomAvailability/save",
-                        method: "PUT",
-                        data: {
-                            id: /*[[${raID}]]*/0,
-                            quarter: document.getElementById("quarter").value,
-                            day: document.getElementById("dropdownMenuButton").textContent,
-                            start: document.getElementById("start").value,
-                            end: document.getElementById("end").value,
-                            room: document.getElementById("room").value,
-                            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-                        },
-                    }).done(function () {
-                        console.log("saved");
-                        window.location.href = "/roomAvailability";
-                    }).fail(function (jqXHR, textStatus) {
-                        console.log(jqXHR.responseText);
-                    })
-                }
-
-            });
-        } else {
-            document.getElementById("dropdownMenuButton").textContent = "Monday";
-            $("#save").click(e => {
-                if(validInput()) {
-                    $.ajax({
-                        url: "/roomAvailability/create",
-                        method: "POST",
-                        data: {
-                            quarter: document.getElementById("quarter").value,
-                            day: document.getElementById("dropdownMenuButton").textContent,
-                            start: document.getElementById("start").value,
-                            end: document.getElementById("end").value,
-                            room: document.getElementById("room").value,
-                            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-                        },
-                    }).done(function () {
-                        console.log("saved");
-                        window.location.href = "/roomAvailability";
-                    }).fail(function (jqXHR, textStatus) {
-                        console.log(jqXHR.responseText);
-                    })
-                }
-            });
-        }
-        
-        /*]]>*/
-    </script>
+    /*]]>*/
+  </script>
 </body>
 
 </html>

@@ -1,8 +1,13 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -33,6 +38,8 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class TutorController {
@@ -128,5 +135,27 @@ public class TutorController {
         tutorRepository.save(tutor);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/tutors/tutors.csv")
+    public void exportCSV(HttpServletResponse response) throws Exception {
+
+        //set file name and content type
+        String filename = "tutors.csv";
+
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
+
+        //create a csv writer
+        StatefulBeanToCsv<Tutor> writer = new StatefulBeanToCsvBuilder<Tutor>(response.getWriter())
+                .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
+                .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+                .withOrderedResults(false)
+                .build();
+
+        //write all users to csv file
+        writer.write(tutorRepository.findAll().iterator());
+
     }
 }
