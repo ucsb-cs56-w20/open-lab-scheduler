@@ -44,39 +44,7 @@
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
-  <!-- <script th:inline="javascript">
-    /*<![CDATA[*/
-    $(".timeSlotAssignmentCheckBox").click(e => {
-      e.preventDefault()
-      e.stopImmediatePropagation()
-
-      if (e.target.checked) {
-        $.ajax({
-          url: "/tutorSignUp/add",
-          method: "POST",
-          data: {
-            tid: e.target.dataset.tid,
-            sid: e.target.dataset.sid,
-            cid: e.target.dataset.cid,
-            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-          },
-        }).then(() => {
-          e.target.checked = true
-        })
-      } else {
-        $.ajax({
-          url: `/tutorSignUp/${e.target.dataset.sid}/${e.target.dataset.tid}/${e.target.dataset.cid}`,
-          method: "DELETE",
-          data: {
-            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-          },
-        }).then(() => {
-          e.target.checked = false
-        })
-      }
-    })
-    /*]]>*/
-  </script> -->
+  
 </body>
 
 </html>
