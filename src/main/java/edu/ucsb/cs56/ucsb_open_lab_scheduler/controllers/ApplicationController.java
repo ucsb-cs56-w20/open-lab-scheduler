@@ -34,10 +34,10 @@ public class ApplicationController{
     @GetMapping("/")
     public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
-        if(role.equals("NotDomain")){
-            redirAttrs.addFlashAttribute("alertDanger", "Warning: Guests have limited access to this website. Please log in with a @ucsb.edu email.");
-        }
-        
+        // if(role.equals("NotDomain")){
+        //     redirAttrs.addFlashAttribute("alertDanger", "Warning: Guests have limited access to this website. Please log in with a @ucsb.edu email.");
+        // }
+
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index"; // returns a view to display
     }
