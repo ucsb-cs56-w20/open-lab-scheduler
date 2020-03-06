@@ -20,6 +20,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityReposi
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotAssignmentRepository;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
@@ -51,6 +52,9 @@ public class HomePageTest {
 
     @MockBean
     private TutorAssignmentRepository tut;
+
+    @MockBean
+    private TimeSlotAssignmentRepository tsar;
 
     @Test
     public void getHomePage_ContentType() throws Exception {
