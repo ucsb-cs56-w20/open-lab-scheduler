@@ -35,6 +35,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
+<<<<<<< HEAD
 import com.opencsv.CSVWriter;
 import javax.servlet.http.HttpServletResponse;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
@@ -43,6 +44,8 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import org.springframework.http.HttpHeaders;
 
 
+=======
+>>>>>>> sw-adding the function of downloading csv of tutors for instructors
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
@@ -63,7 +66,6 @@ public class InstructorMenuController {
 
     @Autowired
     private TutorAssignmentRepository tutorAssignmentRepository;
-        
 
     
     private Comparator<CourseOffering> byYear=(c1,c2)->Integer.compare(Integer.parseInt(c2.getQuarter().substring(1,3)), Integer.parseInt(c1.getQuarter().substring(1,3)));
@@ -84,7 +86,7 @@ public class InstructorMenuController {
 
     @GetMapping("/instructorMenu/{id}")
     public String getTutor(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
-                           RedirectAttributes redirAttrs){
+            RedirectAttributes redirAttrs) {
         if (!authControllerAdvice.getIsInstructor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
@@ -119,5 +121,4 @@ public class InstructorMenuController {
         //model.addAttribute("currentInstructorCourse", tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
         return "redirect:/instructorMenu/instructorMenu";
     }
-
 }
