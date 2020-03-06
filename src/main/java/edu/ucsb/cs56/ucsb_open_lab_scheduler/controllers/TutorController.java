@@ -53,7 +53,7 @@ public class TutorController {
     @GetMapping("/tutors")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!(role.equals("Admin"))) {
+        if (!(role.equals("Admin")) && !(role.equals("Instructor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -84,7 +84,7 @@ public class TutorController {
     @PostMapping("/tutors/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!(role.equals("Admin"))) {
+        if (!(role.equals("Admin")) && !(role.equals("Instructor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -104,7 +104,7 @@ public class TutorController {
     @PostMapping("/tutors/active")
     public ResponseEntity<?> setActive(@RequestParam("tid") long tid, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!role.equals("Admin") && !role.equals("Instructor")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -119,7 +119,7 @@ public class TutorController {
     @DeleteMapping("/tutors/{tid}")
     public ResponseEntity<?> setInactive(@PathVariable("tid") long tid, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!role.equals("Admin") && !role.equals("Instructor")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 

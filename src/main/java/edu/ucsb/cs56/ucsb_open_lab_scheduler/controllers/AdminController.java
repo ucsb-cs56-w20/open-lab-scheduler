@@ -50,6 +50,7 @@ public class AdminController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+
         addOGAdmins();
         model.addAttribute("admins", adminRepository.findAll());
         model.addAttribute("newAdmin", new Admin());
