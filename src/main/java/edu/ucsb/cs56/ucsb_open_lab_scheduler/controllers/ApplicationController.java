@@ -54,8 +54,12 @@ public class ApplicationController{
 
     @GetMapping("/display")
     public String home(Model model, courseSchedule courseSchedule) {
-        String s = courseSchedule.getQuarter() + " " + courseSchedule.getCourseId();
-        return s;
+        String q = courseSchedule.getQuarter();
+        String c = courseSchedule.getCourseId();
+        model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
+        model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
+        model.addAttribute("courseOfferingModel", courseOfferingRepository.findByQuarterAndCourseId(q,c));
+        return "display";
     }
 }
 
