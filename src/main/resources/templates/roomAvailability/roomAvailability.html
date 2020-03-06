@@ -51,12 +51,12 @@ W20,Friday,1500,1700,Phelps 2510
               <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
               <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
               <td th:text="${ra.room}"></td>
-              <td><button type="button" class="edit" th:attr="data-raid=${ra.getId()}">Edit</button></td>
-              <td><button type="button" class="delete" th:attr="data-raid=${ra.getId()}">Delete</button></td>
+              <td><button type="button" class="btn btn-secondary edit" th:attr="data-raid=${ra.getId()}"><i class="far fa-edit"></i></button></td>
+              <td><button type="button" class="btn btn-danger delete" th:attr="data-raid=${ra.getId()}"><i class="fas fa-trash-alt"></i></button></td>
             </tr>
           </tbody>
         </table>
-        <button onclick="window.location.href = '/roomAvailability/new';">Create a New Entry</button>
+        <button class="btn btn-primary" onclick="window.location.href = '/roomAvailability/new';">Create a New Entry</button>
 
       </div>
     </div>
