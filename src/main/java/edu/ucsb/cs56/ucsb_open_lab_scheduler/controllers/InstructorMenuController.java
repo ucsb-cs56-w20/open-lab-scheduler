@@ -113,7 +113,7 @@ public class InstructorMenuController {
                 .findByCourseOffering(courseOffering.get());
 
         TutorlistToCSV.writeCSV(response.getWriter(), tutorassignment);
-        model.addAttribute("currentInstructorCourse", tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
+        //model.addAttribute("currentInstructorCourse", tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
     }
 
 }
