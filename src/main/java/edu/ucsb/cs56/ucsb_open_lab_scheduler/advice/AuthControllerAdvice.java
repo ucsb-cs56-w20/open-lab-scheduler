@@ -6,6 +6,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.UserRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.MembershipService;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
