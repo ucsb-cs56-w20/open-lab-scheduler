@@ -15,9 +15,12 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @Entity
 public class RoomAvailability{
+    private static Logger logger = LoggerFactory.getLogger(RoomAvailability.class);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -88,6 +91,7 @@ public class RoomAvailability{
     }
 
     public long getId() {
+        logger.info("IN GET ID, ABOUT TO RETURN "+id);
         return id;
     }
 
