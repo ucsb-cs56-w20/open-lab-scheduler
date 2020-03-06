@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,11 +24,14 @@ public class CSVDownloadController {
 
     @GetMapping("/usersCSV")
     public void downloadCSV(HttpServletResponse response) throws IOException{
+        String filename = "Users.csv";
+
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; file=tutors.csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + filename + "\"");
 
-        List<User> tutors =  (List<User>) userRepository.findAll();
+        List<User> users =  (List<User>) userRepository.findAll();
 
-        UsersToCSV.writeTutors(response.getWriter(), tutors);
+        UsersToCSV.writeUsers(response.getWriter(), users);
     }
 }
