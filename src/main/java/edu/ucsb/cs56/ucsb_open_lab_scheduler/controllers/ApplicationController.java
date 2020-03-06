@@ -36,7 +36,6 @@ public class ApplicationController{
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         if(role.equals("NotDomain")){
             redirAttrs.addFlashAttribute("alertDanger", "Warning: Guests have limited access to this website. Please log in with a @ucsb.edu email.");
-            return "login";
         }
         
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
