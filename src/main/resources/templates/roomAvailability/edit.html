@@ -91,19 +91,11 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-<<<<<<< HEAD
         </div>
         <div class="modal-body">
           Time slot must be a multiple of the default duration
           <span th:text=${defaultDuration}></span>
         </div>
-=======
-        </div>
-        <div class="modal-body">
-          Time slot must be a multiple of the default duration
-          <span th:text=${defaultDuration}></span>
-        </div>
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
         </div>
@@ -160,11 +152,7 @@
   <script th:inline="javascript">
 
     $(".dropdown-item").click(e => {
-<<<<<<< HEAD
       document.getElementById("day").textContent = e.target.textContent;
-=======
-      document.getElementById("dropdownMenuButton").textContent = e.target.textContent;
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
     })
     /*<![CDATA[*/
 
@@ -173,15 +161,9 @@
       minutes *= 60;
       minutes += time % 100;
       return minutes;
-<<<<<<< HEAD
 
     }
 
-=======
-
-    }
-
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
     function validTime(time) {
       let intTime = parseInt(time);
       if (isNaN(intTime)) {
@@ -230,11 +212,7 @@
 
     if (raExists) {
       var raDay = /*[[${raDay}]]*/"Monday";
-<<<<<<< HEAD
       document.getElementById("day").textContent = raDay;
-=======
-      document.getElementById("dropdownMenuButton").textContent = raDay;
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
       $("#save").click(e => {
         if (validInput()) {
           $.ajax({
@@ -243,11 +221,7 @@
             data: {
               id: /*[[${raID}]]*/0,
               quarter: document.getElementById("quarter").value,
-<<<<<<< HEAD
               day: document.getElementById("day").textContent,
-=======
-              day: document.getElementById("dropdownMenuButton").textContent,
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
               start: document.getElementById("start").value,
               end: document.getElementById("end").value,
               room: document.getElementById("room").value,
@@ -263,11 +237,7 @@
 
       });
     } else {
-<<<<<<< HEAD
       document.getElementById("day").textContent = "Monday";
-=======
-      document.getElementById("dropdownMenuButton").textContent = "Monday";
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
       $("#save").click(e => {
         if (validInput()) {
           $.ajax({
@@ -275,11 +245,7 @@
             method: "POST",
             data: {
               quarter: document.getElementById("quarter").value,
-<<<<<<< HEAD
               day: document.getElementById("day").textContent,
-=======
-              day: document.getElementById("dropdownMenuButton").textContent,
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
               start: document.getElementById("start").value,
               end: document.getElementById("end").value,
               room: document.getElementById("room").value,
