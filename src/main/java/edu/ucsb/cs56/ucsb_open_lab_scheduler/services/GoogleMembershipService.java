@@ -70,7 +70,6 @@ public class GoogleMembershipService implements MembershipService {
      * @param roleToTest "member" or "admin"
      * @return if the current logged in user has that role
      */
-
     public boolean hasRole(OAuth2AuthenticationToken oauthToken, String roleToTest) {
 
         logger.info("adminEmails=[" + adminEmails + "]");
@@ -89,6 +88,7 @@ public class GoogleMembershipService implements MembershipService {
         OAuth2User oAuth2User = oauthToken.getPrincipal();
 
         String email = (String) oAuth2User.getAttributes().get("email");
+
         // hd is the domain of the email, e.g. ucsb.edu
         String hostedDomain = (String) oAuth2User.getAttributes().get("hd");
 

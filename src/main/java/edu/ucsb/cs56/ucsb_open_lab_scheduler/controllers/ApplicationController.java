@@ -32,12 +32,12 @@ public class ApplicationController{
     }
 
     @GetMapping("/")
-    public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken, RedirectAttributes redirAttrs) {
+    public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         // if(role.equals("NotDomain")){
         //     // redirAttrs.addFlashAttribute("alertDanger", "Warning: Guests have limited access to this website. Please log in with a @ucsb.edu email.");
         // }
-
+        
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index"; // returns a view to display
     }
@@ -46,11 +46,6 @@ public class ApplicationController{
     public String getLoginPage(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         Map<String, String> urls = new HashMap<>();
-
-        // if (role.equals("NotDomain")) {
-        //     // redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-        //     return "error"; // custom error page prompting user to relog in
-        // }
         
         // get around an unfortunate limitation of the API
         @SuppressWarnings("unchecked") Iterable<ClientRegistration> iterable = ((Iterable<ClientRegistration>) clientRegistrationRepository);

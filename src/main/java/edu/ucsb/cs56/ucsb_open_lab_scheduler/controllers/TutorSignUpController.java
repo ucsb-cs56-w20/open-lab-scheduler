@@ -74,6 +74,7 @@ public class TutorSignUpController{
         redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
         return "redirect:/";
       }
+      
       List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
 
       List<CourseOffering> courseOfferings = new ArrayList<>();
