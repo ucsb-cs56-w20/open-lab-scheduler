@@ -50,8 +50,38 @@ public class TutorProfileController{
     }
   
     @GetMapping("/tutorProfile")
-    public String allCourses(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+    public String currentCourses(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
 
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Tutor")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+
+        Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
+        if (!tutor.isPresent()) {
+            redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
+            return "redirect:/";
+        }
+
+        List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutorAndCourseOfferingQuarter(tutor.get(), "W20");
+
+        List<CourseOffering> courseOfferings = new ArrayList<>();
+
+        for (TutorAssignment ta : tutorAssignments){
+            courseOfferings.add(ta.getCourseOffering());
+        }
+
+        List<TimeSlotAssignment> timeSlotAssignments = timeSlotAssignmentRepository.findByTutor(tutor.get());
+
+        model.addAttribute("CourseOfferings", courseOfferings);
+        // model.addAttribute("timeSlotAssignments", timeSlotAssignments);
+
+        return "tutorProfile/currentCourses";
+    }
+
+    @GetMapping("/tutorProfile/allCourses")
+    public String allCourses(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Tutor")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
@@ -77,7 +107,7 @@ public class TutorProfileController{
         model.addAttribute("CourseOfferings", courseOfferings);
         // model.addAttribute("timeSlotAssignments", timeSlotAssignments);
 
-        return "tutorProfile/allAssignedCourses";
+        return "tutorProfile/allCourses";
     }
 
 }
