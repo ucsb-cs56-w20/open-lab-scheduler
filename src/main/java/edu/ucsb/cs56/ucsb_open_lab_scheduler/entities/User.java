@@ -9,28 +9,41 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Admin {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotBlank
     private String email;
-
-    private boolean isPermanentAdmin = false;
-
-    public Admin() {
+    private String firstName;
+    private String lastName;
+    
+    public User() {
     }
-
-    public Admin(String email) {
+    
+    public User(String email, String firstName, String lastName) {
         this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
-    public Admin(String email, boolean status) {
-        this.email = email;
-        this.isPermanentAdmin = status;
-    }
+	public String getFirstName() {
+		return this.firstName;
+	}
 
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return this.lastName;
+	}
+    
+	public void setLastName(String lastName) {
+        this.lastName = lastName;
+	}
+    
     public void setId(long id) {
         this.id = id;
     }
@@ -46,13 +59,4 @@ public class Admin {
     public String getEmail() {
         return email;
     }
-
-    public boolean getIsPermanentAdmin() {
-        return isPermanentAdmin;
-    }
-
-    public void setIsPermanentAdmin(boolean status) {
-        isPermanentAdmin = status;
-    }
-
 }
