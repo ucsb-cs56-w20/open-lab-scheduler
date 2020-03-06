@@ -7,6 +7,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.RoomAvailabilityDownloadCSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,6 @@ import java.util.List;
 
 import com.opencsv.CSVWriter;
 import javax.servlet.http.HttpServletResponse;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import org.springframework.http.HttpHeaders;
 
 @Controller
@@ -71,30 +69,19 @@ public class RoomAvailabilityController {
 
 
     @GetMapping("/roomAvailability/export-CSV")
-    public void exportCSV(HttpServletResponse response) throws Exception{
-        String[] header = {"quarter","day","startTime","endTime", "room"};
+    public String exportCSV(HttpServletResponse response, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) throws IOException{
+        String role = authControllerAdvice.getRole(token);
+        if (!(role.equals("Admin"))) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
         String filename = "roomAvailability.csv";
         response.setContentType("text/csv");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + filename + "\"");
-        CSVWriter CsvWriter = new CSVWriter(response.getWriter(),
-                        CSVWriter.DEFAULT_SEPARATOR,
-                        CSVWriter.NO_QUOTE_CHARACTER,
-                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                        CSVWriter.DEFAULT_LINE_END);
-        CsvWriter.writeNext(header);
         List<RoomAvailability> rooms = (List<RoomAvailability>)roomAvailabilityRepository.findAll();
-        for (RoomAvailability room: rooms){
-            String data[] = {
-                room.getQuarter(),
-                room.getDay(),
-                ((Integer)room.getStartTime()).toString(),
-                ((Integer)room.getEndTime()).toString(),
-                room.getRoom().toString()
-            };
-            CsvWriter.writeNext(data);
-        }
-
+        RoomAvailabilityDownloadCSV.writeRoomAvailability(response.getWriter(),rooms);
+        return "redirect:/roomAvailability";
     }
 
 
