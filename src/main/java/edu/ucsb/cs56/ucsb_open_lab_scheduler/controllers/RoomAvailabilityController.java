@@ -36,9 +36,6 @@ import java.util.List;
 
 import com.opencsv.CSVWriter;
 import javax.servlet.http.HttpServletResponse;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import org.springframework.http.HttpHeaders;
 
 @Controller
@@ -86,8 +83,6 @@ public class RoomAvailabilityController {
           RoomAvailabilityDownloadCSV.writeRoomAvailability(response.getWriter(),rooms);
           return "redirect:/roomAvailability";
       }
-
-
 
 
     @PostMapping("/roomAvailability/upload")
