@@ -1,5 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,14 +16,17 @@ public class Tutor{
     private long id;
 
     @CsvBindByPosition(position = 0)
+    @CsvBindByName
     @NotBlank(message = "Email is required")
     private String email;
 
     @CsvBindByPosition(position = 1)
+    @CsvBindByName
     @NotBlank(message = "Last name is required")
     private String lastName;
 
     @CsvBindByPosition(position = 2)
+    @CsvBindByName
     @NotBlank(message = "First name is required")
     private String firstName;
 

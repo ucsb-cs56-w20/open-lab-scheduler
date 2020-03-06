@@ -18,6 +18,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
+import java.util.Collections;
+import java.util.Comparator; 
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
@@ -50,6 +52,10 @@ public class InstructorMenuController {
     private TutorAssignmentRepository tutorAssignmentRepository;
         
 
+    
+    private Comparator<CourseOffering> byYear=(c1,c2)->Integer.compare(Integer.parseInt(c2.getQuarter().substring(1,3)), Integer.parseInt(c1.getQuarter().substring(1,3)));
+    private Comparator<CourseOffering> byFirstLetter=(c1,c2)->c1.getQuarter().compareTo(c2.getQuarter());
+    
     @GetMapping("/instructorMenu")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         if (!authControllerAdvice.getIsInstructor(token)) {
@@ -57,10 +63,11 @@ public class InstructorMenuController {
             return "redirect:/";
         }
 	
-        String email= (String) token.getPrincipal().getAttributes().get("email");
-
-        model.addAttribute("courses",courseOfferingRepository.findByInstructorEmail(email));
-        //model.addAttribute("email", email);
+	String email= (String) token.getPrincipal().getAttributes().get("email");
+	List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
+	Collections.sort(courseList,byYear.thenComparing(byFirstLetter));
+	model.addAttribute("courses",courseList);
+        
         return "instructorMenu/instructorMenu";
     }
 
@@ -78,6 +85,7 @@ public class InstructorMenuController {
 
         }
         model.addAttribute("tutors",tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
+        model.addAttribute("courseOffering", courseOffering.get());
         return "instructorMenu/getTutors";
     }
 
