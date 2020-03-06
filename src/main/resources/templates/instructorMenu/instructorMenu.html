@@ -22,8 +22,8 @@
 	  </thead>
           <tbody>
            <tr th:each="c: ${courses}">
-            <td><a th:href="'/instructorMenu/' + ${c.id}" th:text="${c.courseId}"> </a></td>
-            <td th:text="${c.quarter}"> </td>
+               <td><a th:href="'/instructorMenu/' + ${c.id}" th:text="${c.courseId}"> </a></td>
+               <td th:text="${c.quarter}"> </td>
                <td><a th:href="'/InstructorMenu/downloadCSV/' + ${c.id}" class="btn btn-primary"
                 >Download CSV<i class="fas fa-download"></i
                 ></a>

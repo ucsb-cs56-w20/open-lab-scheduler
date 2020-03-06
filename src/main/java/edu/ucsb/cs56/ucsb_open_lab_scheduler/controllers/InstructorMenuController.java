@@ -35,7 +35,6 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
-<<<<<<< HEAD
 import com.opencsv.CSVWriter;
 import javax.servlet.http.HttpServletResponse;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
@@ -44,8 +43,7 @@ import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import org.springframework.http.HttpHeaders;
 
 
-=======
->>>>>>> sw-adding the function of downloading csv of tutors for instructors
+
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
@@ -120,5 +118,6 @@ public class InstructorMenuController {
         TutorlistToCSV.writeCSV(response.getWriter(), tutorassignment);
         //model.addAttribute("currentInstructorCourse", tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
         return "redirect:/instructorMenu/instructorMenu";
+
     }
 }
