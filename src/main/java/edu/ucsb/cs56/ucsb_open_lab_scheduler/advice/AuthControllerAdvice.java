@@ -120,20 +120,21 @@ public class AuthControllerAdvice {
     }
 
     private void updateLoginTable(OAuth2AuthenticationToken token) {
-        if (token==null) return;
+        return;
+        // if (token==null) return;
         
-        String email = membershipService.email(token);
-        if (email == null) return;
+        // String email = membershipService.email(token);
+        // if (email == null) return;
 
-        List<User> appUsers = userRepository.findByEmail(email);
+        // List<User> appUsers = userRepository.findByEmail(email);
 
-        if (appUsers.size()==0) {
-            // No user with this email is in the AppUsers table yet, so add one
-            User u = new User();
-            u.setEmail(email);
-            u.setFirstName(membershipService.fname(token));
-            u.setLastName(membershipService.lname(token));
-            userRepository.save(u);
-        }
+        // if (appUsers.size()==0) {
+        //     // No user with this email is in the AppUsers table yet, so add one
+        //     User u = new User();
+        //     u.setEmail(email);
+        //     u.setFirstName(membershipService.fname(token));
+        //     u.setLastName(membershipService.lname(token));
+        //     userRepository.save(u);
+        // }
     }
 }
