@@ -120,11 +120,10 @@ public class AuthControllerAdvice {
     }
 
     private void updateLoginTable(OAuth2AuthenticationToken token) {
-        return;
-        // if (token==null) return;
+        if (token==null) return;
         
-        // String email = membershipService.email(token);
-        // if (email == null) return;
+        String email = membershipService.email(token);
+        if (email == null) return;
 
         // List<User> appUsers = userRepository.findByEmail(email);
 
@@ -136,5 +135,15 @@ public class AuthControllerAdvice {
         //     u.setLastName(membershipService.lname(token));
         //     userRepository.save(u);
         // }
+
+        Optional<User> user = userRepository.findByEmail(email);
+        if (!user.isPresent()) {
+            User u = new User();
+            u.setEmail(email);
+            u.setFirstName(membershipService.fname(token));
+            u.setLastName(membershipService.lname(token));
+            userRepository.save(u);
+        }
+        return;
     }
 }
