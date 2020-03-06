@@ -14,7 +14,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.AdminRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
 /**
@@ -38,9 +37,6 @@ public class GoogleMembershipService implements MembershipService {
     private AdminRepository adminRepository;
 
     @Autowired
-    private TutorRepository tutorRepository;
-    
-    @Autowired
     private CourseOfferingRepository courseOfferingRepository;
 
     /**
@@ -53,10 +49,6 @@ public class GoogleMembershipService implements MembershipService {
     /** is current logged in user a member of the google org */
     public boolean isAdmin(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         return hasRole(oAuth2AuthenticationToken, "admin");
-    }
-
-    public boolean isTutor(OAuth2AuthenticationToken oAuth2AuthenticationToken){
-        return hasRole(oAuth2AuthenticationToken, "tutor");
     }
 
     public boolean isInstructor(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
@@ -101,10 +93,6 @@ public class GoogleMembershipService implements MembershipService {
             return true;
         }
 
-        if (roleToTest.equals("tutor") && isTutorEmail(email)){
-            return true;
-        }
-
         if (roleToTest.equals("instructor") && isInstructorEmail(email)) {
             return true;
         }
@@ -137,10 +125,6 @@ public class GoogleMembershipService implements MembershipService {
     public String email(OAuth2AuthenticationToken token) {
         if(token==null) return "";
         return token.getPrincipal().getAttributes().get("email").toString();
-    }
-
-    private boolean isTutorEmail(String email) {
-        return (!tutorRepository.findByEmail(email).isEmpty());
     }
 
     private boolean isInstructorEmail(String email) {

@@ -5,7 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class TutorAssignment {
+public class TutorAssignment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

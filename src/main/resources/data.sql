@@ -33,3 +33,4 @@ INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,5);
 INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,6);
 INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,7);
 INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,8);
+
