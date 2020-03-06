@@ -21,10 +21,18 @@ import java.util.Optional;
 import java.util.Collections;
 import java.util.Comparator; 
 
+import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import org.springframework.http.HttpHeaders;
+
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
 import com.opencsv.CSVWriter;
@@ -40,9 +48,8 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
-
-
-
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.TutorlistToCSV;
 
 @Controller
 public class InstructorMenuController {
@@ -56,7 +63,6 @@ public class InstructorMenuController {
 
     @Autowired
     private TutorAssignmentRepository tutorAssignmentRepository;
-        
 
     
     private Comparator<CourseOffering> byYear=(c1,c2)->Integer.compare(Integer.parseInt(c2.getQuarter().substring(1,3)), Integer.parseInt(c1.getQuarter().substring(1,3)));
@@ -68,18 +74,18 @@ public class InstructorMenuController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-	
-	String email= (String) token.getPrincipal().getAttributes().get("email");
-	List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
-	Collections.sort(courseList,byYear.thenComparing(byFirstLetter));
-	model.addAttribute("courses",courseList);
-        
+
+        String email= (String) token.getPrincipal().getAttributes().get("email");
+        List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
+        Collections.sort(courseList,byYear.thenComparing(byFirstLetter));
+        model.addAttribute("courses",courseList);
+
         return "instructorMenu/instructorMenu";
     }
 
     @GetMapping("/instructorMenu/{id}")
     public String getTutor(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
-                           RedirectAttributes redirAttrs){
+            RedirectAttributes redirAttrs) {
         if (!authControllerAdvice.getIsInstructor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
@@ -94,30 +100,20 @@ public class InstructorMenuController {
         model.addAttribute("courseOffering", courseOffering.get());
         return "instructorMenu/getTutors";
     }
-    @GetMapping("/instructorMenu/export-CSV/{id}")
-    public void exportCSV(@PathVariable("id") long id,HttpServletResponse response) throws Exception{
+    @GetMapping("/InstructorMenu/downloadCSV/{id}")
+    public void exportCSV(@PathVariable long id, Model model, HttpServletResponse response, RedirectAttributes redirAttrs)
+            throws Exception {
         Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(id);
-        String[] header = {"firstName","lastName","email"};
-        String filename = "tutors.csv";
+        String[] header = { "Email", "Last Name", "First Name" };
+        String filename = "Tutors.csv";
         response.setContentType("text/csv");
-        response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + filename + "\"");
-        CSVWriter CsvWriter = new CSVWriter(response.getWriter(),
-                CSVWriter.DEFAULT_SEPARATOR,
-                CSVWriter.NO_QUOTE_CHARACTER,
-                CSVWriter.DEFAULT_ESCAPE_CHARACTER,
-                CSVWriter.DEFAULT_LINE_END);
-        CsvWriter.writeNext(header);
-        List<TutorAssignment> tutorAssignmentList = (List<TutorAssignment>)tutorAssignmentRepository.findByCourseOffering(courseOffering.get());
-        for (TutorAssignment tutorAssignment: tutorAssignmentList){
-            Tutor tutor=tutorAssignment.getTutor();
-            String data[] = {
-                    tutor.getFirstName(),
-                    tutor.getLastName(),
-                    tutor.getEmail()
-            };
-            CsvWriter.writeNext(data);
-        }
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
 
+        List<TutorAssignment> tutorassignment = (List<TutorAssignment>) tutorAssignmentRepository
+                .findByCourseOffering(courseOffering.get());
+
+        TutorlistToCSV.writeCSV(response.getWriter(), tutorassignment);
+        model.addAttribute("currentInstructorCourse", tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
     }
+
 }
