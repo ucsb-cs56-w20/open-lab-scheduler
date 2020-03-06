@@ -27,7 +27,7 @@
         <tbody>
           <tr th:each="a: ${admins}">
             <td th:text="${a.email}"></td>
-            <td>
+              <td>
               <form
                 th:action="@{/admin/delete/{id}(id=${a.id})}"
                 th:method="post"
@@ -37,9 +37,9 @@
                   th:name="${_csrf.parameterName}"
                   th:value="${_csrf.token}"
                 />
-                <button type="submit" class="btn btn-danger">Delete</button>
+                <button  th:if="${!a.isPermanentAdmin}" type="submit" class="btn btn-danger">Delete</button>
               </form>
-            </td>
+              </td>
           </tr>
         </tbody>
       </table>
