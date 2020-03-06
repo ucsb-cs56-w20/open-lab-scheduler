@@ -21,9 +21,9 @@
 	   </tr>
 	  </thead>
           <tbody>
-	    <tr th:each="c: ${courses}">
-	    <td th:text= "${c.courseId}"> </td>
-	    </tr>
+           <tr th:each="c: ${courses}">
+               <td><a th:href="'/instructorMenu/' + ${c.id}" th:text="${c.courseId}"> </a></td>
+           </tr>
           </tbody>
         </table>
 

@@ -31,14 +31,8 @@ public class ApplicationController{
         this.roomAvailabilityRepository = roomAvailabilityRepository;
     }
 
-    @GetMapping("/") // takes get request
-    public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken, RedirectAttributes redirAttrs){
-        String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
-        if(role.equals("NotDomain")){
-            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access this website. Please log in with a @ucsb.edu email.");
-            return "autoLogOut";
-        }
-
+    @GetMapping("/")
+    public String home(Model model) {
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index"; // returns a view to display
     }
@@ -66,4 +60,3 @@ public class ApplicationController{
         return "login"; // custom error page, placeholder for now
     }
 }
-
