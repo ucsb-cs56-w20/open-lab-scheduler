@@ -73,25 +73,6 @@ public class RoomAvailabilityController {
         try (Reader reader = new InputStreamReader(csv.getInputStream())) {
             List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
             roomAvailabilityRepository.saveAll(roomAvails);
-            List<TimeSlot> timeSlots = new ArrayList<>();
-            for ( RoomAvailability ra: roomAvails){
-                int start = ra.getStartTime();
-                int end = ra.getEndTime();
-                while ( start <= end-30){
-                    TimeSlot ts = new TimeSlot();
-                    ts.setRoomAvailability(ra);
-                    ts.setStartTime(start);
-                    if (start%100 >= 30){
-                        start += 70;
-                        ts.setEndTime(start);
-                    } else {
-                        start+=30;
-                        ts.setEndTime(start);
-                    }
-                    timeSlots.add(ts);
-                }
-            }
-            timeSlotRepository.saveAll(timeSlots);
         } catch (IOException e) {
             log.error(e.toString());
         }catch(RuntimeException a){
@@ -174,7 +155,6 @@ public class RoomAvailabilityController {
         if (!role.equals("Admin")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        
         roomAvailabilityRepository.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
