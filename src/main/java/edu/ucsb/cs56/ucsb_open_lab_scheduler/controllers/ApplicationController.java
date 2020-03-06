@@ -2,6 +2,7 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -18,21 +19,23 @@ import java.util.Map;
 public class ApplicationController{
     private final RoomAvailabilityRepository roomAvailabilityRepository;
     private final CourseOfferingRepository courseOfferingRepository;
+    private final TutorAssignmentRepository tutorAssignmentRepository;
 
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
-    public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository, CourseOfferingRepository courseOfferingRepository){
+    public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository, CourseOfferingRepository courseOfferingRepository,
+    TutorAssignmentRepository tutorAssignmentRepository){
         this.roomAvailabilityRepository = roomAvailabilityRepository;
         this.courseOfferingRepository = courseOfferingRepository;
+        this.tutorAssignmentRepository = tutorAssignmentRepository;
     }
 
 
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
-        model.addAttribute("courseOfferingModel", courseOfferingRepository.findAll());
         model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
         model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
         return "index";
@@ -58,7 +61,7 @@ public class ApplicationController{
         String c = courseSchedule.getCourseId();
         model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
         model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
-        model.addAttribute("courseOfferingModel", courseOfferingRepository.findByQuarterAndCourseId(q,c));
+        model.addAttribute("tutorAssignmentModel", tutorAssignmentRepository.findByCourseOffering(courseOfferingRepository.findByQuarterAndCourseId(q,c)));
         return "display";
     }
 }
