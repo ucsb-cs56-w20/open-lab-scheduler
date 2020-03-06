@@ -122,14 +122,12 @@ public class TimeSlotAssignmentController {
                     uniqueTimeSlots.add(arr);
                 } else {
                     uniqueTimeSlots.get(uniqueTimeSlots.size() - 1).add(tsa);
-                    logger.info("entered");
                 }
             }
         }
         for(int i = 0; i < uniqueTimeSlots.size(); i++) {
             java.util.Collections.sort(uniqueTimeSlots.get(i), byCourseOffering.thenComparing(byTutorLastName));
         }
-        logger.info(Integer.toString(uniqueTimeSlots.get(0).size()));
         model.addAttribute("uniqueTimeSlots", uniqueTimeSlots);
         model.addAttribute("quarter", quarter);
         return "timeSlotAssignment/search";
