@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorCheckIn;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorCheckInRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.ValidEmailService;
 
@@ -29,14 +30,14 @@ import org.slf4j.LoggerFactory;
 @Controller
 public class TutorCheckInController {
 
-    private Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private Logger logger = LoggerFactory.getLogger(TutorCheckIn.class);
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
 
     private TutorCheckInRepository tutorcheckinRepository;
 
-    @Value("${app.admin.email}")
+    // @Value("${app.admin.email}")
     private long timeSlotAssignmentId;
 
     @Autowired
