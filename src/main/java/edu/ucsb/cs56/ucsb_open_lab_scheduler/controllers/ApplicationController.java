@@ -35,8 +35,8 @@ public class ApplicationController{
     public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken, RedirectAttributes redirAttrs){
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
         if(role.equals("NotDomain")){
-            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access this website. Please log in with a @ucsb.edu email.");
-            return "autoLogOut";
+            redirAttrs.addFlashAttribute("alertDanger", "Warning: Guests have limited access to this website. Please log in with a @ucsb.edu email.");
+            return "redirect:/login";
         }
 
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
