@@ -31,8 +31,10 @@
         -->
           <form action="#" th:action="@{/display}" th:object="${courseSchedule}" method="get">
             <table>
-              <th><label for="quarter" class="col-form-label">Quarter</label></th>
-              <th><label for="courseId" class="col-form-label">Course</label></th>
+              <thead>
+              <td><label for="quarter" class="col-form-label">Quarter</label></td>
+              <td><label for="courseId" class="col-form-label">Course</label></td>
+              </thead>
               <tr class="form-group">
                 <select td:field="*{quarter}">
                   <option value="" th:disabled="disabled" th:selected="selected">
@@ -74,6 +76,24 @@
               <td th:text="${ra.room}"></td>
             </tr>
           </tbody>
+        </table>
+
+        <table class="table table-striped table-responsive-md">
+          <thead>
+            <tr>
+              <th>Day</th>
+              <th>Start Time</th>
+              <th>Course</th>
+              <th>Tutor</th>
+            </tr>
+          </thead>
+            <tr th:each="tsa : ${timeSlotAssignmentModel}">
+              <td th:text=${tsa.getTimeSlot().getRoomAvailability().getDay()}></td>
+              <td th:text=${tsa.getTimeSlot().getStartTime()}></td>
+              <!--<td th:text=${tsa.getCourseOffering().toString()}></td>-->
+              <td>CMPSC 16</td>
+              <td th:text=${tsa.getTutor().getLastName()}></td>
+            </tr>
         </table>
 
       </div>

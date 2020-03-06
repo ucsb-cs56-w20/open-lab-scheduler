@@ -16,5 +16,5 @@ import org.springframework.stereotype.Repository;
 public interface TimeSlotAssignmentRepository extends CrudRepository<TimeSlotAssignment, Long> {
     
     List<TimeSlotAssignment> findByTutorAndCourseOffering(Tutor tutor, CourseOffering courseOffering);
+    List<TimeSlotAssignment> findByCourseOffering(CourseOffering courseOffering);
 }
-
