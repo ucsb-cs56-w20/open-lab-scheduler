@@ -10,7 +10,7 @@ import java.util.List;
 public class UsersToCSV {
     private static Logger logger = LoggerFactory.getLogger(UsersToCSV.class);
     public static void writeTutors(PrintWriter writer, List<User> users) {
-        String[] CSV_HEADER = {"id", "firstname", "lastname", "email"};
+        String[] CSV_HEADER = {"id", "first name", "last name", "email"};
         try (
                 CSVWriter csvWriter = new CSVWriter(writer,
                         CSVWriter.DEFAULT_SEPARATOR,
