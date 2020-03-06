@@ -51,6 +51,11 @@
           Tutor Assignment
         </a>
       </li>
+      <li th:if="${isAdmin}" class="nav-item ">
+        <a class="nav-link" href="/quarter" id="navbarDropdown" role="button">
+          Quarters
+        </a>
+      </li>
       <li th:if="${isInstructor}" class="nav-item ">
         <a
           class="nav-link"
@@ -58,6 +63,7 @@
           id="navbarDropdown"
           role="button"
         >
+
           My Courses
         </a>
       </li>
