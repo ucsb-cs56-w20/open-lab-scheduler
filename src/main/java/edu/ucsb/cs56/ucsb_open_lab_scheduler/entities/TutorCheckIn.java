@@ -30,6 +30,12 @@ public class TutorCheckIn {
         this.timeSlotAssignmentId = timeSlotAssignmentId;
     }
 
+    public TutorCheckIn(long timeSlotAssignmentId, String date, String remarks) {
+        this.timeSlotAssignmentId = timeSlotAssignmentId;
+        this.date = date;
+        this.remarks = remarks;
+    }
+
     public void setId(long timeSlotAssignmentId) {
         this.timeSlotAssignmentId = timeSlotAssignmentId;
     }
