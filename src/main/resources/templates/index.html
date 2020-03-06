@@ -38,7 +38,7 @@
                   <option value="" th:disabled="disabled" th:selected="selected">
                     Choose A Quarter
                 </option>
-                  <option td:each="q : ${uniqueQuartersModel}" th:value="${q}"th:text="${q}"></option>
+                  <option th:each="q : ${uniqueQuartersModel}" th:value="${q}"th:text="${q}"></option>
                 </select>
                 </tr>
                 <tr class="form-group">
@@ -46,7 +46,8 @@
                   <option value="" th:disabled="disabled" th:selected="selected">
                     Choose A Course
                 </option>
-                  <option td:each="co : ${uniqueCourseOfferingModel}" th:value="${co}"th:text="${co}"></option>
+                  <option th:each="co : ${uniqueCourseOfferingModel}" th:value="${co}"th:text="${co}"> 
+                 </option>
                 </select>
               </tr>
             </table>

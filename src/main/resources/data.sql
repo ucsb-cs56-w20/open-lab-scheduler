@@ -1,6 +1,9 @@
 INSERT INTO room(name) VALUES ('PHELPS 2510');
 INSERT INTO room(name) VALUES ('PHELPS 3526');
 INSERT INTO room(name) VALUES ('PHELPS 3525');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '800', '900', 'W', '1');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '1100', '1215', 'T', '2');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '1200', '1200', 'M', '3');
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 16','F19','Mirza', 'mirza@ucsb.edu');
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 160','F19','Ding', 'ding@ucsb.edu');
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 130A','W20','Koc', 'koc@ucsb.edu');
@@ -11,9 +14,6 @@ INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assi
 INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('Kate','Perkins','kateperkins@example.org', 1,0);
 INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('George','Kripac','Georgekripac@example.org', 1,0);
 INSERT INTO tutor_assignment(course_offering_id, tutor_id, is_course_lead) VALUES (1, 1, 0);
-INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '800', '900', 'W', '1');
-INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '1100', '1230', 'T', '2');
-INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '1200', '1500', 'M', '3');
 INSERT INTO time_slot(room_availability_id, start_time, duration) VALUES ('1', '800', '30');
 INSERT INTO time_slot(room_availability_id, start_time, duration) VALUES ('1', '830', '30');
 INSERT INTO time_slot(room_availability_id, start_time, duration) VALUES ('2', '1100', '30');
