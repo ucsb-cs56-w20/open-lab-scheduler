@@ -56,7 +56,7 @@ public class TimeSlotAssignment{
         return tutor;
     }
 
-    public CourseOffering getCourseOffering(){
+    public CourseOffering getCourseOffering() {
         return courseOffering;
     }
 

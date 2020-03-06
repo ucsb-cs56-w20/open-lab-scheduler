@@ -28,9 +28,5 @@ public interface TimeSlotAssignmentRepository extends CrudRepository<TimeSlotAss
     @Transactional
     void deleteByTimeSlotIdAndTutorId(long timeSlotId, long tutorId);
 
-<<<<<<< HEAD
-=======
-    List<TimeSlotAssignment> findByCourseOffering(CourseOffering courseOffering);
->>>>>>> bq - fixed search page html bug, tested & confimed table functionality
 }
 

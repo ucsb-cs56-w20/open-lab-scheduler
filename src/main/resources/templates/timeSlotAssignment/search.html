@@ -21,22 +21,40 @@
               <th>Day</th>
               <th>Start Time</th>
               <th>End Time</th>
+              <th>Tutor Count</th>
             </tr>
           </thead>
           <tbody>
-            
+
             <tr th:each="tsa : ${uniqueTimeSlots}">
-              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getRoom().getName()}"></td>
-              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getDay()}"></td>
-              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime())}"></td>
-              <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getEndTime())}"></td>
+              <td th:text="${tsa.get(0).getTimeSlot().getRoomAvailability().getRoom().getName()}"></td>
+              <td th:text="${tsa.get(0).getTimeSlot().getRoomAvailability().getDay()}"></td>
+              <td
+                th:text="${tsa.get(0).getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.get(0).getTimeSlot().getStartTime())}">
+              </td>
+              <td
+                th:text="${tsa.get(0).getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.get(0).getTimeSlot().getEndTime())}">
+              </td>
+              <td th:text="${tsa.size()}"></td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Tutor List</button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <span th:each="tutor, iStat: ${tsa}" class="dropdown-item-text">
+                      <div th:if="${iStat.index != 0}" class="dropdown-divider"></div>
+                      <h5 th:text="${tutor.getCourseOffering().getCourseId()}"></h5>
+                      <p th:text="${tutor.getTutor().getFullName()}"></p>
+                    </span>
+                  </div>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
 
       </div>
     </div>
-
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
@@ -46,6 +64,9 @@
     let header = document.getElementById("header");
     header.textContent = "Time Slot Assignments for " + quarter;
     /*]]>*/
+    $(document).on('click', '.dropdown-menu', function (e) {
+      e.stopPropagation();
+    });
   </script>
 </body>
 

@@ -33,16 +33,16 @@ INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VAL
 INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VALUES (3,5,2);
 INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VALUES (3,6,2);
 
-<<<<<<< HEAD
-=======
 INSERt INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', 1000, 1200, 'Monday', 1);
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', 1000, 1200, 'Monday', 1);
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', 1000, 1200, 'Monday', 2);
 
 INSERT INTO time_slot (room_availability_id, start_time, end_time) VALUES (1, 1000, 1200);
+INSERT INTO time_slot (room_availability_id, start_time, end_time) VALUES (2, 1000, 1200);
 
+INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 4, 4);
+INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
+INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 2, 3);
+INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 3, 4);
+INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (2, 4, 3);
 
-INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
-INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
-INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
-INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
-
->>>>>>> bq - fixed search page html bug, tested & confimed table functionality
