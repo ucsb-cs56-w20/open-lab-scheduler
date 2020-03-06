@@ -1,12 +1,13 @@
 
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -17,15 +18,14 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorCheckIn;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorCheckInRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.ValidEmailService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 import javax.validation.Valid;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Controller
 public class TutorCheckInController {
@@ -50,6 +50,7 @@ public class TutorCheckInController {
             tutorcheckinRepository.save(new TutorCheckIn());
         }
     }
+
 
 
 

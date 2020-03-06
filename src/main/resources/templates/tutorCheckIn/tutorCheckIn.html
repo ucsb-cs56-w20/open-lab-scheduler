@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+  <head>
+    <div th:replace="bootstrap/title.html"></div>
+    <div th:replace="bootstrap/bootstrap_head.html"></div>
+  </head>
+
+  <body>
+    <div class="container">
+      <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="my-5">Tutor Check In</h2>
+          <!-- <table class="table table-striped table-responsive-md">
+            <thead>
+              <tr>
+                <th>Course</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="courseOffering : ${courseOffering}">
+                <td
+                  th:text="${courseOffering.getQuarter() + ' ' + courseOffering.getCourseId()}"
+                ></td>
+                <td>
+                  <a
+                    th:href="'/tutorSignUp/courseSelect/' + ${courseOffering.id}"
+                    >Manage</a
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table> -->
+
+          <form action="#" th:action="@{/checkin/remarks}" th:object="${Remarks}" method="get">
+            <table>
+              <tr class="form-group">
+                <th><label for="id" class="col-form-label">ID</label></th>
+                <td><input type="number" th:field="*{id}" class="form-control" id="id"></td>
+              </tr>
+              <tr class="form-group">
+                <th><label for="date" class="col-form-label">Date</label></th>
+                <td><input type="number" th:field="*{date}" class="form-control" id="date"></td>
+              </tr>
+              <tr class="form-group">
+                <th><label for="remarks" class="col-form-label">Remarks</label></th>
+                <td><input type="number" th:field="*{remarks}" class="form-control" id="remarks"></td>
+              </tr>
+            </table>
+      
+            <input type="submit" class="btn btn-primary" value="Enters">
+          </form>
+
+        </div>
+      </div>
+
+      <div th:replace="bootstrap/bootstrap_footer.html"></div>
+    </div>
+    <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  </body>
+</html>
