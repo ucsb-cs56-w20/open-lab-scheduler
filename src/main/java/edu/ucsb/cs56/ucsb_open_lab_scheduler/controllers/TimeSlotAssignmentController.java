@@ -91,6 +91,20 @@ public class TimeSlotAssignmentController {
             timeSlots.addAll(timeSlotAssignmentRepository.findByCourseOffering(course));
         }
         java.util.Collections.sort(timeSlots, byRoom.thenComparing(byDay).thenComparing(byTime));
+        List<TimeSlotAssignment> uniqueTimeSlots = new ArrayList<TimeSlotAssignment>();
+        for(TimeSlotAssignment tsa : timeSlots) {
+            if(uniqueTimeSlots.size() == 0) {
+                uniqueTimeSlots.add(tsa);
+            } else {
+                if(!(uniqueTimeSlots.get(uniqueTimeSlots.size() - 1).getTimeSlot().getRoomAvailability().getRoom() == tsa.getTimeSlot().getRoomAvailability().getRoom()
+                    && uniqueTimeSlots.get(uniqueTimeSlots.size() - 1).getTimeSlot().getRoomAvailability().getDay() == tsa.getTimeSlot().getRoomAvailability().getDay()
+                    && uniqueTimeSlots.get(uniqueTimeSlots.size() - 1).getTimeSlot().getStartTime() == tsa.getTimeSlot().getStartTime()
+                    && uniqueTimeSlots.get(uniqueTimeSlots.size() - 1).getTimeSlot().getEndTime() == tsa.getTimeSlot().getEndTime())) { //if not a duplicate in a table then add
+                        uniqueTimeSlots.add(tsa);
+                    }
+            }
+        }
+        model.addAttribute("uniqueTimeSlots", uniqueTimeSlots);
         model.addAttribute("TimeSlotAssignmentModel", timeSlots);
         model.addAttribute("quarter", quarter);
         return "timeSlotAssignment/search";

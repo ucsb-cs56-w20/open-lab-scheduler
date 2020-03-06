@@ -43,6 +43,7 @@ INSERT INTO time_slot (room_availability_id, start_time, end_time) VALUES (1, 10
 
 INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
 INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
-
+INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
+INSERT INTO time_slot_assignment(time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 3);
 
 >>>>>>> bq - fixed search page html bug, tested & confimed table functionality

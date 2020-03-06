@@ -25,7 +25,7 @@
           </thead>
           <tbody>
             
-            <tr th:each="tsa : ${TimeSlotAssignmentModel}">
+            <tr th:each="tsa : ${uniqueTimeSlots}">
               <td th:text="${tsa.getTimeSlot().getRoomAvailability().getRoom().getName()}"></td>
               <td th:text="${tsa.getTimeSlot().getRoomAvailability().getDay()}"></td>
               <td th:text="${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime())}"></td>
