@@ -26,7 +26,7 @@
           </thead>
           <tbody>
 
-            <tr th:each="tsa : ${uniqueTimeSlots}">
+            <tr th:each="tsa, i : ${uniqueTimeSlots}">
               <td th:text="${tsa.get(0).getTimeSlot().getRoomAvailability().getRoom().getName()}"></td>
               <td th:text="${tsa.get(0).getTimeSlot().getRoomAvailability().getDay()}"></td>
               <td
@@ -37,15 +37,28 @@
               </td>
               <td th:text="${tsa.size()}"></td>
               <td>
-                <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">Tutor List</button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <span th:each="tutor, iStat: ${tsa}" class="dropdown-item-text">
-                      <div th:if="${iStat.index != 0}" class="dropdown-divider"></div>
-                      <h5 th:text="${tutor.getCourseOffering().getCourseId()}"></h5>
-                      <p th:text="${tutor.getTutor().getFullName()}"></p>
-                    </span>
+                <button type="button" class="btn btn-secondary tutorInfo" th:attr="id=${i.index}">More Info</button>
+                <div class="modal fade" th:id="'modal' + ${i.index}" tabindex="-1" role="dialog"
+                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Tutor Info</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <span th:each="tutor, iStat: ${tsa}">
+                          <div th:if="${iStat.index != 0}" class="dropdown-divider"></div>
+                          <h5 th:text="${tutor.getCourseOffering().getCourseId()}"></h5>
+                          <p th:text="${tutor.getTutor().getFullName()}"></p>
+                        </span>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -57,6 +70,7 @@
     </div>
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
+
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
   <script th:inline="javascript">
     /*<![CDATA[*/
@@ -67,6 +81,11 @@
     $(document).on('click', '.dropdown-menu', function (e) {
       e.stopPropagation();
     });
+    $(".tutorInfo").click(e => {
+      let modalName = "#modal" + e.target.getAttribute("id");
+      console.log(modalName);
+      $(modalName).modal();
+    })
   </script>
 </body>
 
