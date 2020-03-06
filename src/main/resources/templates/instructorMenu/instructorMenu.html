@@ -17,13 +17,17 @@
 	   <tr>
 	    <th> Courses</th>
 	    <th> Quarter</th>
+
 	   </tr>
 	  </thead>
           <tbody>
            <tr th:each="c: ${courses}">
-            <td><a th:href="'/instructorMenu/' + ${c.id}" th:text="${c.courseId}"> </a></td>
-	    <td th:text="${c.quarter}"> </td>
-	    </tr>
+               <td><a th:href="'/instructorMenu/' + ${c.id}" th:text="${c.courseId}"> </a></td>
+               <td th:text="${c.quarter}"> </td>
+               <td><a th:href="'/instructorMenu/' + ${c.id}" th:text="${c.courseId}"> </a></td>
+               <td><a th:href="@{'/instructorMenu/export-CSV/' + ${c.id}}" class="btn btn-primary"
+               >export to CSV<i class="fas fa-download"></i></a></td>
+           </tr>
           </tbody>
         </table>
 
