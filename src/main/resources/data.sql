@@ -1,9 +1,10 @@
 INSERT INTO room(name) VALUES ('PHELPS 2510');
 INSERT INTO room(name) VALUES ('PHELPS 3526');
 INSERT INTO room(name) VALUES ('PHELPS 3525');
-INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '800', '900', 'W', '1');
-INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '1100', '1215', 'T', '2');
-INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '1200', '1200', 'M', '3');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('F19', '800', '930', 'W', '1');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('F19', '1000', '1030', 'W', '1');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '1100', '1130', 'T', '2');
+INSERT INTO room_availability(quarter, start_time, end_time, day, room_id) VALUES ('W20', '1200', '1239', 'M', '3');
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 16','F19','Mirza', 'mirza@ucsb.edu');
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 160','F19','Ding', 'ding@ucsb.edu');
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email) VALUES ('CMPSC 130A','W20','Koc', 'koc@ucsb.edu');

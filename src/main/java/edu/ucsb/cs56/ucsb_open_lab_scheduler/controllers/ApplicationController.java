@@ -64,7 +64,7 @@ public class ApplicationController{
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("quarter", "W20");
+        model.addAttribute("quarter", "F19");
         model.addAttribute("courseId", "CMPSC 16");
         model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
         model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
@@ -101,16 +101,6 @@ public class ApplicationController{
 
         model.addAttribute("urls", urls);
         return "login";
-    }
-
-    @GetMapping("/display")
-    public String home(Model model, CourseSchedule CourseSchedule) {
-        String q = CourseSchedule.getQuarter();
-        String c = CourseSchedule.getCourseId();
-        model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
-        model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
-        model.addAttribute("tutorAssignmentModel", tutorAssignmentRepository.findByCourseOffering(courseOfferingRepository.findByQuarterAndCourseId(q,c)));
-        return "display";
     }
 }
 
