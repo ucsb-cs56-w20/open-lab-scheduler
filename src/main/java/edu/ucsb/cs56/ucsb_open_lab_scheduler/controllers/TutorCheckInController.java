@@ -38,30 +38,30 @@ public class TutorCheckInController {
     private TutorCheckInRepository tutorcheckinRepository;
 
     // @Value("${app.admin.email}")
-    private long timeSlotAssignmentId;
+    // private long timeSlotAssignmentId;
 
     @Autowired
     public TutorCheckInController(TutorCheckInRepository repo) {
         this.tutorcheckinRepository = repo;
     }
 
-    @GetMapping("/tutorcheckin")
+    @GetMapping("/tutorCheckIn")
     public String tutorcheckin(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Tutor")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        addTutor();
+        // addTutor();
         model.addAttribute("tutors", tutorcheckinRepository.findAll());
         model.addAttribute("newTutor", new TutorCheckIn());
-        return "tutorcheckin/create";
+        return "tutorCheckIn/tutorCheckIn";
     }
-    private void addTutor() {
-        if (tutorcheckinRepository.findById(timeSlotAssignmentId).isEmpty()) {
-            tutorcheckinRepository.save(new TutorCheckIn());
-        }
-    }
+    // private void addTutor() {
+    //     if (tutorcheckinRepository.findById(timeSlotAssignmentId).isEmpty()) {
+    //         tutorcheckinRepository.save(new TutorCheckIn());
+    //     }
+    // }
 
 
 
