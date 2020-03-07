@@ -79,6 +79,7 @@ public class ApplicationController{
         Model model) {
         model.addAttribute("quarter", quarter);
         model.addAttribute("courseId", courseId);
+        model.addAttribute("CourseSchedule", new CourseSchedule());
         model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
         model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
         List<TimeSlotAssignment> timeSlotAssignments =  timeSlotAssignmentRepository.findByCourseOffering(
