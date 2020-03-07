@@ -40,7 +40,7 @@ import org.springframework.http.HttpHeaders;
 
 @Controller
 public class RoomAvailabilityController {
-    private static Logger log = LoggerFactory.getLogger(RoomAvailabilityController.class);
+    private static Logger logger = LoggerFactory.getLogger(RoomAvailabilityController.class);
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
@@ -63,7 +63,7 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("RoomAvailabilityModel", roomAvailabilityRepository.findAll());
+        model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "roomAvailability/roomAvailability";
     }
 
@@ -116,7 +116,7 @@ public class RoomAvailabilityController {
             }
             timeSlotRepository.saveAll(timeSlots);
         } catch (IOException e) {
-            log.error(e.toString());
+            logger.error(e.toString());
         } catch (RuntimeException a){
             redirAttrs.addFlashAttribute("alertDanger", "Please enter a correct csv file.");
             return "redirect:/roomAvailability";
@@ -138,12 +138,12 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/create")
-    public ResponseEntity<?> create(@RequestParam("quarter") String quarter, @RequestParam("day") String day,
+    public String create(@RequestParam("quarter") String quarter, @RequestParam("day") String day,
             @RequestParam("start") String start, @RequestParam("end") String end, @RequestParam("room") String room,
             OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return "index";
         }
 
         RoomAvailability roomAvailability = new RoomAvailability(quarter, Integer.parseInt(start),
@@ -151,16 +151,16 @@ public class RoomAvailabilityController {
 
         roomAvailabilityRepository.save(roomAvailability);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "redirect:/roomAvailability";
     }
 
-    @GetMapping("/roomAvailability/{id}/edit")
+    @GetMapping("/roomAvailability/edit/{id}")
     public String editEntry(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
             RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-            return "redirect:/";
+            return "index";
         }
 
         model.addAttribute("ra", roomAvailabilityRepository.findById(id));
@@ -172,12 +172,12 @@ public class RoomAvailabilityController {
     }
 
     @PutMapping("/roomAvailability/save")
-    public ResponseEntity<?> save(@RequestParam("id") String id, @RequestParam("quarter") String quarter,
+    public String save(@RequestParam("id") String id, @RequestParam("quarter") String quarter,
             @RequestParam("day") String day, @RequestParam("start") String start, @RequestParam("end") String end,
             @RequestParam("room") String room, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return "index";
         }
 
         RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id));
@@ -188,18 +188,24 @@ public class RoomAvailabilityController {
         ra.setRoom(new Room(room));
         roomAvailabilityRepository.save(ra);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "redirect:/roomAvailability";
     }
 
-    @DeleteMapping("/roomAvailability/{id}")
-    public ResponseEntity<?> deleteEntry(@PathVariable("id") long id, OAuth2AuthenticationToken token) {
+    @PostMapping("/roomAvailability/delete/{id}")
+    public String deleteEntry(@PathVariable("id") long id, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return "index";
         }
         
-        roomAvailabilityRepository.deleteById(id);
+        logger.info("feelsbadman");
+        List<TimeSlot> timeSlots= timeSlotRepository.findByRoomAvailabilityId(id);
+        if(!timeSlots.isEmpty()){
+            for(TimeSlot ts: timeSlots){
+                timeSlotRepository.deleteById(ts.getId());
+            }
+        }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "redirect:/roomAvailibity";
     }
 }
