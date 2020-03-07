@@ -11,7 +11,9 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.formbeans.courseSchedule;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.formbeans.CourseSchedule;
 import java.util.Comparator;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlotAssignment;
 import java.util.List;
@@ -64,16 +66,28 @@ public class ApplicationController{
 
     @GetMapping("/")
     public String home(Model model) {
-        String quarter = "W20";
-        String courseId = "CMPSC 16";
-        model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
+        model.addAttribute("quarter", "W20");
+        model.addAttribute("courseId", "CMPSC 16");
+        model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
+        model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
+        model.addAttribute("CourseSchedule", new CourseSchedule());
+        return "index";
+    }
+
+    @GetMapping("/results")
+    public String getSchedule(
+        @RequestParam(name="quarter", required = true) String quarter,
+        @RequestParam(name="courseId", required = true) String courseId,
+        Model model) {
+        model.addAttribute("quarter", quarter);
+        model.addAttribute("courseId", courseId);
         model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
         model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
         List<TimeSlotAssignment> timeSlotAssignments =  timeSlotAssignmentRepository.findByCourseOffering(
             courseOfferingRepository.findByQuarterAndCourseId(quarter, courseId));
         java.util.Collections.sort(timeSlotAssignments,sortByDay.thenComparing(sortByTimeSlot).thenComparing(sortByTutorLastName));
-        model.addAttribute("timeSlotAssignmentModel", timeSlotAssignments);
-        return "index";
+        model.addAttribute("timeSlotAssignments", timeSlotAssignments);
+        return "home/results";
     }
 
     @GetMapping("/login")
@@ -91,9 +105,9 @@ public class ApplicationController{
     }
 
     @GetMapping("/display")
-    public String home(Model model, courseSchedule courseSchedule) {
-        String q = courseSchedule.getQuarter();
-        String c = courseSchedule.getCourseId();
+    public String home(Model model, CourseSchedule CourseSchedule) {
+        String q = CourseSchedule.getQuarter();
+        String c = CourseSchedule.getCourseId();
         model.addAttribute("uniqueCourseOfferingModel", courseOfferingRepository.findAllUniqueCourses());
         model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
         model.addAttribute("tutorAssignmentModel", tutorAssignmentRepository.findByCourseOffering(courseOfferingRepository.findByQuarterAndCourseId(q,c)));
