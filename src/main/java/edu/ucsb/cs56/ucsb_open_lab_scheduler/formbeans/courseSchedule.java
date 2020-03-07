@@ -1,10 +1,10 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.formbeans;
 
-public class courseSchedule{
+public class CourseSchedule{
     private String courseId;
     private String quarter;
 
-    public courseSchedule(){
+    public CourseSchedule(){
         this.courseId = "";
         this.quarter = "";
     }
