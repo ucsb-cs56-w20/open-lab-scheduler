@@ -18,17 +18,17 @@
               <tr>
                 <th>Day</th>
                 <th>Start Time</th>
-                <th>Duration</th>
+                <th>End Time</th>
                 <th>Course</th>
                 <th>Tutor</th>
               </tr>
             </thead>
               <tr th:each="tsa : ${timeSlotAssignments}">
                 <td th:text=${tsa.getTimeSlot().getRoomAvailability().getDay()}></td>
-                <td th:text=${tsa.getTimeSlot().getStartTime()}></td>
-                <td th:text=${tsa.getTimeSlot().getDuration()}></td>
+                <td th:text=${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime())}></td>
+                <td th:text=${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getEndTime())}></td>
                 <td th:text=${courseId}></td>
-                <td th:text=${tsa.getTutor().getLastName()}></td>
+                <td th:text=${tsa.getTutor().getFullName()}></td>
               </tr>
           </table>
           

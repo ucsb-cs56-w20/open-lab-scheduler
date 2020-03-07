@@ -58,4 +58,8 @@ public class TimeSlot{
         return duration;
     }
 
+    public int getEndTime(){
+        return duration + startTime;
+    }
+
 }
