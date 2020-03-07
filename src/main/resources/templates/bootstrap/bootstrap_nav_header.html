@@ -11,6 +11,11 @@
           Tutor Sign-Up
         </a>
       </li>
+      <li th:if="${isTutor}" class="nav-item ">
+        <a class="nav-link" href="/tutorProfile" id="navbarDropdown" role="button">
+          Tutor Profile 
+        </a>
+      </li>
       <li th:if="${isAdmin}" class="nav-item ">
         <a
           class="nav-link"
