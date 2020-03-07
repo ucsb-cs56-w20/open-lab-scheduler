@@ -35,7 +35,7 @@ import java.util.List;
 
 @Controller
 public class RoomAvailabilityController {
-    private static Logger log = LoggerFactory.getLogger(RoomAvailabilityController.class);
+    private static Logger logger = LoggerFactory.getLogger(RoomAvailabilityController.class);
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
@@ -58,7 +58,7 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("RoomAvailabilityModel", roomAvailabilityRepository.findAll());
+        model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "roomAvailability/roomAvailability";
     }
 
@@ -93,7 +93,7 @@ public class RoomAvailabilityController {
             }
             timeSlotRepository.saveAll(timeSlots);
         } catch (IOException e) {
-            log.error(e.toString());
+            logger.error(e.toString());
         }catch(RuntimeException a){
             redirAttrs.addFlashAttribute("alertDanger", "Please enter the correct csv files.");
             return "redirect:/roomAvailability";
@@ -131,7 +131,7 @@ public class RoomAvailabilityController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/roomAvailability/{id}/edit")
+    @GetMapping("/roomAvailability/edit/{id}")
     public String editEntry(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
             RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
@@ -168,15 +168,21 @@ public class RoomAvailabilityController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/roomAvailability/{id}")
-    public ResponseEntity<?> deleteEntry(@PathVariable("id") long id, OAuth2AuthenticationToken token) {
+    @PostMapping("/roomAvailability/delete/{id}")
+    public String deleteEntry(@PathVariable("id") long id, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            return "index";
         }
-        
+        logger.info("feelsbadman");
+        List<TimeSlot> timeSlots= timeSlotRepository.findByRoomAvailabilityId(id);
+        if(!timeSlots.isEmpty()){
+            for(TimeSlot ts: timeSlots){
+                timeSlotRepository.deleteById(ts.getId());
+            }
+        }
         roomAvailabilityRepository.deleteById(id);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        logger.info("poggers");
+        return "redirect:/roomAvailability";
     }
 }
