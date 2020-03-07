@@ -94,8 +94,8 @@ public class RoomAvailabilityController {
             timeSlotRepository.saveAll(timeSlots);
         } catch (IOException e) {
             log.error(e.toString());
-        }catch(RuntimeException a){
-            redirAttrs.addFlashAttribute("alertDanger", "Please enter the correct csv files.");
+        } catch (RuntimeException a){
+            redirAttrs.addFlashAttribute("alertDanger", "Please enter a correct csv file.");
             return "redirect:/roomAvailability";
         }
         return "redirect:/roomAvailability";

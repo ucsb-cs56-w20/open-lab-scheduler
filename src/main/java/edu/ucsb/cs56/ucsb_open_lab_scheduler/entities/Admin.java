@@ -17,11 +17,18 @@ public class Admin {
     @NotBlank
     private String email;
 
+    private boolean isPermanentAdmin = false;
+
     public Admin() {
     }
 
     public Admin(String email) {
         this.email = email;
+    }
+
+    public Admin(String email, boolean status) {
+        this.email = email;
+        this.isPermanentAdmin = status;
     }
 
     public void setId(long id) {
@@ -38,6 +45,14 @@ public class Admin {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean getIsPermanentAdmin() {
+        return isPermanentAdmin;
+    }
+
+    public void setIsPermanentAdmin(boolean status) {
+        isPermanentAdmin = status;
     }
 
 }

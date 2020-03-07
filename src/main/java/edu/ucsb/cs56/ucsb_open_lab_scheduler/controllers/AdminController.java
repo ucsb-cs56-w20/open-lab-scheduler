@@ -107,7 +107,7 @@ public class AdminController {
     private void addOGAdmins() {
         authControllerAdvice.getAdminEmails().forEach((email) -> {
             if(adminRepository.findByEmail(email).isEmpty()) {
-                adminRepository.save(new Admin(email));
+                adminRepository.save(new Admin(email, true));
             }
         });
     }
