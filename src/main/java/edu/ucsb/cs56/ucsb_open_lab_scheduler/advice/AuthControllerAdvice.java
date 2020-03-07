@@ -105,6 +105,8 @@ public class AuthControllerAdvice {
     public String getRole(OAuth2AuthenticationToken token){
         if(getIsAdmin(token)){
             return "Admin";
+        }else if(getIsInstructor(token)) {
+            return "Instructor";
         }else if(getIsTutor(token)){
             return "Tutor";
         }else if(getIsMember(token)){
