@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Update Course Offering</title>
+        <div th:replace="bootstrap/bootstrap_head.html"></div>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+        <div class="container my-5">
+            <h2 class="mb-5">Update Course Offering</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="#" th:action="@{/courseOffering/update/{id}(id=${courseOffering.id})}" th:object="${courseOffering}" method="post">
+                        <div th:replace="courseOffering/form.html"></div>
+                        <div class="row">
+                            
+                            <div class="col-md-6 mt-5">
+                                <input type="submit" class="btn btn-primary" value="Update CourseOffering">
+                            </div>
+                            <div class="col-md-6 mt-5">
+                                <a href="/courseOffering" class="btn btn-danger">Cancel</a>
+                            </div>
+                        </div>    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

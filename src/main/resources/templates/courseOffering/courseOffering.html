@@ -38,6 +38,7 @@ CMPSC 48,F19,Richert Wang,richert@ucsb.edu
               <th>Instructor Name</th>
               <th>Instructor Email</th>
               <th> </th>
+              <th> </th>
             </tr>
           </thead>
           <tbody>
@@ -46,6 +47,11 @@ CMPSC 48,F19,Richert Wang,richert@ucsb.edu
               <td th:text="${co.quarter}"></td>
               <td th:text="${co.instructorName}"></td>
               <td th:text="${co.instructorEmail}"></td>
+              <td>
+                <form th:action="@{/courseOffering/edit/{id}(id=${co.id})}" th:method="get">
+                  <button type="submit" class="btn btn-success">Edit</button>
+                </form>
+              </td>
               <td>
                 <form th:action="@{/courseOffering/delete/{id}(id=${co.id})}" th:method="get">
                   <button type="submit" class="btn btn-danger">Delete</button>
