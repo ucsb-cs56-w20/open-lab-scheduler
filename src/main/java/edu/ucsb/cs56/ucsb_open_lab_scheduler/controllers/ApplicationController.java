@@ -1,9 +1,10 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotAssignmentRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -13,17 +14,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.formbeans.CourseSchedule;
-import java.util.Comparator;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlotAssignment;
-import java.util.List;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.formbeans.CourseSchedule;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotAssignmentRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class ApplicationController{
-    private final RoomAvailabilityRepository roomAvailabilityRepository;
     private final CourseOfferingRepository courseOfferingRepository;
     private final TutorAssignmentRepository tutorAssignmentRepository;
     private final TimeSlotAssignmentRepository timeSlotAssignmentRepository;
@@ -55,9 +54,8 @@ public class ApplicationController{
     }
 
     @Autowired
-    public ApplicationController(RoomAvailabilityRepository roomAvailabilityRepository, CourseOfferingRepository courseOfferingRepository,
+    public ApplicationController(CourseOfferingRepository courseOfferingRepository,
     TutorAssignmentRepository tutorAssignmentRepository, TimeSlotAssignmentRepository timeSlotAssignmentRepository){
-        this.roomAvailabilityRepository = roomAvailabilityRepository;
         this.courseOfferingRepository = courseOfferingRepository;
         this.tutorAssignmentRepository = tutorAssignmentRepository;
         this.timeSlotAssignmentRepository = timeSlotAssignmentRepository;
