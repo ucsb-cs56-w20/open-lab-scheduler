@@ -17,6 +17,7 @@ public interface TutorAssignmentRepository extends CrudRepository<TutorAssignmen
     List<TutorAssignment> findByCourseOfferingId(long courseOfferingId);
     List<TutorAssignment> findByTutorId(long tutorId);
     List<TutorAssignment> findByCourseOffering(CourseOffering courseOffering);
+    List<TutorAssignment> findByTutorAndCourseOfferingQuarter(Tutor tutor, String courseOfferingQuarter);
 
     @Transactional
     void deleteByCourseOfferingIdAndTutorId(long courseOfferingId, long tutorId);

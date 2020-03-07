@@ -31,7 +31,7 @@
               <td th:text="${slot.getRoomAvailability().getTime12HrFormat(slot.getEndTime())}"></td>
               <td>
                 <input class="timeSlotAssignmentCheckBox" type="checkbox" th:checked="${shouldBeChecked.test(slot)}"
-                  th:attr="data-tid=${tutor.id},data-sid=${slot.id}" />
+                  th:attr="data-tid=${tutor.id},data-sid=${slot.id},data-cid=${courseOffering.id}" />
               </td>
             </tr>
           </tbody>
@@ -55,6 +55,7 @@
           data: {
             tid: e.target.dataset.tid,
             sid: e.target.dataset.sid,
+            cid: e.target.dataset.cid,
             /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
           },
         }).then(() => {
@@ -62,7 +63,7 @@
         })
       } else {
         $.ajax({
-          url: `/tutorAssignment/${e.target.dataset.sid}/${e.target.dataset.tid}`,
+          url: `/tutorSignUp/${e.target.dataset.sid}/${e.target.dataset.tid}/${e.target.dataset.cid}`,
           method: "DELETE",
           data: {
             /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
