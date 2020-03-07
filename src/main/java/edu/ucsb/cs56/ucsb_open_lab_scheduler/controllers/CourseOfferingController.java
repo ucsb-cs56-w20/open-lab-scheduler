@@ -123,16 +123,6 @@ public class CourseOfferingController {
         return "courseOffering/create";
     }
 
-    public boolean checkIfCourseExists(Iterable<CourseOffering> iter, CourseOffering courseOffering){
-        boolean courseExists = false;
-        for(CourseOffering course : iter) {
-            if(courseOffering.equals(course)){
-                courseExists = true;
-            }
-        }
-        return courseExists;
-
-    }
 
     @PostMapping("/courseOffering/add")
     public String add(@Valid CourseOffering courseOffering, BindingResult result, Model model, RedirectAttributes redirAttrs, OAuth2AuthenticationToken token) {
@@ -143,13 +133,6 @@ public class CourseOfferingController {
         }
         if (result.hasErrors()) {
             return "courseOffering/create";
-        }
-        Iterable<CourseOffering> iter = courseOfferingRepository.findAll();
-        boolean courseExists = checkIfCourseExists(iter, courseOffering);
-        if(courseExists){
-            final String errorCourseExists = "Course already exists for this quarter";
-            model.addAttribute("errorCourseExists", errorCourseExists);
-            return "redirect:/courseOffering";
         }
         courseOfferingRepository.save(courseOffering);
         model.addAttribute("courseOffering", courseOfferingRepository.findAll());
