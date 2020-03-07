@@ -15,7 +15,7 @@
 
           <h2>Add New Entry</h2>
 
-          <div th:replace="tutorCheckinIn/entries"></div>
+          <div th:replace="tutorCheckIn/entries.html"></div>
 
           <h2>Past Entries</h2>
           <table class="table table-striped table-responsive-md">
@@ -26,6 +26,7 @@
                 <th>Remarks</th>
               </tr>
             </thead>
+          </table>
 <!--
             <tbody>
               <tr th:each="t: ${tutor}">

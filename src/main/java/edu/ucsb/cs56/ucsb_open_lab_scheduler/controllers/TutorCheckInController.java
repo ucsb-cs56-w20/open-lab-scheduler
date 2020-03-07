@@ -55,7 +55,7 @@ public class TutorCheckInController {
         // addTutor();
         model.addAttribute("tutors", tutorcheckinRepository.findAll());
         model.addAttribute("newTutor", new TutorCheckIn());
-        return "tutorCheckIn/tutorCheckIn";
+        return "/tutorCheckIn/tutorCheckIn";
     }
     // private void addTutor() {
     //     if (tutorcheckinRepository.findById(timeSlotAssignmentId).isEmpty()) {
