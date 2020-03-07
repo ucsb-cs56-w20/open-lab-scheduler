@@ -17,6 +17,7 @@
 
           <div th:replace="tutorCheckinIn/entries"></div>
 
+          <h2>Past Entries</h2>
           <table class="table table-striped table-responsive-md">
             <thead>
               <tr>
@@ -25,6 +26,16 @@
                 <th>Remarks</th>
               </tr>
             </thead>
+
+            <tbody>
+              <tr th:each="t: ${tutor}">
+                <td th:text="${t.id}"></td>
+                <td th:text="${t.date}"></td>
+                <td th:text="${t.remarks}"></td>
+              </tr>
+
+            </tbody>
+
             <!-- <tbody>
               <tr th:each="ra : ${RoomAvailabilityModel}">
                 <td th:text="${ra.quarter}"></td>
