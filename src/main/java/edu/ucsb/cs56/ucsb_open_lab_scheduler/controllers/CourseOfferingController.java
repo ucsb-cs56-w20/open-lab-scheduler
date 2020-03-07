@@ -164,7 +164,7 @@ public class CourseOfferingController {
         return "courseOffering/update";
     }
 
-    @PostMapping("/courseOfferings/update/{id}")
+    @PostMapping("/courseOffering/update/{id}")
     public String update(@PathVariable("id") long id, @Valid CourseOffering courseOffering, BindingResult result,
             Model model, RedirectAttributes redirAttrs, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
@@ -173,11 +173,11 @@ public class CourseOfferingController {
             return "redirect:/";
         }
         if (result.hasErrors()) {
-            courseOffering.setId(id);
+            //courseOffering.setId(id);
             return "courseOffering/update";
         }
-
         courseOfferingRepository.save(courseOffering);
+        // model.addAttribute("courseOffering", courseOfferingRepository.findAll());
         return "redirect:/courseOffering";
     }
 }
