@@ -44,6 +44,10 @@ public class ApplicationController{
         return (a.getTutor().getLastName()).compareTo(b.getTutor().getLastName());
     };
 
+    Comparator<TimeSlotAssignment> sortByRoom = (a,b)-> {
+        return (a.getTimeSlot().getRoomAvailability().getRoom().getName()).compareTo(b.getTimeSlot().getRoomAvailability().getRoom().getName());
+    };
+
     private int convertDayToInt(String day){
         if(day.equals("M")){return 1;}
         else if(day.equals("T")){return 2;}
@@ -84,7 +88,7 @@ public class ApplicationController{
         model.addAttribute("uniqueQuartersModel", courseOfferingRepository.findAllUniqueQuarters());
         List<TimeSlotAssignment> timeSlotAssignments =  timeSlotAssignmentRepository.findByCourseOffering(
             courseOfferingRepository.findByQuarterAndCourseId(quarter, courseId));
-        java.util.Collections.sort(timeSlotAssignments,sortByDay.thenComparing(sortByTimeSlot).thenComparing(sortByTutorLastName));
+        java.util.Collections.sort(timeSlotAssignments,sortByDay.thenComparing(sortByRoom).thenComparing(sortByTimeSlot).thenComparing(sortByTutorLastName));
         model.addAttribute("timeSlotAssignments", timeSlotAssignments);
         return "home/results";
     }

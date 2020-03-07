@@ -17,6 +17,7 @@
             <thead>
               <tr>
                 <th>Day</th>
+                <th>Room</th>
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Course</th>
@@ -25,6 +26,7 @@
             </thead>
               <tr th:each="tsa : ${timeSlotAssignments}">
                 <td th:text=${tsa.getTimeSlot().getRoomAvailability().getDay()}></td>
+                <td th:text=${tsa.getTimeSlot().getRoomAvailability().getRoom().getName()}></td>
                 <td th:text=${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime())}></td>
                 <td th:text=${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getEndTime())}></td>
                 <td th:text=${courseId}></td>
