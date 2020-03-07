@@ -21,6 +21,7 @@
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Course</th>
+                <th>Quarter</th>
                 <th>Tutor</th>
               </tr>
             </thead>
@@ -30,6 +31,7 @@
                 <td th:text=${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime())}></td>
                 <td th:text=${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getEndTime())}></td>
                 <td th:text=${courseId}></td>
+                <td th:text=${quarter}></td>
                 <td th:text=${tsa.getTutor().getFullName()}></td>
               </tr>
           </table>
