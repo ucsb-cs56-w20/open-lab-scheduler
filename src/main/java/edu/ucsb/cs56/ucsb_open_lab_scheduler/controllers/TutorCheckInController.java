@@ -45,6 +45,18 @@ public class TutorCheckInController {
         this.tutorcheckinRepository = repo;
     }
 
+    @GetMapping("/tutorcheckin")
+    public String tutorcheckin(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Tutor")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+        addTutor();
+        model.addAttribute("tutors", tutorcheckinRepository.findAll());
+        model.addAttribute("newTutor", new TutorCheckIn());
+        return "tutorcheckin/create";
+    }
     private void addTutor() {
         if (tutorcheckinRepository.findById(timeSlotAssignmentId).isEmpty()) {
             tutorcheckinRepository.save(new TutorCheckIn());
