@@ -38,15 +38,6 @@ public class TimeSlotAssignment{
         this.tutor = tutor;
     }
 
-<<<<<<< HEAD
-    public CourseOffering getCourseOffering(){
-        return courseOffering;
-=======
-    public void setCourseOffering(CourseOffering courseOffering){
-        this.courseOffering = courseOffering;
->>>>>>> ys- made index.html display a table of cs16 timeslotassignments sorted by day, then time, then tutor
-    }
-
     public long getId(){
         return id;
     }
