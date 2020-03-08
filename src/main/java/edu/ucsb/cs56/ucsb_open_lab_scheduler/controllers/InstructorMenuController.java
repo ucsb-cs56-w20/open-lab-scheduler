@@ -101,13 +101,16 @@ public class InstructorMenuController {
     }
     @GetMapping("/InstructorMenu/downloadCSV/{id}")
     public String exportCSV(@PathVariable long id, Model model, HttpServletResponse response,  OAuth2AuthenticationToken token, RedirectAttributes redirAttrs)
-            throws Exception {
+            throws IOException {
         if (!authControllerAdvice.getIsInstructor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
         Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(id);
-        String[] header = { "Email", "Last Name", "First Name" };
+        if (!courseOffering.isPresent()) {
+            redirAttrs.addFlashAttribute("alertDanger", "Course offering with id " + id + " not found");
+            return "redirect:/";
+        }
         String filename = "Tutors.csv";
         response.setContentType("text/csv");
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
@@ -116,7 +119,6 @@ public class InstructorMenuController {
                 .findByCourseOffering(courseOffering.get());
 
         TutorlistToCSV.writeCSV(response.getWriter(), tutorassignment);
-        //model.addAttribute("currentInstructorCourse", tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
         return "redirect:/instructorMenu/instructorMenu";
 
     }
