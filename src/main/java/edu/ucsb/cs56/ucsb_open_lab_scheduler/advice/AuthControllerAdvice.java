@@ -37,7 +37,6 @@ public class AuthControllerAdvice {
 
     @ModelAttribute("id")
     public String getUid(OAuth2AuthenticationToken token){
-        // return "stub";
         if (token == null) return "";
         return token.getPrincipal().getAttributes().get("given_name").toString();
     }
@@ -64,14 +63,12 @@ public class AuthControllerAdvice {
 
     @ModelAttribute("picture")
     public String getPicture(OAuth2AuthenticationToken token){
-        // return "stub";
         if (token == null) return "";
         return token.getPrincipal().getAttributes().get("picture").toString();
     }
 
     @ModelAttribute("login")
     public String getLogin(OAuth2AuthenticationToken token){
-        // return "stub";
         if (token == null) return "";
         return token.getName();
     }

@@ -34,10 +34,6 @@ public class ApplicationController{
     @GetMapping("/")
     public String home(Model model, OAuth2AuthenticationToken oAuth2AuthenticationToken) {
         String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
-        // if(role.equals("NotDomain")){
-        //     // redirAttrs.addFlashAttribute("alertDanger", "Warning: Guests have limited access to this website. Please log in with a @ucsb.edu email.");
-        // }
-        
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "index"; // returns a view to display
     }
@@ -51,10 +47,6 @@ public class ApplicationController{
         @SuppressWarnings("unchecked") Iterable<ClientRegistration> iterable = ((Iterable<ClientRegistration>) clientRegistrationRepository);
         iterable.forEach(clientRegistration -> urls.put(clientRegistration.getClientName(),
                 "/oauth2/authorization/" + clientRegistration.getRegistrationId()));
-
-        // String role = authControllerAdvice.getRole(oAuth2AuthenticationToken);
-        // if(role.equals("NotDomain"))
-        //     return "error";
 
         model.addAttribute("urls", urls);
         return "login"; // custom error page, placeholder for now
