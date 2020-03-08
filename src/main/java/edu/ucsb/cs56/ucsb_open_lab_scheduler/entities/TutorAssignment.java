@@ -29,11 +29,13 @@ public class TutorAssignment {
         this.tutor = tutor;
         this.courseOffering = courseOffering;
         this.isCourseLead = lead;
+        this.type = "Not Assigned";
     }
 
-    public TutorAssignment(Tutor tutor, CourseOffering courseOffering, String type){
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering, boolean lead, String type){
         this.tutor = tutor;
         this.courseOffering = courseOffering;
+        this.isCourseLead = lead;
         this.type = type;
     }
 
