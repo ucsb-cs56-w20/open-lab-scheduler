@@ -69,12 +69,13 @@ public class TutorSignUpController{
           return "redirect:/";
         }
 
-        Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
-        if (!tutor.isPresent()) {
-          redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
-          return "redirect:/";
-        }
-        List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
+      Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
+      if (!tutor.isPresent()) {
+        redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
+        return "redirect:/";
+      }
+      
+      List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
 
         List<CourseOffering> courseOfferings = new ArrayList<>();
 
