@@ -20,12 +20,21 @@ public class TutorAssignment {
     
     private boolean isCourseLead;
 
+    @NotBlank(message = "Type is required")
+    private String type;
+
     public TutorAssignment(){}
 
     public TutorAssignment(Tutor tutor, CourseOffering courseOffering, boolean lead){
         this.tutor = tutor;
         this.courseOffering = courseOffering;
         this.isCourseLead = lead;
+    }
+
+    public TutorAssignment(Tutor tutor, CourseOffering courseOffering, String type){
+        this.tutor = tutor;
+        this.courseOffering = courseOffering;
+        this.type = type;
     }
 
     public void setId(long id){
@@ -38,6 +47,10 @@ public class TutorAssignment {
 
     public void setTutor(Tutor tutor){
         this.tutor = tutor;
+    }
+
+    public void setType(String type)   {
+        this.type = type;
     }
 
     public long getId(){
@@ -59,5 +72,9 @@ public class TutorAssignment {
      public boolean getIsCourseLead(){
          return isCourseLead;
      }
+
+    public String getType() {
+        return type;
+    }
 
 }
