@@ -55,7 +55,7 @@ public class TutorCheckInController {
         // addTutor();
         model.addAttribute("tutors", tutorcheckinRepository.findAll());
         model.addAttribute("newTutor", new TutorCheckIn());
-        return "tutorCheckIn/tutorCheckIn";
+        return "/tutorCheckIn/tutorCheckIn";
     }
     // private void addTutor() {
     //     if (tutorcheckinRepository.findById(timeSlotAssignmentId).isEmpty()) {
@@ -63,7 +63,24 @@ public class TutorCheckInController {
     //     }
     // }
 
+    @PostMapping("/tutorCheckIn")
+    public String addEntry(@Valid TutorCheckIn tutor, BindingResult result, Model model, RedirectAttributes redirAttrs,
+            OAuth2AuthenticationToken token) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Tutor")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
 
+        boolean errors = false;
+        if (!errors) {
+            tutorcheckinRepository.save(tutor);
+            model.addAttribute("newTutor", new TutorCheckIn());
+        } else {
+            model.addAttribute("newTutor", tutor);
+        }
+        model.addAttribute("tutors", tutorcheckinRepository.findAll());
+        return "redirect:/";
+    }
 
-
-}
+    }
