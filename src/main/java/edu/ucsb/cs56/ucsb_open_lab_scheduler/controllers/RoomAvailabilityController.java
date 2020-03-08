@@ -205,7 +205,8 @@ public class RoomAvailabilityController {
                 timeSlotRepository.deleteById(ts.getId());
             }
         }
+        roomAvailabilityRepository.deleteById(id);
 
-        return "redirect:/roomAvailibity";
+        return "redirect:/roomAvailability";
     }
 }
