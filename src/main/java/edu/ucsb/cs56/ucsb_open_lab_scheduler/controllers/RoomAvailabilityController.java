@@ -38,13 +38,10 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-<<<<<<< HEAD
 import com.opencsv.CSVWriter;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
-=======
 import javax.validation.Valid;
->>>>>>> bq - finished time validation, started on duration validation
 
 @Controller
 public class RoomAvailabilityController {
