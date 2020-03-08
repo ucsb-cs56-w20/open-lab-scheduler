@@ -21,7 +21,10 @@ public class TimeSlot{
     private int startTime;
     private int endTime;
 
-    public TimeSlot(){}
+    public TimeSlot(){
+        this.startTime = 0;
+        this.endTime = 0;
+    }
 
     public void setId(long id){
         this.id = id;
@@ -50,6 +53,7 @@ public class TimeSlot{
     public int getStartTime(){
         return startTime;
     }
+
 
     public int getEndTime(){
         return endTime;
