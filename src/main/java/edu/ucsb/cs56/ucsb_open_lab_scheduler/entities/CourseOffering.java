@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 
@@ -32,22 +34,21 @@ public class CourseOffering implements Comparable<CourseOffering>{
     @NotBlank(message = "Instructor Email is required")
     private String instructorEmail;
 
-    private String numTAs;
-    private String numLAs;
-    private String num190J;
+    @Min(value = 0, message = "Must input an integer greater than 0")
+    @NotNull(message = "Must input an integer greater than 0")
+    private int numTAs;
+
+    @Min(value = 0, message = "Must input an integer greater than 0")
+    @NotNull(message = "Must input an integer greater than 0")
+    private int numLAs;
+
+    @Min(value = 0, message = "Must input an integer greater than 0")
+    @NotNull(message = "Must input an integer greater than 0")
+    private int num190J;
 
     public CourseOffering(){}
-    public CourseOffering(long id, String courseId, String quarter, String instructorName, String instructorEmail){
-        this.id = id;
-        this.courseId = courseId;
-        this.quarter = quarter;
-        this.instructorName = instructorName;
-        this.instructorEmail = instructorEmail;
-        this.numTAs = "0";
-        this.numLAs = "0";
-        this.num190J = "0";
-    }
-    public CourseOffering(long id, String courseId, String quarter, String instructorName, String instructorEmail, String numTAs, String numLAs, String num190J){
+
+    public CourseOffering(long id, String courseId, String quarter, String instructorName, String instructorEmail, int numTAs, int numLAs, int num190J){
         this.id = id;
         this.courseId = courseId;
         this.quarter = quarter;
@@ -56,6 +57,9 @@ public class CourseOffering implements Comparable<CourseOffering>{
         this.numTAs = numTAs;
         this.numLAs = numLAs;
         this.num190J = num190J;
+        // this.numTAs = Integer.parseInt(numTAs);
+        // this.numLAs = Integer.parseInt(numLAs);
+        // this.num190J = Integer.parseInt(num190J);
     }
 
 
@@ -79,15 +83,15 @@ public class CourseOffering implements Comparable<CourseOffering>{
         this.instructorEmail = instructorEmail;
     }
 
-    public void setNumTAs(String numTAs){
+    public void setNumTAs(int numTAs){
         this.numTAs = numTAs;
     }
 
-    public void setNumLAs(String numLAs){
+    public void setNumLAs(int numLAs){
         this.numLAs = numLAs;
     }
 
-    public void setNum190J(String num190J){
+    public void setNum190J(int num190J){
         this.num190J = num190J;
     }
 
@@ -111,15 +115,15 @@ public class CourseOffering implements Comparable<CourseOffering>{
         return instructorEmail;
     }
 
-    public String getNumTAs(){
+    public int getNumTAs(){
         return numTAs;
     }
 
-    public String getNumLAs(){
+    public int getNumLAs(){
         return numLAs;
     }
 
-    public String getNum190J(){
+    public int getNum190J(){
         return num190J;
     }
 

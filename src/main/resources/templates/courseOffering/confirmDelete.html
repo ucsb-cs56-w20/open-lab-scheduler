@@ -37,12 +37,12 @@
                             <td th:text="${co.instructorEmail}"></td>
                             <td>
                                 <form th:action="@{/courseOffering/delete/confirm/{id}(id=${co.id})}" th:method="post">
-                                    <button type="submit" class="btn btn-danger btn-lg btn-block">Delete</button>
+                                    <button type="submit" class="btn btn-danger btn-block">Delete</button>
                                 </form>
                             </td>
                             <td>
                                 <form th:action="@{/courseOffering/}" th:method="get">
-                                    <button type="submit" class="btn btn-primary btn-lg btn-block">Cancel</button>
+                                    <button type="submit" class="btn btn-primary btn-block">Cancel</button>
                                 </form>
                             </td>
                         </tr>

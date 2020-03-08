@@ -1,37 +1,37 @@
 <div class="row">
   <div class="form-group col-md-6">
       <label for="courseId" class="col-form-label">Course Id</label>
-      <input type="text" th:field="*{courseId}" class="form-control" id="courseId" placeholder="Course">
+      <input type="text" required th:field="*{courseId}" class="form-control" id="courseId" placeholder="Course">
       <span th:if="${#fields.hasErrors('courseId')}" th:errors="*{courseId}" class="text-danger"></span>
   </div>
   <div class="form-group col-md-6">
       <label for="quarter" class="col-form-label">Quarter</label>
-      <input type="text" th:field="*{quarter}" class="form-control" id="quarter" placeholder="Quarter">
+      <input type="text" required th:field="*{quarter}" class="form-control" id="quarter" placeholder="Quarter">
       <span th:if="${#fields.hasErrors('quarter')}" th:errors="*{quarter}" class="text-danger"></span>
   </div>
   <div class="form-group col-md-6">
       <label for="instructor name" class="col-form-label">Instructor Name</label>
-      <input type="text" th:field="*{instructorName}" class="form-control" id="instructorName" placeholder="Instructor Name">
+      <input type="text" required th:field="*{instructorName}" class="form-control" id="instructorName" placeholder="Instructor Name">
       <span th:if="${#fields.hasErrors('instructorName')}" th:errors="*{instructorName}" class="text-danger"></span>
   </div>
   <div class="form-group col-md-6">
     <label for="instructorEmail" class="col-form-label">Instructor Email</label>
-    <input type="text" th:field="*{instructorEmail}" class="form-control" id="instructorEmail" placeholder="Instructor Email">
+    <input type="text" required th:field="*{instructorEmail}" class="form-control" id="instructorEmail" placeholder="Instructor Email">
     <span th:if="${#fields.hasErrors('instructorEmail')}" th:errors="*{instructorEmail}" class="text-danger"></span>
     </div>
     <div class="form-group col-md-6">
     <label for="numTAs" class="col-form-label">TAs</label>
-    <input type="text" th:field="*{numTAs}" class="form-control" id="numTAs" placeholder="# of TAs">
+    <input type="number" required th:field="*{numTAs}" class="form-control" id="numTAs" placeholder="# of TAs">
     <span th:if="${#fields.hasErrors('numTAs')}" th:errors="*{numTAs}" class="text-danger"></span>
     </div>
     <div class="form-group col-md-6">
     <label for="numLAs" class="col-form-label">LAs</label>
-    <input type="text" th:field="*{numLAs}" class="form-control" id="numLAs" placeholder="# of LAs">
+    <input type="number" required th:field="*{numLAs}" class="form-control" id="numLAs" placeholder="# of LAs">
     <span th:if="${#fields.hasErrors('numLAs')}" th:errors="*{numLAs}" class="text-danger"></span>
     </div>
     <div class="form-group col-md-6">
     <label for="num190J" class="col-form-label">190J</label>
-    <input type="text" th:field="*{num190J}" class="form-control" id="num190J" placeholder="# of 190J">
+    <input type="number" required th:field="*{num190J}" class="form-control" id="num190J" placeholder="# of 190J">
     <span th:if="${#fields.hasErrors('num190J')}" th:errors="*{num190J}" class="text-danger"></span>
     </div>
     
