@@ -13,13 +13,19 @@ INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assi
 INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('George','Kripac','Georgekripac@example.org', 1,0);
 INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('ChanChan','Mao','chanchanmao@ucsb.edu', 1,0);
 
+INSERT INTO room_availability (quarter, start_time, end_time, day, room_id) VALUES ('W20', 1700, 1900, 'Monday', 1);
+
+INSERT INTO time_slot (room_availability_id, start_time, end_time) VALUES (1, 1700, 1730);
+
+INSERT INTO time_slot_assignment (time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 1);
+
 INSERT INTO tutor_assignment(course_offering_id, tutor_id, is_course_lead) VALUES (1, 1, 0);
 
+INSERT INTO tutor_check_in(time_slot_assignment_id, time, date, remarks) VALUES (1, '1:30','10/20/20','Today I gave students answers');
 
-INSERT INTO tutor_check_in(time_slot_assignment_id, time, date, remarks) VALUES (6, '1:30','10/20/20','Today I gave students answers');
-/*
-INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('1','10:00','10/10/20','helped a student with constructor method');
-INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('2','1:30','3/7/20','helped a student with function call');
-INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('3','6:00','9/3/20','explained recursion');
-INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('4','7:00','5/8/20','helped a student with dictionaries');
-*/
+
+-- INSERT INTO tutor_check_in(id, time, date, remarks) VALUES ('1','10:00','10/10/20','helped a student with constructor method');
+
+-- INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('2','1:30','3/7/20','helped a student with function call');
+-- INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('3','6:00','9/3/20','explained recursion');
+-- INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('4','7:00','5/8/20','helped a student with dictionaries');

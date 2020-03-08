@@ -47,7 +47,7 @@ public class TutorCheckInController {
 
     @GetMapping("/tutorCheckIn")
     public String tutorcheckin(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-        String role = authControllerAdvice.getRole(token);
+        // String role = authControllerAdvice.getRole(token);
         if (!authControllerAdvice.getIsTutor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
@@ -65,8 +65,8 @@ public class TutorCheckInController {
 
     @GetMapping("/tutorCheckIn/viewLog")
     public String viewLog(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-        String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Tutor")) {
+        //String role = authControllerAdvice.getRole(token);
+        if (!authControllerAdvice.getIsTutor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }

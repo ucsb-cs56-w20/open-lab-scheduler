@@ -55,8 +55,23 @@ public class GoogleMembershipService implements MembershipService {
         return hasRole(oAuth2AuthenticationToken, "admin");
     }
 
-    public boolean isTutor(OAuth2AuthenticationToken oAuth2AuthenticationToken){
-        return hasRole(oAuth2AuthenticationToken, "tutor");
+    public boolean isTutor(OAuth2AuthenticationToken oauthToken){
+        // return hasRole(oAuth2AuthenticationToken, "tutor");
+        if (oauthToken == null) {
+            return false;
+        }
+        if (clientService == null) {
+            logger.error(String.format("unable to obtain autowired clientService"));
+            return false;
+        }
+        OAuth2AuthorizedClient client = clientService
+                .loadAuthorizedClient(oauthToken.getAuthorizedClientRegistrationId(), oauthToken.getName());
+        OAuth2User oAuth2User = oauthToken.getPrincipal();
+
+        String email = (String) oAuth2User.getAttributes().get("email");
+        boolean result = isTutorEmail(email);
+        logger.info("Email = " + email + " result = " + result);
+        return result;
     }
 
     public boolean isInstructor(OAuth2AuthenticationToken oAuth2AuthenticationToken) {
