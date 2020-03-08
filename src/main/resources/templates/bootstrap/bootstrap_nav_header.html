@@ -82,9 +82,9 @@
           Tutor View
         </a>
       </li>
-
+      
       <li th:if="${isTutor}" class="dropdown user-nav">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+        <a href="#" class="dropdown-toggle float-right" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
         >Tutor Check In
         </a>
         <ul class="dropdown-menu">
@@ -121,8 +121,10 @@
         >
           <img th:src="${picture} " height="20" width="20" th:alt="${fname}" />
           <span class="caret"></span>
-        </a>
+      </a>
+        
         <ul class="dropdown-menu  pull-left">
+          
           <li role="separator" class="divider"></li>
           <li class="dropdown-item">
             <form
