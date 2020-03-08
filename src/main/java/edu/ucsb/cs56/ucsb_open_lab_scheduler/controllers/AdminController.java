@@ -30,6 +30,9 @@ public class AdminController {
 
     private Logger logger = LoggerFactory.getLogger(AdminController.class);
 
+    @Value("${app.member.hosted-domain}")
+    String memberHostedDomain;
+
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
 
@@ -47,6 +50,7 @@ public class AdminController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+
         addOGAdmins();
         model.addAttribute("admins", adminRepository.findAll());
         model.addAttribute("newAdmin", new Admin());
@@ -78,27 +82,37 @@ public class AdminController {
     public String addAdmin(@Valid Admin admin, BindingResult result, Model model, RedirectAttributes redirAttrs,
             OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
+
+
+        
         if (!role.equals("Admin")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
 
         boolean errors = false;
+
         if (!ValidEmailService.validEmail(admin.getEmail())) {
             errors = true;
             redirAttrs.addFlashAttribute("alertDanger", "Invalid email.");
+        }else if (!ValidEmailService.inDomain(admin.getEmail(), memberHostedDomain)) { // ensure non-domain emails are treated as guest
+            errors = true;
+            redirAttrs.addFlashAttribute("alertDanger", "Cannot add an admin from outside the hosted domain.");
         }
+
         List<Admin> alreadyExistingAdmins = adminRepository.findByEmail(admin.getEmail());
         if (!alreadyExistingAdmins.isEmpty()) {
             errors = true;
             redirAttrs.addFlashAttribute("alertDanger", "An admin with that email already exists.");
         }
+
         if (!errors) {
             adminRepository.save(admin);
             model.addAttribute("newAdmin", new Admin());
         } else {
             model.addAttribute("newAdmin", admin);
         }
+
         model.addAttribute("admins", adminRepository.findAll());
         return "redirect:/admin";
     }
@@ -106,7 +120,7 @@ public class AdminController {
     private void addOGAdmins() {
         authControllerAdvice.getAdminEmails().forEach((email) -> {
             if(adminRepository.findByEmail(email).isEmpty()) {
-                adminRepository.save(new Admin(email));
+                adminRepository.save(new Admin(email, true));
             }
         });
     }

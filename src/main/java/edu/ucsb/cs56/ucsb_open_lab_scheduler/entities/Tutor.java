@@ -1,5 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,14 +16,17 @@ public class Tutor{
     private long id;
 
     @CsvBindByPosition(position = 0)
+    @CsvBindByName
     @NotBlank(message = "Email is required")
     private String email;
 
     @CsvBindByPosition(position = 1)
+    @CsvBindByName
     @NotBlank(message = "Last name is required")
     private String lastName;
 
     @CsvBindByPosition(position = 2)
+    @CsvBindByName
     @NotBlank(message = "First name is required")
     private String firstName;
 
@@ -93,6 +97,10 @@ public class Tutor{
         this.numberOfCoursesAssigned++;
     }
 
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
+
     @Override
     public String toString(){
         return "{"+
@@ -101,6 +109,7 @@ public class Tutor{
             ", firstName='"+firstName+"'"+
             ", lastName='"+lastName+"'"+
             ", isActive='"+isActive+"'"+
+            ", numberOfCoursesAssigned='"+numberOfCoursesAssigned+"'"+
             "}";
     }
 
@@ -112,11 +121,11 @@ public class Tutor{
             return false;
         }
         Tutor tutor = (Tutor) o;
-        return id == tutor.id && Objects.equals(email, tutor.email) && Objects.equals(firstName, tutor.firstName) && Objects.equals(lastName, tutor.lastName) && isActive == tutor.isActive;
+        return id == tutor.id && Objects.equals(email, tutor.email) && Objects.equals(firstName, tutor.firstName) && Objects.equals(lastName, tutor.lastName) && isActive == tutor.isActive && numberOfCoursesAssigned == tutor.numberOfCoursesAssigned;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, isActive);
+        return Objects.hash(id, email, firstName, lastName, isActive, numberOfCoursesAssigned);
     }
 }

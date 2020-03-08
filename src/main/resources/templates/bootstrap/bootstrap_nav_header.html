@@ -11,6 +11,11 @@
           Tutor Sign-Up
         </a>
       </li>
+      <li th:if="${isTutor}" class="nav-item ">
+        <a class="nav-link" href="/tutorProfile" id="navbarDropdown" role="button">
+          Tutor Profile 
+        </a>
+      </li>
       <li th:if="${isAdmin}" class="nav-item ">
         <a
           class="nav-link"
@@ -21,7 +26,7 @@
           Room Availability
         </a>
       </li>
-      <li th:if="${isAdmin}" class="nav-item ">
+      <li th:if="${isAdmin or isInstructor}" class="nav-item ">
         <a class="nav-link" href="/tutors" id="navbarDropdown" role="button">
           Tutors
         </a>
@@ -36,7 +41,7 @@
           Course Offering
         </a>
       </li>
-      <li th:if="${isAdmin}" class="nav-item ">
+      <li th:if="${isAdmin or isInstructor}" class="nav-item ">
         <a
           class="nav-link"
           href="/tutorAssignment/courseSelect"
@@ -73,7 +78,6 @@
         </a>
       </li>
     </ul>
-
 
     <ul class="nav navbar-nav navbar-right">
       <li th:if="${isLoggedIn}">

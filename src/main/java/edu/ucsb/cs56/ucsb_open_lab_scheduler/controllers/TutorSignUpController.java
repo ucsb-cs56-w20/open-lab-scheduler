@@ -53,18 +53,18 @@ public class TutorSignUpController{
     public TutorSignUpController(TutorAssignmentRepository tutorAssignmentRepository, TutorRepository tutorRepository,
         CourseOfferingRepository courseOfferingRepository,RoomAvailabilityRepository roomAvailabilityRepository,
         TimeSlotAssignmentRepository timeSlotAssignmentRepository, TimeSlotRepository timeSlotRepository) {
-      this.tutorAssignmentRepository = tutorAssignmentRepository;
-      this.tutorRepository = tutorRepository;
-      this.courseOfferingRepository = courseOfferingRepository;
-      this.roomAvailabilityRepository = roomAvailabilityRepository;
-      this.timeSlotAssignmentRepository = timeSlotAssignmentRepository;
-      this.timeSlotRepository = timeSlotRepository;
+        this.tutorAssignmentRepository = tutorAssignmentRepository;
+        this.tutorRepository = tutorRepository;
+        this.courseOfferingRepository = courseOfferingRepository;
+        this.roomAvailabilityRepository = roomAvailabilityRepository;
+        this.timeSlotAssignmentRepository = timeSlotAssignmentRepository;
+        this.timeSlotRepository = timeSlotRepository;
     }
   
     @GetMapping("/tutorSignUp/courseSelect")
     public String signUpTable(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
       String role = authControllerAdvice.getRole(token);
-      if (!role.equals("Tutor")) {
+      if (!authControllerAdvice.getIsTutor(token)) {
         redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
         return "redirect:/";
       }
@@ -74,23 +74,24 @@ public class TutorSignUpController{
         redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
         return "redirect:/";
       }
+      
       List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
 
-      List<CourseOffering> courseOfferings = new ArrayList<>();
+        List<CourseOffering> courseOfferings = new ArrayList<>();
 
-      for (TutorAssignment ta : tutorAssignments){
-          courseOfferings.add(ta.getCourseOffering());
-          System.out.print(ta.getCourseOffering());
-      }
+        for (TutorAssignment ta : tutorAssignments){
+            courseOfferings.add(ta.getCourseOffering());
+            System.out.print(ta.getCourseOffering());
+        }
 
-      model.addAttribute("courseOffering", courseOfferings);
-      return "tutorSignUp/tutorSignUp";
+        model.addAttribute("courseOffering", courseOfferings);
+        return "tutorSignUp/tutorSignUp";
     }
 
     @GetMapping("/tutorSignUp/courseSelect/{id}")
     public String timeSlotAssignMent(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs){
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Tutor")) {
+        if (!authControllerAdvice.getIsTutor(token)) {
         redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
         return "redirect:/";
         }
@@ -118,7 +119,7 @@ public class TutorSignUpController{
         }
 
         Predicate<TimeSlot> shouldBeChecked = t -> timeSlotAssignments.stream()
-            .anyMatch((ta) -> ta.getTimeSlot() == t);
+            .anyMatch((ta) -> ta.getTimeSlot() == t && ta.getCourseOffering().equals(courseOffering.get()));
         
     
         model.addAttribute("shouldBeChecked", shouldBeChecked);
@@ -132,9 +133,9 @@ public class TutorSignUpController{
     }
     @PostMapping("/tutorSignUp/add")
     public ResponseEntity<?> add(@RequestParam("sid") long sid, @RequestParam("tid") long tid,
-                                OAuth2AuthenticationToken token) {
+                                 @RequestParam("cid") long cid, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Tutor")) {
+        if (!authControllerAdvice.getIsTutor(token)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -143,20 +144,23 @@ public class TutorSignUpController{
         timeSlotAssignment.setTimeSlot(ts.get());
         Optional<Tutor> tutor = tutorRepository.findById(tid);
         timeSlotAssignment.setTutor(tutor.get());
+        Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(cid);
+        timeSlotAssignment.setCourseOffering(courseOffering.get());
+         
         timeSlotAssignmentRepository.save(timeSlotAssignment);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/tutorSignUp/{sid}/{tid}")
+    @DeleteMapping("/tutorSignUp/{sid}/{tid}/{cid}")
     public ResponseEntity<?> delete(@PathVariable("sid") long sid, @PathVariable("tid") long tid,
-                                    OAuth2AuthenticationToken token) {
+                                    @PathVariable("cid") long cid,OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Tutor")) {
+        if (!authControllerAdvice.getIsTutor(token)) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        timeSlotAssignmentRepository.deleteByTimeSlotIdAndTutorId(sid, tid);
+        timeSlotAssignmentRepository.deleteByTimeSlotIdAndTutorIdAndCourseOfferingId(sid, tid, cid);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     }
