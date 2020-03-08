@@ -16,7 +16,7 @@
               <table class="table table-striped table-responsive-md">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
                     <th>Time</th>
                     <th>Date</th>
                     <th>Remarks</th>
@@ -24,8 +24,8 @@
                 </thead>
     
                 <tbody>
-                  <tr th:each="t: ${tutorLogModel}">
-                    <td th:text="${t.id}"></td>
+                  <tr th:each="t: ${tutorCheckIns}">
+                    <!-- <td th:text="${t.id}"></td> -->
                     <td th:text="${t.time}"></td>
                     <td th:text="${t.date}"></td>
                     <td th:text="${t.remarks}"></td>

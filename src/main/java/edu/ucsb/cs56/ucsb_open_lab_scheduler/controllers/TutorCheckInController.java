@@ -73,7 +73,9 @@ public class TutorCheckInController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("tutors", tutorcheckinRepository.findAll());
+        List<TutorCheckIn> tutorCheckIns = tutorcheckinRepository.findAll();
+        model.addAttribute("tutorCheckIns", tutorCheckIns);
+        logger.info("tutorCheckIns" + tutorCheckIns);
         //model.addAttribute("newTutor", new TutorCheckIn());
         return "/tutorCheckIn/viewLog";
     }
