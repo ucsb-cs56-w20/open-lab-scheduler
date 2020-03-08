@@ -17,7 +17,6 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.AdminRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
-
 /**
  * Service object that wraps the UCSB Academic Curriculum API
  */
@@ -40,7 +39,7 @@ public class GoogleMembershipService implements MembershipService {
 
     @Autowired
     private TutorRepository tutorRepository;
-
+    
     @Autowired
     private CourseOfferingRepository courseOfferingRepository;
 
@@ -143,7 +142,7 @@ public class GoogleMembershipService implements MembershipService {
     private boolean isTutorEmail(String email) {
         return (!tutorRepository.findByEmail(email).isEmpty());
     }
-    
+
     private boolean isInstructorEmail(String email) {
         return (!courseOfferingRepository.findByInstructorEmail(email).isEmpty());
     }

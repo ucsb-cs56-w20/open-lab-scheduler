@@ -17,13 +17,13 @@
 	   <tr>
 	    <th> Courses</th>
 	    <th> Quarter</th>
-    </tr>
-  </thead>
-        <tbody>
-         <tr th:each="c: ${courses}">
-          <td><a th:href="'/instructorMenu/' + ${c.id}" th:text="${c.courseId}"> </a></td>
-    <td th:text="${c.quarter}"> </td>
-    </tr>
+	   </tr>
+	  </thead>
+          <tbody>
+           <tr th:each="c: ${courses}">
+            <td><a th:href="'/instructorMenu/' + ${c.id}" th:text="${c.courseId}"> </a></td>
+	    <td th:text="${c.quarter}"> </td>
+	    </tr>
           </tbody>
         </table>
 

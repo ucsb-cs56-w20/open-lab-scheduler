@@ -33,7 +33,7 @@ public interface MembershipService {
             return "Instructor";
         if (isMember(token))
            return "Member";
-           
+        
         return "Guest";
     }
 
