@@ -138,4 +138,29 @@ public class CourseOfferingController {
         model.addAttribute("courseOffering", courseOfferingRepository.findAll());
         return "redirect:/courseOffering";
     }
+
+    @GetMapping("/courseOffering/edit/{id}")
+    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+        CourseOffering courseOffering = courseOfferingRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid course offering Id:" + id));
+        model.addAttribute("courseOffering", courseOffering);
+        return "courseOffering/update";
+    }
+
+    @PostMapping("/courseOffering/update/{id}")
+    public String update(@PathVariable("id") long id, @Valid CourseOffering courseOffering, BindingResult result,
+            Model model, RedirectAttributes redirAttrs, OAuth2AuthenticationToken token) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+        if (result.hasErrors()) {
+            //courseOffering.setId(id);
+            return "courseOffering/update";
+        }
+        courseOfferingRepository.save(courseOffering);
+        // model.addAttribute("courseOffering", courseOfferingRepository.findAll());
+        return "redirect:/courseOffering";
+    }
 }

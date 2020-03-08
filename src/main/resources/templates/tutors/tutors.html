@@ -4,6 +4,27 @@
 <head>
   <div th:replace="bootstrap/title.html"></div>
   <div th:replace="bootstrap/bootstrap_head.html"></div>
+  <style>
+    .sortAscending, .sortDescending {
+      padding-left: 20px;
+    }
+    .sortAscending:after {
+        content: ' ';
+        position: relative;
+        left: 10px;
+        border: 7px solid transparent;
+        bottom: 15px;
+        border-bottom-color: silver;
+    }
+    .sortDescending:after {
+        content: ' ';
+        position: relative;
+        left: 10px;
+        border: 7px solid transparent;
+        top: 15px;
+        border-top-color: silver;
+    }
+  </style>
 </head>
 
 <body>
@@ -30,23 +51,23 @@ phtcon@ucsb.edu,Conrad,Phill
         <br>
 
         <a href="/tutors/add" class="btn btn-primary" style="display: inline-block" role="button">Create New Tutor</a>
-          <a href="/tutors/tutors.csv" type="button" class="btn btn-secondary">Download Tutors to CSV</a>
+        <a href="/tutors/tutors.csv" type="button" class="btn btn-secondary">Download Tutors to CSV</a>
 
         <br><br>
 
-        <table class="table table-striped table-responsive-md">
+        <table class="table table-striped table-responsive-md" style="display: none">
           <thead>
-            <tr>
-              <th>Email</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Assigned Courses</th>
-                <th>Active</th>
-                <th>Edit</th>
-                <th>Delete</th>
+            <tr id="tutorHeaders">
+              <th id="email" onclick="sortTutors(0)" style="cursor: pointer">Email</th>
+              <th id="fname" onclick="sortTutors(1)" style="cursor: pointer">First Name</th>
+              <th id="lname" onclick="sortTutors(2)" style="cursor: pointer" class="sortDescending">Last Name</th>
+              <th id="assigned" onclick="sortTutors(3)" style="cursor: pointer">Assigned Courses</th>
+              <th id="active" onclick="sortTutors(4)" style="cursor: pointer">Active</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tutorTable">
             <tr th:each="t : ${TutorModel}">
               <td th:text="${t.email}"></td>
               <td th:text="${t.firstName}"></td>
@@ -60,46 +81,141 @@ phtcon@ucsb.edu,Conrad,Phill
                 </label>
               </td>
               <td><a th:href="@{'/tutors/' + ${t.id}}" type="button" class="btn btn-secondary" style="display: block;">Edit</a></td>
-                <td><button type ="button" class="btn btn-danger" th:attr="onclick=|del('${t.email}', ${t.id})|"/>Delete</button></td>
+              <td><button type ="button" class="btn btn-danger deleteTutorButton" th:attr="data-tmail=${t.email}, data-tid=${t.id}">Delete</button></td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-      <!-- Delete Confirmation -->
-      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title">Delete Tutor</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  <div class="modal-body">
-                      Are you sure you want to delete <b id="tNameDel">TUTOR_NAME_SET_WITH_JS</b>? <br><br>All associated TutorAssignments will also be removed. This action can not be reversed.
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <form id="deleteForm" action="ACTION_SET_BY_JS" method="get" >
-                          <button type="submit" class="btn btn-danger">Confirm Delete</button>
-                      </form>
-                  </div>
-              </div>
-          </div>
-      </div>
+    <!-- Delete Confirmation -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Tutor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <b id="tNameDel">TUTOR_NAME_SET_WITH_JS</b>? <br><br>All associated TutorAssignments will also be removed. This action can not be reversed.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form id="deleteForm" action="ACTION_SET_BY_JS" method="get" >
+                        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
   <script th:inline="javascript">
-      function del(name, id) {
-          document.getElementById("tNameDel").innerHTML = name;
-          document.getElementById("deleteForm").setAttribute("action", "/tutors/" + id + "/delete");
-          $("#deleteModal").modal();
-      }
     /*<![CDATA[*/
+    var sortCol, sortAscending
+
+    init()
+    
+    function init() {
+      sortCol = 2
+      sortAscending = false
+      sortTutors(sortCol)
+    }
+
+    function del(name, id) {
+      document.getElementById("tNameDel").innerHTML = name;
+      document.getElementById("deleteForm").setAttribute("action", "/tutors/" + id + "/delete");
+      $("#deleteModal").modal();
+    }
+    
+    function sortTutors(newSortCol) {
+      var headers = document.getElementById("tutorHeaders")
+
+      toggleSortingArrows()
+      
+      if(newSortCol === sortCol) {
+        sortAscending = !sortAscending
+      } else {
+        sortCol = newSortCol
+        sortAscending = true
+      }
+
+      toggleSortingArrows()
+
+      $.ajax({
+        url: "/tutors/sort",
+        method: "GET",
+        data: {
+          col: sortCol,
+          ascending: sortAscending
+        },
+        success: function(data) {
+          var table = document.getElementById("tutorTable")
+          for(var i = 0; i != table.rows.length; ++i) {
+            table.rows[i].cells[0].innerHTML = data[i].email
+            table.rows[i].cells[1].innerHTML = data[i].firstName
+            table.rows[i].cells[2].innerHTML = data[i].lastName
+            table.rows[i].cells[3].innerHTML = data[i].numberOfCoursesAssigned
+            table.rows[i].cells[4].childNodes[1].childNodes[1].innerHTML = data[i].isActive ? "Active" : "Inactive"
+            table.rows[i].cells[4].childNodes[1].childNodes[4].checked = data[i].isActive
+            table.rows[i].cells[4].childNodes[1].childNodes[4].dataset.tid = data[i].id
+            table.rows[i].cells[5].childNodes[0].setAttribute("href", "/tutors/" + data[i].id)
+            table.rows[i].cells[6].childNodes[0].dataset.tmail = data[i].email
+            table.rows[i].cells[6].childNodes[0].dataset.tid = data[i].id
+            table.parentNode.style.display = "initial"
+          }
+        },
+      })
+    }
+
+    function toggleSortingArrows() {
+      switch(sortCol) {
+        case 0:
+          if(sortAscending) {
+            $("#email").toggleClass("sortAscending")
+          } else {
+            $("#email").toggleClass("sortDescending")
+          }
+          break
+        case 1:
+          if(sortAscending) {
+            $("#fname").toggleClass("sortAscending")
+          } else {
+            $("#fname").toggleClass("sortDescending")
+          }
+          break
+        case 2:
+          if(sortAscending) {
+            $("#lname").toggleClass("sortAscending")
+          } else {
+            $("#lname").toggleClass("sortDescending")
+          }
+          break
+        case 3:
+          if(sortAscending) {
+            $("#assigned").toggleClass("sortAscending")
+          } else {
+            $("#assigned").toggleClass("sortDescending")
+          }
+          break
+        case 4:
+          if(sortAscending) {
+            $("#active").toggleClass("sortAscending")
+          } else {
+            $("#active").toggleClass("sortDescending")
+          }
+          break
+      }
+    }
+
+    $(".deleteTutorButton").click(e => {
+      del(e.target.dataset.tmail, e.target.dataset.tid)
+    })
+    
     $(".tutorIsActiveCheckbox").click(e => {
       e.preventDefault()
       e.stopImmediatePropagation()
@@ -107,24 +223,21 @@ phtcon@ucsb.edu,Conrad,Phill
       if (e.target.checked) {
         $.ajax({
           url: "/tutors/active",
-          method: "POST",
+          method: "PUT",
           data: {
             tid: e.target.dataset.tid,
-            [[${_csrf.parameterName}]]: [[${_csrf.token}]]
+            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
           },
         }).then(() => {
           e.target.checked = true
-          console.log(e.target)
-          console.log(e.target.parentNode)
-          console.log(e.target.parentNode.childNodes[1])
           e.target.parentNode.childNodes[1].innerHTML = "Active"
         })
       } else {
         $.ajax({
           url: `/tutors/${e.target.dataset.tid}`,
-          method: "DELETE",
+          method: "PUT",
           data: {
-            [[${_csrf.parameterName}]]: [[${_csrf.token}]]
+            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
           },
         }).then(() => {
           e.target.checked = false
