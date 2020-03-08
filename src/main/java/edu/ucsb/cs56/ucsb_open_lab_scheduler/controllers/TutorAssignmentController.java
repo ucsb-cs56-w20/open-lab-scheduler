@@ -26,9 +26,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Controller
@@ -91,9 +93,32 @@ public class TutorAssignmentController {
         .filter((ta) -> ta.getTutor().getIsActive())
         .anyMatch((ta) -> ta.getTutor().equals(tutor));
 
+    // get other courses tutors are enrolled in this quarter
+    ArrayList<String> tutorCourses = new ArrayList<>();
+    for (Tutor t : tutors) {
+      StringBuilder stringBuilder = new StringBuilder();
+      Stream<TutorAssignment> tutorStream = tutorAssignmentRepository.findByTutorAndCourseOfferingQuarter(t,
+              courseOffering.get().getQuarter()).parallelStream();
+      tutorStream.forEach(item -> {
+        if (item.getCourseOffering().getCourseId() != courseOffering.get().getCourseId()) {
+          stringBuilder.append(item.getCourseOffering().getCourseId() + ", ");
+        }
+      });
+      if (stringBuilder.toString().equalsIgnoreCase("")) {
+        tutorCourses.add("");
+      } else {
+        tutorCourses.add(stringBuilder.toString().substring(0, stringBuilder.toString().length() - 2));
+      }
+    }
+
+
     model.addAttribute("shouldBeChecked", shouldBeChecked);
     model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());
+    model.addAttribute("tutorCourses", tutorCourses);
+
+
+
     
     Predicate<Tutor> shouldBeChecked2 = tutor -> tutorAssignments.stream()
       .filter((ta) -> ta.getIsCourseLead())
