@@ -63,6 +63,7 @@ public class InstructorMenuController {
 
     @Autowired
     private TutorAssignmentRepository tutorAssignmentRepository;
+        
 
     
     private Comparator<CourseOffering> byYear=(c1,c2)->Integer.compare(Integer.parseInt(c2.getQuarter().substring(1,3)), Integer.parseInt(c1.getQuarter().substring(1,3)));
@@ -74,7 +75,6 @@ public class InstructorMenuController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-
         String email= (String) token.getPrincipal().getAttributes().get("email");
         List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
         Collections.sort(courseList,byYear.thenComparing(byFirstLetter));
@@ -84,7 +84,7 @@ public class InstructorMenuController {
 
     @GetMapping("/instructorMenu/{id}")
     public String getTutor(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
-            RedirectAttributes redirAttrs) {
+                           RedirectAttributes redirAttrs){
         if (!authControllerAdvice.getIsInstructor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
@@ -100,8 +100,12 @@ public class InstructorMenuController {
         return "instructorMenu/getTutors";
     }
     @GetMapping("/InstructorMenu/downloadCSV/{id}")
-    public void exportCSV(@PathVariable long id, Model model, HttpServletResponse response, RedirectAttributes redirAttrs)
+    public String exportCSV(@PathVariable long id, Model model, HttpServletResponse response,  OAuth2AuthenticationToken token, RedirectAttributes redirAttrs)
             throws Exception {
+        if (!authControllerAdvice.getIsInstructor(token)) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
         Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(id);
         String[] header = { "Email", "Last Name", "First Name" };
         String filename = "Tutors.csv";
@@ -113,6 +117,7 @@ public class InstructorMenuController {
 
         TutorlistToCSV.writeCSV(response.getWriter(), tutorassignment);
         //model.addAttribute("currentInstructorCourse", tutorAssignmentRepository.findByCourseOffering(courseOffering.get()));
+        return "redirect:/instructorMenu/instructorMenu";
     }
 
 }
