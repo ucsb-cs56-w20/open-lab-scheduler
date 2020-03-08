@@ -3,6 +3,12 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvRecurse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.validations.TimeConstraint;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,10 +32,12 @@ public class RoomAvailability{
 
     @CsvBindByPosition(position = 2)
     @NotNull
+    @TimeConstraint
     private int startTime;
 
     @CsvBindByPosition(position = 3)
     @NotNull
+    @TimeConstraint
     private int endTime;
 
     @CsvBindByPosition(position = 1)
@@ -41,21 +49,25 @@ public class RoomAvailability{
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, Room room) {
+    private int duration;
+
+    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
         this.id = id;
         this.quarter = quarter;
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
-        this.room = room;
+        this.room = new Room(room);
+        this.duration = militaryToMinutes(this.endTime) - militaryToMinutes(this.startTime);
     }
 
-    public RoomAvailability(String quarter, int startTime, int endTime, String day, Room room) {
+    public RoomAvailability(String quarter, int startTime, int endTime, String day, String room) {
         this.quarter = quarter;
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
-        this.room = room;
+        this.room = new Room(room);
+        this.duration = militaryToMinutes(this.endTime) - militaryToMinutes(this.startTime);
     }
 
     public RoomAvailability(){}
@@ -117,6 +129,10 @@ public class RoomAvailability{
             time = "120" + time;
         }
         return time.substring(0,time.length()-2)+":"+time.substring(time.length()-2)+ " "+ suffix;
+    }
+
+    public int militaryToMinutes(int time) {
+        return ((time / 100) * 60) + (time % 100);
     }
 
     @Override

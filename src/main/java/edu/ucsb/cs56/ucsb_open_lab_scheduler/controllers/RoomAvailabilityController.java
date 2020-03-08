@@ -70,6 +70,7 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+        Iterable<RoomAvailability> list = roomAvailabilityRepository.findAll();
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "roomAvailability/roomAvailability";
     }
@@ -147,16 +148,14 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/create")
-    public String create(@ModelAttribute RoomAvailability ra, BindingResult result, @RequestParam("room") String room, OAuth2AuthenticationToken token) {
+    public String create(@ModelAttribute RoomAvailability ra, BindingResult result, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return "index";
         }
-        Room r = roomRepository.findByName(room);
-        if(r != null) {
-            ra.setRoom(r);
-        } else {
-            ra.setRoom(new Room(room));
+        Room r = roomRepository.findByName(ra.getRoom().getName());
+        if(r == null) {
+            roomRepository.save(r);
         }
         roomAvailabilityRepository.save(ra);
 
@@ -180,24 +179,23 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/save")
-    public String save(@ModelAttribute RoomAvailability ra, BindingResult result, @RequestParam("room") String room, @RequestParam("id") long id,
+    public String save(@ModelAttribute RoomAvailability ra, BindingResult result, @RequestParam("id") long id,
         OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return "index";
 
         }
-        logger.info(room);
         RoomAvailability existingRA = roomAvailabilityRepository.findById(id);
         existingRA.setQuarter(ra.getQuarter());
         existingRA.setDay(ra.getDay());
         existingRA.setStartTime(ra.getStartTime());
         existingRA.setEndTime(ra.getEndTime());
-        Room r = roomRepository.findByName(room);
-        if(r != null) {
-            ra.setRoom(r);
+        Room r = roomRepository.findByName(ra.getRoom().getName());
+        if(r == null) {
+            roomRepository.save(r);
         } else {
-            ra.setRoom(new Room(room));
+            existingRA.setRoom(r);
         }
         roomAvailabilityRepository.save(ra);
 

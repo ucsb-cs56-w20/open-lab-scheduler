@@ -51,7 +51,7 @@
       <div class="form-group">
         <label for="room">Room</label>
         <input type="text" class="form-control" id="room" name="room" aria-describedby="roomInput"
-          th:attr="value=${(raExists)? ra.getRoom().getName() : ''}">
+          th:attr="value=${(raExists)? ra.getRoom().getName() : ''}" th:field="*{room}">
       </div>
       <input th:if="${raExists}" type="hidden" id="id" name="id" th:value="${raID}">
       <button type="submit" class="btn btn-primary" id="save">Save</button>
