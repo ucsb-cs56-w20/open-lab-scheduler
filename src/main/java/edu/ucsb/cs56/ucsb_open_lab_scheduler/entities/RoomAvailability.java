@@ -59,27 +59,30 @@ public class RoomAvailability{
     @JoinColumn(name = "room_id")
     private Room room;
 
+    //@Value("${app.timeSlotDefaultDuration}")
     private int defaultDuration;
 
-    public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
+    /*public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
         this.id = id;
         this.quarter = quarter;
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
         this.room = new Room(room);
-    }
+    }*/
 
-    public RoomAvailability(String quarter, int startTime, int endTime, String day, String room, int duration) {
+    /*public RoomAvailability(String quarter, int startTime, int endTime, String day, String room, int duration) {
         this.quarter = quarter;
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
         this.room = new Room(room);
         this.defaultDuration = duration;
-    }
+    }*/
 
-    public RoomAvailability(){}
+    public RoomAvailability(){
+        this.defaultDuration = 30;
+    }
 
     public String getQuarter() {
         return this.quarter;
