@@ -4,6 +4,27 @@
 <head>
   <div th:replace="bootstrap/title.html"></div>
   <div th:replace="bootstrap/bootstrap_head.html"></div>
+  <style>
+    .sortAscending, .sortDescending {
+      padding-left: 20px;
+    }
+    .sortAscending:after {
+        content: ' ';
+        position: relative;
+        left: 10px;
+        border: 7px solid transparent;
+        bottom: 15px;
+        border-bottom-color: silver;
+    }
+    .sortDescending:after {
+        content: ' ';
+        position: relative;
+        left: 10px;
+        border: 7px solid transparent;
+        top: 15px;
+        border-top-color: silver;
+    }
+  </style>
 </head>
 
 <body>
@@ -36,12 +57,12 @@ phtcon@ucsb.edu,Conrad,Phill
 
         <table class="table table-striped table-responsive-md" style="display: none">
           <thead>
-            <tr>
-              <th onclick="sortTutors(0)">Email</th>
-              <th onclick="sortTutors(1)">First Name</th>
-              <th onclick="sortTutors(2)">Last Name</th>
-              <th onclick="sortTutors(3)">Assigned Courses</th>
-              <th onclick="sortTutors(4)">Active</th>
+            <tr id="tutorHeaders">
+              <th id="email" onclick="sortTutors(0)" style="cursor: pointer">Email</th>
+              <th id="fname" onclick="sortTutors(1)" style="cursor: pointer">First Name</th>
+              <th id="lname" onclick="sortTutors(2)" style="cursor: pointer" class="sortDescending">Last Name</th>
+              <th id="assigned" onclick="sortTutors(3)" style="cursor: pointer">Assigned Courses</th>
+              <th id="active" onclick="sortTutors(4)" style="cursor: pointer">Active</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -112,12 +133,19 @@ phtcon@ucsb.edu,Conrad,Phill
     }
     
     function sortTutors(newSortCol) {
+      var headers = document.getElementById("tutorHeaders")
+
+      toggleSortingArrows()
+      
       if(newSortCol === sortCol) {
         sortAscending = !sortAscending
       } else {
         sortCol = newSortCol
         sortAscending = true
       }
+
+      toggleSortingArrows()
+
       $.ajax({
         url: "/tutors/sort",
         method: "GET",
@@ -142,6 +170,46 @@ phtcon@ucsb.edu,Conrad,Phill
           }
         },
       })
+    }
+
+    function toggleSortingArrows() {
+      switch(sortCol) {
+        case 0:
+          if(sortAscending) {
+            $("#email").toggleClass("sortAscending")
+          } else {
+            $("#email").toggleClass("sortDescending")
+          }
+          break
+        case 1:
+          if(sortAscending) {
+            $("#fname").toggleClass("sortAscending")
+          } else {
+            $("#fname").toggleClass("sortDescending")
+          }
+          break
+        case 2:
+          if(sortAscending) {
+            $("#lname").toggleClass("sortAscending")
+          } else {
+            $("#lname").toggleClass("sortDescending")
+          }
+          break
+        case 3:
+          if(sortAscending) {
+            $("#assigned").toggleClass("sortAscending")
+          } else {
+            $("#assigned").toggleClass("sortDescending")
+          }
+          break
+        case 4:
+          if(sortAscending) {
+            $("#active").toggleClass("sortAscending")
+          } else {
+            $("#active").toggleClass("sortDescending")
+          }
+          break
+      }
     }
 
     $(".deleteTutorButton").click(e => {
