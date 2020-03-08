@@ -35,14 +35,19 @@ public class TutorCheckIn {
         this.timeSlotAssignmentId = timeSlotAssignmentId;
     }
 
-    public TutorCheckIn(TimeSlotAssignment timeSlotAssignmentId, String date, String remarks) {
+    public TutorCheckIn(TimeSlotAssignment timeSlotAssignmentId, String time, String date, String remarks) {
         this.timeSlotAssignmentId = timeSlotAssignmentId;
+        this.time = time;
         this.date = date;
         this.remarks = remarks;
     }
 
     public void setId(TimeSlotAssignment timeSlotAssignmentId) {
         this.timeSlotAssignmentId = timeSlotAssignmentId;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setDate(String date) {
@@ -55,6 +60,10 @@ public class TutorCheckIn {
 
     public TimeSlotAssignment getId() {
         return timeSlotAssignmentId;
+    }
+
+    public String getTime() {
+        return time;
     }
 
     public String getDate() {

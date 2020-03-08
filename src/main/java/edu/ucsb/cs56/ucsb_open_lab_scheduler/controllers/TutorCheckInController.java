@@ -16,10 +16,15 @@ import org.springframework.validation.BindingResult;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorCheckIn;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlotAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorCheckInRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.ValidEmailService;
+
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,9 +41,6 @@ public class TutorCheckInController {
     private AuthControllerAdvice authControllerAdvice;
 
     private TutorCheckInRepository tutorcheckinRepository;
-
-    // @Value("${app.admin.email}")
-    // private long timeSlotAssignmentId;
 
     @Autowired
     public TutorCheckInController(TutorCheckInRepository repo) {
@@ -71,9 +73,27 @@ public class TutorCheckInController {
             return "redirect:/";
         }
         model.addAttribute("tutors", tutorcheckinRepository.findAll());
-        model.addAttribute("newTutor", new TutorCheckIn());
+        //model.addAttribute("newTutor", new TutorCheckIn());
         return "/tutorCheckIn/viewLog";
     }
+
+    @PostMapping("/tutorCheckIn/create")
+    public ResponseEntity<?> create(@RequestParam("timeSlotAssignmentId") TimeSlotAssignment timeSlotAssignmentId, @RequestParam("time") String time,
+            @RequestParam("date") String date, @RequestParam("remarks") String remarks,
+            OAuth2AuthenticationToken token) {
+       // String role = authControllerAdvice.getRole(token);
+        if (!authControllerAdvice.getIsTutor(token)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        TutorCheckIn tutorCheckIn = new TutorCheckIn(timeSlotAssignmentId, time, date, remarks);
+
+        tutorcheckinRepository.save(tutorCheckIn);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 
     // @PostMapping("/tutorCheckIn") -- USE LATER?
     // public String addEntry(@Valid TutorCheckIn tutor, BindingResult result, Model model, RedirectAttributes redirAttrs,
