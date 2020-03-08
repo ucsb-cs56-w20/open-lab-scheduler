@@ -70,7 +70,6 @@ public class GoogleMembershipService implements MembershipService {
      * @param roleToTest "member" or "admin"
      * @return if the current logged in user has that role
      */
-
     public boolean hasRole(OAuth2AuthenticationToken oauthToken, String roleToTest) {
 
         logger.info("adminEmails=[" + adminEmails + "]");
@@ -82,11 +81,14 @@ public class GoogleMembershipService implements MembershipService {
             logger.error(String.format("unable to obtain autowired clientService"));
             return false;
         }
+
         OAuth2AuthorizedClient client = clientService
                 .loadAuthorizedClient(oauthToken.getAuthorizedClientRegistrationId(), oauthToken.getName());
+                
         OAuth2User oAuth2User = oauthToken.getPrincipal();
 
         String email = (String) oAuth2User.getAttributes().get("email");
+
         // hd is the domain of the email, e.g. ucsb.edu
         String hostedDomain = (String) oAuth2User.getAttributes().get("hd");
 
