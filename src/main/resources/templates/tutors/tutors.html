@@ -30,7 +30,7 @@ phtcon@ucsb.edu,Conrad,Phill
         <br>
 
         <a href="/tutors/add" class="btn btn-primary" style="display: inline-block" role="button">Create New Tutor</a>
-          <a href="/tutors/tutors.csv" type="button" class="btn btn-secondary">Download Tutors to CSV</a>
+        <a href="/tutors/tutors.csv" type="button" class="btn btn-secondary">Download Tutors to CSV</a>
 
         <br><br>
 
@@ -38,12 +38,12 @@ phtcon@ucsb.edu,Conrad,Phill
           <thead>
             <tr>
               <th>Email</th>
-              <th>First Name</th>
-              <th>Last Name</th>
+              <th onclick="sortTutors(1)">First Name</th>
+              <th onclick="sortTutors(2)">Last Name</th>
               <th>Assigned Courses</th>
-                <th>Active</th>
-                <th>Edit</th>
-                <th>Delete</th>
+              <th>Active</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -67,38 +67,39 @@ phtcon@ucsb.edu,Conrad,Phill
       </div>
     </div>
 
-      <!-- Delete Confirmation -->
-      <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title">Delete Tutor</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                  <div class="modal-body">
-                      Are you sure you want to delete <b id="tNameDel">TUTOR_NAME_SET_WITH_JS</b>? <br><br>All associated TutorAssignments will also be removed. This action can not be reversed.
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <form id="deleteForm" action="ACTION_SET_BY_JS" method="get" >
-                          <button type="submit" class="btn btn-danger">Confirm Delete</button>
-                      </form>
-                  </div>
-              </div>
-          </div>
-      </div>
+    <!-- Delete Confirmation -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Tutor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete <b id="tNameDel">TUTOR_NAME_SET_WITH_JS</b>? <br><br>All associated TutorAssignments will also be removed. This action can not be reversed.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <form id="deleteForm" action="ACTION_SET_BY_JS" method="get" >
+                        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
   <script th:inline="javascript">
-      function del(name, id) {
-          document.getElementById("tNameDel").innerHTML = name;
-          document.getElementById("deleteForm").setAttribute("action", "/tutors/" + id + "/delete");
-          $("#deleteModal").modal();
-      }
+    function del(name, id) {
+        document.getElementById("tNameDel").innerHTML = name;
+        document.getElementById("deleteForm").setAttribute("action", "/tutors/" + id + "/delete");
+        $("#deleteModal").modal();
+    }
+
     /*<![CDATA[*/
     $(".tutorIsActiveCheckbox").click(e => {
       e.preventDefault()
