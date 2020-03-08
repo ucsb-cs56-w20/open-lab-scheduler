@@ -41,6 +41,9 @@ public class TutorCheckInController {
     private AuthControllerAdvice authControllerAdvice;
     
     @Autowired
+    private TutorRepository tutorRepository;
+    
+    @Autowired
     private TutorCheckInRepository tutorcheckinRepository;
 
     @Autowired
@@ -73,6 +76,12 @@ public class TutorCheckInController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
+        Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
+        if (!tutor.isPresent()) {
+            redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
+            return "redirect:/";
+        } 
+
         List<TutorCheckIn> tutorCheckIns = tutorcheckinRepository.findAll();
         model.addAttribute("tutorCheckIns", tutorCheckIns);
         logger.info("tutorCheckIns" + tutorCheckIns);
@@ -87,7 +96,7 @@ public class TutorCheckInController {
        // String role = authControllerAdvice.getRole(token);
         if (!authControllerAdvice.getIsTutor(token)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
+        } 
 
         TutorCheckIn tutorCheckIn = new TutorCheckIn(timeSlotAssignmentId, time, date, remarks);
 
