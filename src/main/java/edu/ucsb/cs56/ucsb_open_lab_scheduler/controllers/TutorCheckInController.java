@@ -48,7 +48,7 @@ public class TutorCheckInController {
     @GetMapping("/tutorCheckIn")
     public String tutorcheckin(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Tutor")) {
+        if (!authControllerAdvice.getIsTutor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
