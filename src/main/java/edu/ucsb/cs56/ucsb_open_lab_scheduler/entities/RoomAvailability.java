@@ -49,6 +49,7 @@ public class RoomAvailability{
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @DurationConstraint
     private int duration;
 
     public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
