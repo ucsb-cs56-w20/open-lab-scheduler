@@ -46,7 +46,7 @@ phtcon@ucsb.edu,Conrad,Phill
               <th>Delete</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="tutorTable">
             <tr th:each="t : ${TutorModel}">
               <td th:text="${t.email}"></td>
               <td th:text="${t.firstName}"></td>
@@ -94,17 +94,46 @@ phtcon@ucsb.edu,Conrad,Phill
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
   <script th:inline="javascript">
+    /*<![CDATA[*/
+    var sortCol = 2
+    var sortAscending = true
+
     function del(name, id) {
       document.getElementById("tNameDel").innerHTML = name;
       document.getElementById("deleteForm").setAttribute("action", "/tutors/" + id + "/delete");
       $("#deleteModal").modal();
     }
-
-    function sortTutors(col) {
-      var x = 0 // TODO: replace placeholder
+    
+    function sortTutors(newSortCol) {
+      console.log('click: ' + newSortCol)
+      if(newSortCol === sortCol) {
+        sortAscending = !sortAscending
+      } else {
+        sortCol = newSortCol
+        sortAscending = true
+      }
+      $.ajax({
+        url: "/tutors/sort",
+        method: "GET",
+        data: {
+          col: sortCol,
+          ascending: sortAscending
+        },
+        success: function(data) {
+          var table = document.getElementById("tutorTable")
+          for(var i = 0; i != table.rows.length; ++i) {
+            table.rows[i].cells[0].innerHTML = data[i].email
+            table.rows[i].cells[1].innerHTML = data[i].firstName
+            table.rows[i].cells[2].innerHTML = data[i].lastName
+            table.rows[i].cells[3].innerHTML = data[i].numberOfCoursesAssigned
+            table.rows[i].cells[4].childNodes[1].childNodes[1].innerHTML = data[i].isActive ? "Active" : "Inactive"
+            table.rows[i].cells[4].childNodes[1].childNodes[4].checked = data[i].isActive
+            table.rows[i].cells[4].childNodes[1].childNodes[4].dataset.tid = data[i].id
+          }
+        },
+      })
     }
-
-    /*<![CDATA[*/
+    
     $(".tutorIsActiveCheckbox").click(e => {
       e.preventDefault()
       e.stopImmediatePropagation()
@@ -115,7 +144,7 @@ phtcon@ucsb.edu,Conrad,Phill
           method: "PUT",
           data: {
             tid: e.target.dataset.tid,
-            [[${_csrf.parameterName}]]: [[${_csrf.token}]]
+            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
           },
         }).then(() => {
           e.target.checked = true
@@ -126,7 +155,7 @@ phtcon@ucsb.edu,Conrad,Phill
           url: `/tutors/${e.target.dataset.tid}`,
           method: "PUT",
           data: {
-            [[${_csrf.parameterName}]]: [[${_csrf.token}]]
+            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
           },
         }).then(() => {
           e.target.checked = false

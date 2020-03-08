@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,6 +46,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
+@SessionAttributes("TutorModel")
 public class TutorController {
     private static Logger log = LoggerFactory.getLogger(TutorController.class);
 
@@ -110,7 +113,7 @@ public class TutorController {
     }
 
     @RequestMapping(value="/tutors/active", method=RequestMethod.PUT)
-    public ResponseEntity<?> setActive(@RequestParam("tid") long tid, OAuth2AuthenticationToken token) {
+    public ResponseEntity<?> setActive(@RequestParam("tid") long tid, @ModelAttribute("TutorModel") ArrayList<Tutor> tutors, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -125,7 +128,7 @@ public class TutorController {
     }
 
     @RequestMapping(value="/tutors/{tid}", method=RequestMethod.PUT)
-    public ResponseEntity<?> setInactive(@PathVariable("tid") long tid, OAuth2AuthenticationToken token) {
+    public ResponseEntity<?> setInactive(@PathVariable("tid") long tid, @ModelAttribute("TutorModel") ArrayList<Tutor> tutors, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -161,13 +164,8 @@ public class TutorController {
     }
 
     @GetMapping("/tutors/sort")
-    public ResponseEntity<?> sortTutors(@RequestParam("col") int col, @RequestParam("ascending") boolean ascending, 
-            @ModelAttribute("TutorModel") ArrayList<Tutor> tutors, OAuth2AuthenticationToken token) {
-        String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
+    public @ResponseBody ArrayList<Tutor> sortTutors(@RequestParam("col") int col, @RequestParam("ascending") boolean ascending, 
+            @ModelAttribute("TutorModel") ArrayList<Tutor> tutors) {
         switch(col) {
             case 0:
                 // by email, alphabetical
@@ -220,9 +218,9 @@ public class TutorController {
                 });
                 break;
             default:
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+                throw new IllegalArgumentException("Invalid column number: " + col);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return tutors;
     }
 }
