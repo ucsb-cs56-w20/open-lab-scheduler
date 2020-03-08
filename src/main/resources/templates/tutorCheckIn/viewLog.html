@@ -23,27 +23,16 @@
                   </tr>
                 </thead>
     
-                <!-- <tbody>
-                  <tr th:each="t: ${tutor}">
+                <tbody>
+                  <tr th:each="t: ${tutorLogModel}">
                     <td th:text="${t.id}"></td>
                     <td th:text="${t.time}"></td>
                     <td th:text="${t.date}"></td>
                     <td th:text="${t.remarks}"></td>
                   </tr>
     
-                </tbody> -->
+                </tbody>
     
-                <!-- <tbody>
-                  <tr th:each="ra : ${RoomAvailabilityModel}">
-                    <td th:text="${ra.quarter}"></td>
-                    <td th:text="${ra.day}"></td>
-                    <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
-                    <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
-                    <td th:text="${ra.room}"></td>
-                    <td><button type="button" class="btn btn-secondary edit" th:attr="data-raid=${ra.getId()}"><i class="far fa-edit"></i></button></td>
-                    <td><button type="button" class="btn btn-danger delete" th:attr="data-raid=${ra.getId()}"><i class="fas fa-trash-alt"></i></button></td>
-                  </tr>
-                </tbody> -->
               </table>
     
     
