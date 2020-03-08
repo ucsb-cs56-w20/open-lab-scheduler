@@ -5,6 +5,8 @@ import javax.validation.ConstraintValidatorContext;
 
 public class TimeValidator implements
   ConstraintValidator<TimeConstraint, Integer> {
+
+    public TimeValidator() {}
  
     @Override
     public void initialize(TimeConstraint time) {

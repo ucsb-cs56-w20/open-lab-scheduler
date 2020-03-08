@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,16 +32,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+<<<<<<< HEAD
 import com.opencsv.CSVWriter;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+=======
+import javax.validation.Valid;
+>>>>>>> bq - finished time validation, started on duration validation
 
 @Controller
 public class RoomAvailabilityController {
@@ -60,6 +64,7 @@ public class RoomAvailabilityController {
 
     @Autowired
     TimeSlotRepository timeSlotRepository;
+
     @Value("${app.timeSlotDefaultDuration}")
     private int defaultDuration;
 
@@ -70,7 +75,6 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        Iterable<RoomAvailability> list = roomAvailabilityRepository.findAll();
         model.addAttribute("roomAvailabilityModel", roomAvailabilityRepository.findAll());
         return "roomAvailability/roomAvailability";
     }
@@ -148,15 +152,25 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/create")
-    public String create(@ModelAttribute RoomAvailability ra, BindingResult result, OAuth2AuthenticationToken token) {
+    public String create(@ModelAttribute @Valid RoomAvailability ra, BindingResult result, OAuth2AuthenticationToken token, 
+        RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
+        if(result.hasErrors()) {
+            List<ObjectError> errors = result.getAllErrors();
+            String errorMessage = "";
+            for(ObjectError error : errors) {
+                errorMessage += error.getDefaultMessage() + "\n";
+            }
+            redirAttrs.addFlashAttribute("alertDanger", errorMessage);
+            return "redirect:/roomAvailability";
+        }
         if (!role.equals("Admin")) {
             return "index";
         }
         Room r = roomRepository.findByName(ra.getRoom().getName());
         if(r == null) {
-            roomRepository.save(r);
-        }
+            roomRepository.save(new Room(ra.getRoom().getName()));
+        } 
         roomAvailabilityRepository.save(ra);
 
         return "redirect:/roomAvailability";
@@ -179,12 +193,14 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/save")
-    public String save(@ModelAttribute RoomAvailability ra, BindingResult result, @RequestParam("id") long id,
+    public String save(@ModelAttribute @Valid RoomAvailability ra, BindingResult result, @RequestParam("id") long id,
         OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return "index";
-
+        }
+        if(result.hasErrors()) {
+            return "redirect:/roomAvailability";
         }
         RoomAvailability existingRA = roomAvailabilityRepository.findById(id);
         existingRA.setQuarter(ra.getQuarter());
@@ -193,7 +209,7 @@ public class RoomAvailabilityController {
         existingRA.setEndTime(ra.getEndTime());
         Room r = roomRepository.findByName(ra.getRoom().getName());
         if(r == null) {
-            roomRepository.save(r);
+            roomRepository.save(new Room(ra.getRoom().getName()));
         } else {
             existingRA.setRoom(r);
         }

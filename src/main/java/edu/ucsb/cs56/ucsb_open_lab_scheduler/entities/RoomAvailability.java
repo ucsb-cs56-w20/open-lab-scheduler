@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.validations.DurationConstraint;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.validations.TimeConstraint;
 
 import javax.persistence.Entity;
@@ -19,6 +20,14 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
+
+@DurationConstraint.List({
+    @DurationConstraint(
+        startTime = "startTime", 
+        endTime = "endTime", 
+        message = "Duration is not a multiple of default"
+    )
+})
 
 @Entity
 public class RoomAvailability{
@@ -49,9 +58,6 @@ public class RoomAvailability{
     @JoinColumn(name = "room_id")
     private Room room;
 
-    @DurationConstraint
-    private int duration;
-
     public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
         this.id = id;
         this.quarter = quarter;
@@ -59,7 +65,6 @@ public class RoomAvailability{
         this.endTime = endTime;
         this.day = day;
         this.room = new Room(room);
-        this.duration = militaryToMinutes(this.endTime) - militaryToMinutes(this.startTime);
     }
 
     public RoomAvailability(String quarter, int startTime, int endTime, String day, String room) {
@@ -68,7 +73,6 @@ public class RoomAvailability{
         this.endTime = endTime;
         this.day = day;
         this.room = new Room(room);
-        this.duration = militaryToMinutes(this.endTime) - militaryToMinutes(this.startTime);
     }
 
     public RoomAvailability(){}
