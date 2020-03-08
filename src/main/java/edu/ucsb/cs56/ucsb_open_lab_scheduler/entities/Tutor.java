@@ -97,6 +97,10 @@ public class Tutor{
         this.numberOfCoursesAssigned++;
     }
 
+    public String getFullName(){
+        return firstName + " " + lastName;
+    }
+
     @Override
     public String toString(){
         return "{"+

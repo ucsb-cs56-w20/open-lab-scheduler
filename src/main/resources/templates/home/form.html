@@ -1,0 +1,22 @@
+<form method="GET" th:object="${CourseSchedule}">
+     <div class="form-group row">
+            <label for="quarter" class="col-sm-2 col-form-label">Quarter</label>
+            <div class="col-sm-10">
+                <select th:field="*{quarter}" class="custom-select">
+                    <option th:each="q : ${uniqueQuartersModel}" th:value="${q}"th:text="${q}"></option>
+                </select>
+            </div>
+         </div> 
+       
+        <div class="form-group row">
+           <label for="course" class="col-sm-2 col-form-label">Course</label>
+            <div class="col-sm-10">
+                <select th:field="*{courseId}" class="custom-select">
+                    <option th:each="c : ${uniqueCourseOfferingModel}" th:value="${c}"th:text="${c}"></option>
+                </select>
+            </div>
+        </div>
+            
+
+        <button type="submit" th:formaction="@{/results}" class="btn btn-primary" id="public-schedule-display">Submit</button>
+  </form>
