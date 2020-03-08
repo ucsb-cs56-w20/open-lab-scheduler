@@ -17,6 +17,7 @@
               <tr>
                 <th>Quarter</th>
                 <th>Action</th>
+                <th>Open Lab Assignments</th>
               </tr>
             </thead>
             <tbody>
@@ -28,6 +29,12 @@
                   <a
                     th:href="'/quarter/' + ${quarter} + '/courseLeads'"
                     >Course Leads</a
+                  >
+                </td>
+                <td>
+                  <a
+                    th:href="'/quarter/' + ${quarter} + '/labAssignments'"
+                    >Lab Assignments</a
                   >
                 </td>
               </tr>
