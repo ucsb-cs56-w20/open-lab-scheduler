@@ -26,12 +26,10 @@ INSERT INTO time_slot(room_availability_id, start_time, end_time) VALUES ('3', '
 INSERT INTO time_slot(room_availability_id, start_time, end_time) VALUES ('3', '1330', '1400');
 INSERT INTO time_slot(room_availability_id, start_time, end_time) VALUES ('3', '1400', '1430');
 INSERT INTO time_slot(room_availability_id, start_time, end_time) VALUES ('3', '1430', '1500');
-INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (2,1);
-INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (2,2);
-INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (2,3);
-INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (2,4);
-INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,5);
-INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,6);
-INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,7);
-INSERT INTO time_slot_assignment(tutor_id, time_slot_id) VALUES (1,8);
+INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VALUES (2,1,1);
+INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VALUES (2,2,1);
+INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VALUES (2,3,1);
+INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VALUES (3,4,2);
+INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VALUES (3,5,2);
+INSERT INTO time_slot_assignment(tutor_id, time_slot_id, course_offering_id) VALUES (3,6,2);
 

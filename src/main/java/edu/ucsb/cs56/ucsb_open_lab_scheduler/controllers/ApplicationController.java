@@ -90,6 +90,7 @@ public class ApplicationController{
             courseOfferingRepository.findByQuarterAndCourseId(quarter, courseId));
         java.util.Collections.sort(timeSlotAssignments,sortByDay.thenComparing(sortByRoom).thenComparing(sortByTimeSlot).thenComparing(sortByTutorLastName));
         model.addAttribute("timeSlotAssignments", timeSlotAssignments);
+        model.addAttribute("isEmpty", timeSlotAssignments.isEmpty());
         return "home/results";
     }
 
