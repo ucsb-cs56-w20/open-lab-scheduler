@@ -3,12 +3,16 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.RoomAvailabilityDownloadCSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.opencsv.CSVWriter;
@@ -45,6 +50,11 @@ public class RoomAvailabilityController {
 
     @Autowired
     RoomAvailabilityRepository roomAvailabilityRepository;
+
+    @Autowired
+    TimeSlotRepository timeSlotRepository;
+    @Value("${app.timeSlotDefaultDuration}")
+    private int defaultDuration;
 
     @GetMapping("/roomAvailability")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
@@ -86,11 +96,30 @@ public class RoomAvailabilityController {
         try (Reader reader = new InputStreamReader(csv.getInputStream())) {
             List<RoomAvailability> roomAvails = csvToObjectService.parse(reader, RoomAvailability.class);
             roomAvailabilityRepository.saveAll(roomAvails);
+            List<TimeSlot> timeSlots = new ArrayList<>();
+            for ( RoomAvailability ra: roomAvails){
+                int start = ra.getStartTime();
+                int end = ra.getEndTime();
+                while ( start <= end-30){
+                    TimeSlot ts = new TimeSlot();
+                    ts.setRoomAvailability(ra);
+                    ts.setStartTime(start);
+                    if (start%100 >= 30){
+                        start += 70;
+                        ts.setEndTime(start);
+                    } else {
+                        start+=30;
+                        ts.setEndTime(start);
+                    }
+                    timeSlots.add(ts);
+                }
+            }
+            timeSlotRepository.saveAll(timeSlots);
         } catch (IOException e) {
             log.error(e.toString());
-        }catch(RuntimeException a){
-            redirAttrs.addFlashAttribute("message", "Please enter a file with correct CSV variable types");
-            return "redirect:/roomavailability";
+        } catch (RuntimeException a){
+            redirAttrs.addFlashAttribute("alertDanger", "Please enter a correct csv file.");
+            return "redirect:/roomAvailability";
         }
         return "redirect:/roomAvailability";
     }
@@ -103,6 +132,7 @@ public class RoomAvailabilityController {
             return "redirect:/";
         }
         model.addAttribute("raExists", false);
+        model.addAttribute("defaultDuration", defaultDuration);
         return "roomAvailability/edit";
 
     }
@@ -132,9 +162,12 @@ public class RoomAvailabilityController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        model.addAttribute("ra", roomAvailabilityRepository.findById(id).get());
+
+        model.addAttribute("ra", roomAvailabilityRepository.findById(id));
+        model.addAttribute("raDay", roomAvailabilityRepository.findById(id).getDay());
         model.addAttribute("raExists", true);
         model.addAttribute("raID", id);
+        model.addAttribute("defaultDuration", defaultDuration);
         return "roomAvailability/edit";
     }
 
@@ -147,7 +180,7 @@ public class RoomAvailabilityController {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
-        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id)).get();
+        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id));
         ra.setQuarter(quarter);
         ra.setDay(day);
         ra.setStartTime(Integer.parseInt(start));

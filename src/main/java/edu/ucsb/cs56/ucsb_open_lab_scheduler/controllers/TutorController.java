@@ -101,7 +101,7 @@ public class TutorController {
         }catch(IOException e){
             log.error(e.toString());
         }catch(RuntimeException a){
-            redirAttrs.addFlashAttribute("message", "Please enter a file with correct CSV variable types for Tutor information.");
+            redirAttrs.addFlashAttribute("alertDanger", "Please enter a correct csv file.");
             return "redirect:/tutors";
         }
         return "redirect:/tutors";
