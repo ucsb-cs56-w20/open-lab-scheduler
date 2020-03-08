@@ -62,11 +62,7 @@
           My Courses
         </a>
       </li>
-      <li th:if="${isTutor}" class="nav-item ">
-        <a class="nav-link" href="/tutorCheckIn" id="navbarDropdown" role="button">
-          Tutor Check In
-        </a>
-      </li>
+
       <li th:if="${isAdmin}" class="nav-item ">
         <a
           class="nav-link"
@@ -87,7 +83,51 @@
           Tutor View
         </a>
       </li>
+
+      <!-- <li th:if="${isTutor}" class="nav-item ">
+        <a class="nav-link" href="/tutorCheckIn" id="navbarDropdown" role="button">
+          Log Tutor Entry
+        </a>
+      </li> -->
     </ul>
+
+    <li th:if="${isLoggedIn}" class="dropdown user-nav">
+      <a
+        href="#"
+        class="dropdown-toggle float-right"
+        data-toggle="dropdown"
+        role="button"
+        aria-haspopup="true"
+        aria-expanded="false"
+      >Tutor Check In
+      </a>
+      <ul class="dropdown-menu">
+        <li role="separator" class="divider"></li>
+        <li class="dropdown-item">
+          <!-- <form
+            method="POST"
+            action="/logout"
+            class="form-inline"
+            th:if="${isLoggedIn}"
+          > -->
+            <!-- <button class="navbar-btn" type="submit">Log Tutor Entry</button> -->
+            <a class="nav-link" href="/tutorCheckIn" id="navbarDropdown" role="button">
+              Log Tutor Entry
+            </a>
+            <!-- <input
+              type="hidden"
+              th:name="${_csrf.parameterName}"
+              th:value="${_csrf.token}"
+            /> -->
+          <!-- </form> -->
+        </li>
+        <li class="dropdown-item"> 
+          <a class="nav-link" href="/tutorCheckIn" id="navbarDropdown" role="button">
+            View Tutor Log
+          </a>
+        </li>
+      </ul>
+    </li>
 
 
     <ul class="nav navbar-nav navbar-right">
