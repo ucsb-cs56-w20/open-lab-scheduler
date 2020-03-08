@@ -54,7 +54,7 @@ public class TutorAssignmentController {
   @GetMapping("/tutorAssignment/courseSelect")
   public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Admin"))) {
+    if (!(role.equals("Admin")) && !(role.equals("Instructor"))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -68,11 +68,13 @@ public class TutorAssignmentController {
     String role = authControllerAdvice.getRole(token);
     String email= (String) token.getPrincipal().getAttributes().get("email");
     List<CourseOffering> instructorCourses=courseOfferingRepository.findByInstructorEmail(email);
+
     boolean isInstructorForCourse=false;
     for(int i=0;i<instructorCourses.size();i++){
       if(instructorCourses.get(i).getId()==id)
         isInstructorForCourse=true;
     }
+    
     if (!((role.equals("Admin")) || (isInstructorForCourse))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";

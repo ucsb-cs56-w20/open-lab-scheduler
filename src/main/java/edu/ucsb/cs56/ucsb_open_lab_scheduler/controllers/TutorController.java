@@ -65,7 +65,7 @@ public class TutorController {
     @GetMapping("/tutors")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!(role.equals("Admin"))) {
+        if (!(role.equals("Admin")) && !(role.equals("Instructor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -96,7 +96,7 @@ public class TutorController {
     @PostMapping("/tutors/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!(role.equals("Admin"))) {
+        if (!(role.equals("Admin")) && !(role.equals("Instructor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -109,13 +109,14 @@ public class TutorController {
             redirAttrs.addFlashAttribute("alertDanger", "Please enter a correct csv file.");
             return "redirect:/tutors";
         }
+        
         return "redirect:/tutors";
     }
 
     @RequestMapping(value="/tutors/active", method=RequestMethod.PUT)
     public ResponseEntity<?> setActive(@RequestParam("tid") long tid, @ModelAttribute("TutorModel") ArrayList<Tutor> tutors, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!role.equals("Admin") && !role.equals("Instructor")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -130,7 +131,7 @@ public class TutorController {
     @RequestMapping(value="/tutors/{tid}", method=RequestMethod.PUT)
     public ResponseEntity<?> setInactive(@PathVariable("tid") long tid, @ModelAttribute("TutorModel") ArrayList<Tutor> tutors, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!role.equals("Admin") && !role.equals("Instructor")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
