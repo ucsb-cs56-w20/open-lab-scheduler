@@ -87,10 +87,12 @@
           Tutor View
         </a>
       </li>
+    </ul>
 
+    <ul class = "navbar-nav mr-auto mt-2 mt-lg-0">
       <li th:if="${isTutor}" class="dropdown user-nav">
-        <a href="#" class="dropdown-toggle float-right" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
-        >Tutor Check In
+        <a href="#" class="dropdown-toggle float-right" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        Tutor Check In
         </a>
         <ul class="dropdown-menu">
           <li role="separator" class="divider"></li>
@@ -107,8 +109,6 @@
         </ul>
       </li>
     </ul>
-
-
 
     <ul class="nav navbar-nav navbar-right">
       <li th:if="${isLoggedIn}">
