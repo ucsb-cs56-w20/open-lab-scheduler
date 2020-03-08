@@ -39,7 +39,8 @@ public class TutorCheckInController {
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
-
+    
+    @Autowired
     private TutorCheckInRepository tutorcheckinRepository;
 
     @Autowired
