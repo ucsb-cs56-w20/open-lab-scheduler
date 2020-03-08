@@ -199,4 +199,5 @@ public class QuarterController {
     
 
     return "quarter/labAssignments";
-  }                         
+  }
+}  
