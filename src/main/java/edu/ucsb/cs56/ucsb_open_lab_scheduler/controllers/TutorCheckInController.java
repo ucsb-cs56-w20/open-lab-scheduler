@@ -63,14 +63,13 @@ public class TutorCheckInController {
     //     }
     // }
 
-    @GetMapping("/tutorCheckIn/viewLog") // EDIT THIS FUNCTION TO DISPLAY LOG
+    @GetMapping("/tutorCheckIn/viewLog")
     public String viewLog(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Tutor")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        // addTutor();
         model.addAttribute("tutors", tutorcheckinRepository.findAll());
         model.addAttribute("newTutor", new TutorCheckIn());
         return "/tutorCheckIn/viewLog";
