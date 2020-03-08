@@ -16,8 +16,8 @@ INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assi
 INSERT INTO tutor_assignment(course_offering_id, tutor_id, is_course_lead) VALUES (1, 1, 0);
 
 /*
-INSERT INTO tutor(id, time, date, remarks) VALUES ('1','10:00','10/10/20','helped a student with constructor method');
-INSERT INTO tutor(id, time, date, remarks) VALUES ('2','1:30','3/7/20','helped a student with function call');
-INSERT INTO tutor(id, time, date, remarks) VALUES ('3','6:00','9/3/20','explained recursion');
-INSERT INTO tutor(id, time, date, remarks) VALUES ('4','7:00','5/8/20','helped a student with dictionaries');
+INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('1','10:00','10/10/20','helped a student with constructor method');
+INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('2','1:30','3/7/20','helped a student with function call');
+INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('3','6:00','9/3/20','explained recursion');
+INSERT INTO tutorcheckin(id, time, date, remarks) VALUES ('4','7:00','5/8/20','helped a student with dictionaries');
 */
