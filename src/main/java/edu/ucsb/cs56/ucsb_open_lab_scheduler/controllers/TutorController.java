@@ -166,6 +166,12 @@ public class TutorController {
     @GetMapping("/tutors/sort")
     public @ResponseBody ArrayList<Tutor> sortTutors(@RequestParam("col") int col, @RequestParam("ascending") boolean ascending, 
             @ModelAttribute("TutorModel") ArrayList<Tutor> tutors) {
+        for(Tutor t : tutors) {
+            Tutor updatedTutor = tutorRepository.findById(t.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + t.getId()));
+            t.setIsActive(updatedTutor.getIsActive());
+        }
+
         switch(col) {
             case 0:
                 // by email, alphabetical
