@@ -11,7 +11,7 @@
     <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
 
     <h2 class="my-5" th:inline="text">[[${raExists} ? 'Editing' : 'Creating']] a Room Availability</h2>
-    <form action="#" method="post" th:action="@{/roomAvailability/create}" th:object="${ra}">
+    <form action="#" method="post" th:action="${raExists} ? @{/roomAvailability/save} : @{/roomAvailability/create}" th:object="${ra}">
       <div class="form-group">
         <label>Quarter</label>
         <input type="text" class="form-control" id="quarter" aria-describedby="quarterInput"
@@ -51,8 +51,9 @@
       <div class="form-group">
         <label for="room">Room</label>
         <input type="text" class="form-control" id="room" name="room" aria-describedby="roomInput"
-          th:attr="value=${(raExists)? ra.getRoom().getName() : ''}" value="room">
+          th:attr="value=${(raExists)? ra.getRoom().getName() : ''}">
       </div>
+      <input th:if="${raExists}" type="hidden" id="id" name="id" th:value="${raID}">
       <button type="submit" class="btn btn-primary" id="save">Save</button>
     </form>
     <div th:replace="bootstrap/bootstrap_footer.html"></div>

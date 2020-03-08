@@ -5,6 +5,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.RoomAvailabilityDownloadCSV;
@@ -53,6 +54,9 @@ public class RoomAvailabilityController {
 
     @Autowired
     RoomAvailabilityRepository roomAvailabilityRepository;
+
+    @Autowired
+    RoomRepository roomRepository;
 
     @Autowired
     TimeSlotRepository timeSlotRepository;
@@ -143,14 +147,18 @@ public class RoomAvailabilityController {
     }
 
     @PostMapping("/roomAvailability/create")
-    public String create(@ModelAttribute RoomAvailability newRA, BindingResult result, @RequestParam("room") String room, OAuth2AuthenticationToken token) {
+    public String create(@ModelAttribute RoomAvailability ra, BindingResult result, @RequestParam("room") String room, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return "index";
         }
-        newRA.setRoom(new Room(room));
-        roomAvailabilityRepository.save(newRA);
-        logger.info(newRA.getEndTime() + "");
+        Room r = roomRepository.findByName(room);
+        if(r != null) {
+            ra.setRoom(r);
+        } else {
+            ra.setRoom(new Room(room));
+        }
+        roomAvailabilityRepository.save(ra);
 
         return "redirect:/roomAvailability";
     }
@@ -171,21 +179,26 @@ public class RoomAvailabilityController {
         return "roomAvailability/edit";
     }
 
-    @PutMapping("/roomAvailability/save")
-    public String save(@RequestParam("id") String id, @RequestParam("quarter") String quarter,
-            @RequestParam("day") String day, @RequestParam("start") String start, @RequestParam("end") String end,
-            @RequestParam("room") String room, OAuth2AuthenticationToken token) {
+    @PostMapping("/roomAvailability/save")
+    public String save(@ModelAttribute RoomAvailability ra, BindingResult result, @RequestParam("room") String room, @RequestParam("id") long id,
+        OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return "index";
-        }
 
-        RoomAvailability ra = roomAvailabilityRepository.findById(Long.parseLong(id));
-        ra.setQuarter(quarter);
-        ra.setDay(day);
-        ra.setStartTime(Integer.parseInt(start));
-        ra.setEndTime(Integer.parseInt(end));
-        ra.setRoom(new Room(room));
+        }
+        logger.info(room);
+        RoomAvailability existingRA = roomAvailabilityRepository.findById(id);
+        existingRA.setQuarter(ra.getQuarter());
+        existingRA.setDay(ra.getDay());
+        existingRA.setStartTime(ra.getStartTime());
+        existingRA.setEndTime(ra.getEndTime());
+        Room r = roomRepository.findByName(room);
+        if(r != null) {
+            ra.setRoom(r);
+        } else {
+            ra.setRoom(new Room(room));
+        }
         roomAvailabilityRepository.save(ra);
 
         return "redirect:/roomAvailability";
