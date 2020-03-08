@@ -97,13 +97,8 @@ public class Tutor{
         this.numberOfCoursesAssigned++;
     }
 
-<<<<<<< HEAD
-    public String getFullName(){
-        return firstName + " " + lastName;
-=======
     public String getFullName() {
         return this.firstName + " " + this.lastName;
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
     }
 
     @Override

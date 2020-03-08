@@ -79,9 +79,9 @@
             </tr>
           </thead>
           <tbody>
-              <tr th:each="room, iStat: ${uniqueTimeSlots}">
-                <th th:text="${room.get(0).getTimeSlot().getRoomAvailability().getRoom().getName()}"></th>
-                <td th:each="data : ${tutorsPerCourse.get(iStat.index)}"  th:text="${data}"></td>
+              <tr th:each="room, iStat: ${uniqueRooms}">
+                <th th:text="${room.getName()}"></th>
+                <td th:each="data : ${tutorsPerRoom.get(iStat.index)}"  th:text="${data}"></td>
               </tr>
           </tbody>
         </table>

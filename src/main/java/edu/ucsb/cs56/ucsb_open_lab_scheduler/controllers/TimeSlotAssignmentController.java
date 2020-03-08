@@ -20,8 +20,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Room;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlotAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotAssignmentRepository;
 
 @Controller
@@ -34,6 +36,9 @@ public class TimeSlotAssignmentController {
 
     @Autowired
     TimeSlotAssignmentRepository timeSlotAssignmentRepository;
+
+    @Autowired
+    RoomRepository roomRepository;
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
@@ -51,24 +56,43 @@ public class TimeSlotAssignmentController {
             .compareTo(b.getTutor().getLastName());
 
     private Comparator<TimeSlotAssignment> byDay = (a, b) -> {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("EEE");
-            String dayA = a.getTimeSlot().getRoomAvailability().getDay();
-            String dayB = b.getTimeSlot().getRoomAvailability().getDay();
-            Date dateA = format.parse(dayA);
-            Date dateB = format.parse(dayB);
-            if (dateA.equals(dateB)) {
-                return dayA.substring(dayA.indexOf(" ") + 1).compareTo(dayB.substring(dayB.indexOf(" ") + 1));
-            } else {
-                Calendar cal1 = Calendar.getInstance();
-                Calendar cal2 = Calendar.getInstance();
-                cal1.setTime(dateA);
-                cal2.setTime(dateB);
-                return cal1.get(Calendar.DAY_OF_WEEK) - cal2.get(Calendar.DAY_OF_WEEK);
-            }
-        } catch (Exception e) {
-            return -1;
+        int dayA = -1;
+        int dayB = -1;
+        switch(a.getTimeSlot().getRoomAvailability().getDay()) {
+            case "M":
+                dayA = 0;
+                break;
+            case "T":
+                dayA = 1;
+                break;
+            case "W":
+                dayA = 2;
+                break;
+            case "R":
+                dayA = 3;
+                break;
+            case "F":
+                dayA = 4;
+                break;
         }
+        switch(b.getTimeSlot().getRoomAvailability().getDay()) {
+            case "M":
+                dayB = 0;
+                break;
+            case "T":
+                dayB = 1;
+                break;
+            case "W":
+                dayB = 2;
+                break;
+            case "R":
+                dayB = 3;
+                break;
+            case "F":
+                dayB = 4;
+                break;
+        }
+        return Integer.compare(dayA, dayB);
     };
 
     private Comparator<TimeSlotAssignment> byTime = (a, b) -> Integer.compare(a.getTimeSlot().getStartTime(),
@@ -100,6 +124,9 @@ public class TimeSlotAssignmentController {
         java.util.Collections.sort(timeSlots, byRoom.thenComparing(byDay).thenComparing(byTime));
         // 2d array where rows are "unique" time slots (unique in the table) and columns
         // are same time slots w/ different tutors
+        for(TimeSlotAssignment time : timeSlots) {
+            logger.info(time.getId() + "");
+        }
         
         ArrayList<ArrayList<TimeSlotAssignment>> uniqueTimeSlots = new ArrayList<ArrayList<TimeSlotAssignment>>();
         for (TimeSlotAssignment tsa : timeSlots) {
@@ -126,8 +153,7 @@ public class TimeSlotAssignmentController {
         }
         for(int i = 0; i < uniqueTimeSlots.size(); i++) {
             java.util.Collections.sort(uniqueTimeSlots.get(i), byCourseOffering.thenComparing(byTutorLastName));
-        }
-        
+        }        
 
         java.util.Collections.sort(courses, byCourseId);
         ArrayList<CourseOffering> uniqueCourses = new ArrayList<CourseOffering>();
@@ -141,34 +167,59 @@ public class TimeSlotAssignmentController {
             }
         }
 
-        ArrayList<ArrayList<Integer>> numTutorsPerCourseOffering = new ArrayList<ArrayList<Integer>>();
-        String currentCourseOffering = "";
+        ArrayList<Room> uniqueRooms = new ArrayList<Room>();
         for(int i = 0; i < uniqueTimeSlots.size(); i++) {
-            if(uniqueTimeSlots.get(i).size() > 0) {
-                currentCourseOffering = uniqueTimeSlots.get(i).get(0).getCourseOffering().getCourseId();
-                ArrayList<Integer> init = new ArrayList<Integer>();
-                init.add(uniqueTimeSlots.get(i).size());
-                numTutorsPerCourseOffering.add(init);
-            }
-            int counter = 0;
-            for(int j = 0; j < uniqueTimeSlots.get(i).size(); j++) {
-                if(uniqueTimeSlots.get(i).get(j).getCourseOffering().getCourseId().equals(currentCourseOffering)) {
-                    counter++;
-                } else {
-                    numTutorsPerCourseOffering.get(i).add(counter);
-                    currentCourseOffering = uniqueTimeSlots.get(i).get(j).getCourseOffering().getCourseId();
-                    counter = 1;
+            if(i == 0) {
+                uniqueRooms.add(roomRepository.findByName(uniqueTimeSlots.get(i).get(0).getTimeSlot().getRoomAvailability().getRoom().getName()));
+            } else {
+                if(!uniqueRooms.get(uniqueRooms.size() - 1).getName().equals(uniqueTimeSlots.get(i).get(0).getTimeSlot().getRoomAvailability().getRoom().getName())) {
+                    uniqueRooms.add(roomRepository.findByName(uniqueTimeSlots.get(i).get(0).getTimeSlot().getRoomAvailability().getRoom().getName()));
                 }
-            }
-            numTutorsPerCourseOffering.get(i).add(counter);
-            for(int k = numTutorsPerCourseOffering.get(i).size(); k < uniqueCourses.size() + 1; k++) {
-                numTutorsPerCourseOffering.get(i).add(0);
             }
         }
 
-        model.addAttribute("tutorsPerCourse", numTutorsPerCourseOffering);
+        ArrayList<ArrayList<Integer>> numTutorsPerRoom = new ArrayList<ArrayList<Integer>>();
+        for(int i = 0; i < uniqueTimeSlots.size(); i++) {
+            if(i == 0) {
+                ArrayList<Integer> numTutors = new ArrayList<Integer>();
+                numTutors.add(uniqueTimeSlots.get(0).size());
+                numTutorsPerRoom.add(numTutors);
+            } else if(i != 0 && uniqueTimeSlots.get(i).get(0).getTimeSlot().getRoomAvailability().getRoom().getName().equals(uniqueTimeSlots.get(i - 1).get(0).getTimeSlot().getRoomAvailability().getRoom().getName())) {
+                numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).set(0, numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).get(0) + uniqueTimeSlots.get(i).size());
+            } else {
+                ArrayList<Integer> numTutors = new ArrayList<Integer>();
+                numTutors.add(uniqueTimeSlots.get(i).size());
+                numTutorsPerRoom.add(numTutors);
+            }
+            String currentCourseOffering = "";
+            int counter = 0;
+            for(int j = 0; j < uniqueTimeSlots.get(i).size(); j++) {
+                if(j == 0) {
+                    currentCourseOffering = uniqueTimeSlots.get(i).get(j).getCourseOffering().getCourseId();
+                    counter++;
+                } else {
+                    if(uniqueTimeSlots.get(numTutorsPerRoom.size() - 1).get(j).getCourseOffering().getCourseId().equals(currentCourseOffering)) {
+                        counter++;
+                    } else {
+                        numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).add(counter);
+                        currentCourseOffering = uniqueTimeSlots.get(i).get(j).getCourseOffering().getCourseId();
+                        counter = 1;
+                    }
+                }
+                numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).add(counter);
+            }
+            logger.error("" + numTutorsPerRoom.size());
+            if(numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).size() < uniqueCourses.size()) {
+                numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).add(0);
+            }
+        }
+
+
+
+        model.addAttribute("tutorsPerRoom", numTutorsPerRoom);
         model.addAttribute("uniqueTimeSlots", uniqueTimeSlots);
         model.addAttribute("uniqueCourses", uniqueCourses);
+        model.addAttribute("uniqueRooms", uniqueRooms);
         model.addAttribute("quarter", quarter);
         return "timeSlotAssignment/search";
     }

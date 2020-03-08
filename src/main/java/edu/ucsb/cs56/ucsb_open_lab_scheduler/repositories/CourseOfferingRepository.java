@@ -14,6 +14,9 @@ public interface CourseOfferingRepository extends CrudRepository<CourseOffering,
     @Query(value = "SELECT DISTINCT course_id FROM course_offering", nativeQuery=true)
     public List<String> findAllUniqueCourses();
 
+    @Query(value = "SELECT DISTINCT quarter FROM course_offering", nativeQuery=true)
+    public List<String> findAllUniqueQuarters();
+
     public List<CourseOffering> findByInstructorEmail(String instructorEmail);
 
     public List<CourseOffering> findByQuarter(String quarter);
