@@ -34,7 +34,7 @@ phtcon@ucsb.edu,Conrad,Phill
 
         <br><br>
 
-        <table class="table table-striped table-responsive-md">
+        <table class="table table-striped table-responsive-md" style="display: none">
           <thead>
             <tr>
               <th onclick="sortTutors(0)">Email</th>
@@ -60,7 +60,7 @@ phtcon@ucsb.edu,Conrad,Phill
                 </label>
               </td>
               <td><a th:href="@{'/tutors/' + ${t.id}}" type="button" class="btn btn-secondary" style="display: block;">Edit</a></td>
-              <td><button type ="button" class="btn btn-danger" th:attr="onclick=|del('${t.email}', ${t.id})|"/>Delete</button></td>
+              <td><button type ="button" class="btn btn-danger deleteTutorButton" th:attr="data-tmail=${t.email}, data-tid=${t.id}">Delete</button></td>
             </tr>
           </tbody>
         </table>
@@ -95,8 +95,15 @@ phtcon@ucsb.edu,Conrad,Phill
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
   <script th:inline="javascript">
     /*<![CDATA[*/
-    var sortCol = 2
-    var sortAscending = true
+    var sortCol, sortAscending
+
+    init()
+    
+    function init() {
+      sortCol = 2
+      sortAscending = false
+      sortTutors(sortCol)
+    }
 
     function del(name, id) {
       document.getElementById("tNameDel").innerHTML = name;
@@ -128,10 +135,18 @@ phtcon@ucsb.edu,Conrad,Phill
             table.rows[i].cells[4].childNodes[1].childNodes[1].innerHTML = data[i].isActive ? "Active" : "Inactive"
             table.rows[i].cells[4].childNodes[1].childNodes[4].checked = data[i].isActive
             table.rows[i].cells[4].childNodes[1].childNodes[4].dataset.tid = data[i].id
+            table.rows[i].cells[5].childNodes[0].setAttribute("href", "/tutors/" + data[i].id)
+            table.rows[i].cells[6].childNodes[0].dataset.tmail = data[i].email
+            table.rows[i].cells[6].childNodes[0].dataset.tid = data[i].id
+            table.parentNode.style.display = "initial"
           }
         },
       })
     }
+
+    $(".deleteTutorButton").click(e => {
+      del(e.target.dataset.tmail, e.target.dataset.tid)
+    })
     
     $(".tutorIsActiveCheckbox").click(e => {
       e.preventDefault()
