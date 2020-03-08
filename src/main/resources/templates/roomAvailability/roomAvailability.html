@@ -4,6 +4,7 @@
 <head>
   <div th:replace="bootstrap/title.html"></div>
   <div th:replace="bootstrap/bootstrap_head.html"></div>
+  <script src="https://kit.fontawesome.com/0652970da1.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -50,12 +51,12 @@ W20,Friday,1500,1700,Phelps 2510
               <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
               <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
               <td th:text="${ra.room}"></td>
-              <td><button type="button" class="edit" th:attr="data-raid=${ra.getId()}">Edit</button></td>
-              <td><button type="button" class="delete" th:attr="data-raid=${ra.getId()}">Delete</button></td>
+              <td><button type="button" class="btn btn-secondary edit" th:attr="data-raid=${ra.getId()}"><i class="far fa-edit"></i></button></td>
+              <td><button type="button" class="btn btn-danger delete" th:attr="data-raid=${ra.getId()}"><i class="fas fa-trash-alt"></i></button></td>
             </tr>
           </tbody>
         </table>
-        <button onclick="window.location.href = '/roomAvailability/new';">Create a new entry</button>
+        <button class="btn btn-primary" onclick="window.location.href = '/roomAvailability/new';">Create a New Entry</button>
 
       </div>
     </div>
@@ -66,17 +67,19 @@ W20,Friday,1500,1700,Phelps 2510
   <script th:inline="javascript">
     /*<![CDATA[*/
     $(".delete").click(e => {
-      $.ajax({
-          url: `/roomAvailability/${e.target.dataset.raid}`,
-          method: "DELETE",
-          data: {
-            /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
-          },
-        }).fail(function(jqXHR, textStatus) {
-                console.log(jqXHR.responseText);
-        }).done(function() {
-          window.location.href="/roomAvailability";
-        })
+      if(confirm("Are you sure you want to delete?")) {
+          $.ajax({
+              url: `/roomAvailability/${e.target.dataset.raid}`,
+              method: "DELETE",
+              data: {
+                /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
+              },
+            }).fail(function(jqXHR, textStatus) {
+                    console.log(jqXHR.responseText);
+            }).done(function() {
+              window.location.href="/roomAvailability";
+            })
+      }
     })
     $(".edit").click(e => {
       window.location.href=`roomAvailability/${e.target.dataset.raid}/edit`;
