@@ -13,6 +13,7 @@ public interface MembershipService {
     /** is current logged in user a member of the github org */
     public boolean isAdmin(OAuth2AuthenticationToken oAuth2AuthenticationToken);
 
+    public boolean isTutor(OAuth2AuthenticationToken oAuth2AuthenticationToken);
     public boolean isInstructor(OAuth2AuthenticationToken oAuth2AuthenticationToken);
 
     /** is current logged in user a member or admin of the
@@ -26,10 +27,13 @@ public interface MembershipService {
             return "Guest";
         if (isAdmin(token))
            return "Admin";
+        if (isTutor(token))
+            return "Tutor";
         if (isInstructor(token))
             return "Instructor";
         if (isMember(token))
            return "Member";
+           
         return "Guest";
     }
 

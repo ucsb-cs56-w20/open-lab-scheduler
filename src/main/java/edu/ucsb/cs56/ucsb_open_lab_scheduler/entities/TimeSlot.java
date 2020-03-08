@@ -23,7 +23,7 @@ public class TimeSlot{
 
     public TimeSlot(){
         this.startTime = 0;
-        this.endTime = 30;
+        this.endTime = 0;
     }
 
     public void setId(long id){

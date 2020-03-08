@@ -109,10 +109,6 @@ public class RoomAvailability{
     }
 
     public String getTime12HrFormat(int t){
-        String checkForSixty = Integer.toString(t);
-        checkForSixty = checkForSixty.substring(checkForSixty.length() - 2);
-        String check = "60";
-        if(check.equals(checkForSixty)) t += 40;
         String time = t <= 1200 ? Integer.toString(t) : Integer.toString(t%1200);
         String suffix = t < 1200 ? "am" : "pm";
         if (time.length()==2)
