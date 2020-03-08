@@ -37,11 +37,11 @@ phtcon@ucsb.edu,Conrad,Phill
         <table class="table table-striped table-responsive-md">
           <thead>
             <tr>
-              <th>Email</th>
+              <th onclick="sortTutors(0)">Email</th>
               <th onclick="sortTutors(1)">First Name</th>
               <th onclick="sortTutors(2)">Last Name</th>
-              <th>Assigned Courses</th>
-              <th>Active</th>
+              <th onclick="sortTutors(3)">Assigned Courses</th>
+              <th onclick="sortTutors(4)">Active</th>
               <th>Edit</th>
               <th>Delete</th>
             </tr>
@@ -95,9 +95,13 @@ phtcon@ucsb.edu,Conrad,Phill
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
   <script th:inline="javascript">
     function del(name, id) {
-        document.getElementById("tNameDel").innerHTML = name;
-        document.getElementById("deleteForm").setAttribute("action", "/tutors/" + id + "/delete");
-        $("#deleteModal").modal();
+      document.getElementById("tNameDel").innerHTML = name;
+      document.getElementById("deleteForm").setAttribute("action", "/tutors/" + id + "/delete");
+      $("#deleteModal").modal();
+    }
+
+    function sortTutors(col) {
+      var x = 0 // TODO: replace placeholder
     }
 
     /*<![CDATA[*/
@@ -108,7 +112,7 @@ phtcon@ucsb.edu,Conrad,Phill
       if (e.target.checked) {
         $.ajax({
           url: "/tutors/active",
-          method: "POST",
+          method: "PUT",
           data: {
             tid: e.target.dataset.tid,
             [[${_csrf.parameterName}]]: [[${_csrf.token}]]
@@ -120,7 +124,7 @@ phtcon@ucsb.edu,Conrad,Phill
       } else {
         $.ajax({
           url: `/tutors/${e.target.dataset.tid}`,
-          method: "DELETE",
+          method: "PUT",
           data: {
             [[${_csrf.parameterName}]]: [[${_csrf.token}]]
           },
