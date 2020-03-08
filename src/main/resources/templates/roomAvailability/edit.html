@@ -11,7 +11,7 @@
     <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
 
     <h2 class="my-5" th:inline="text">[[${raExists} ? 'Editing' : 'Creating']] a Room Availability</h2>
-    <form action="#" method="post" th:action="@{/roomAvailability/create}" th:object=${newRA}>
+    <form action="#" method="post" th:action="@{/roomAvailability/create}" th:object="${ra}">
       <div class="form-group">
         <label>Quarter</label>
         <input type="text" class="form-control" id="quarter" aria-describedby="quarterInput"
@@ -20,28 +20,29 @@
       <div class="form-group">
         <label>Day</label>
         <select class="custom-select" th:field="*{day}">
-          <option selected value="Monday">Monday</option>
-          <option value="Tuesday">Tuesday</option>
-          <option value="Wednesday">Wednesday</option>
-          <option value="Thurdsday">Thursday</option>
-          <option value="Friday">Friday</option>
-          <option value="Saturday">Saturday</option>
-          <option value="Sunday">Sunday</option>
+          <option selected th:value="'Monday'">Monday</option>
+          <option th:value="'Tuesday'">Tuesday</option>
+          <option th:value="'Wednesday'">Wednesday</option>
+          <option th:value="'Thurdsday'">Thursday</option>
+          <option th:value="'Friday'">Friday</option>
+          <option th:value="'Saturday'">Saturday</option>
+          <option th:value="'Sunday'">Sunday</option>
         </select>
       </div>
       <div class="form-group">
         <label for="start">Start Time</label>
-        <input type="text" class="form-control" id="start" aria-describedby="startInput"
-          th:attr="value=${(raExists)? ra.getStartTime() : ''}" th:field="*{startTime}" required>
-        <small class="form-text text-muted">Start time should be entered as an integer in military time (e.g. "1730 for
+        <input type="number" class="form-control" id="start" aria-describedby="startInput"
+          th:attr="value=${(raExists)? ra.getStartTime() : 0}" th:field="*{startTime}" required>
+        <small class="form-text text-muted">Start time should be entered as an integer in military time (e.g. "1730
+          for
           5:30 PM").</small>
         <small class="form-text text-muted">Start time should also be a multiple of the default duration <span
             th:inline="text">[[${defaultDuration}]]</span> minutes.</small>
       </div>
       <div class="form-group">
         <label for="end">End Time</label>
-        <input type="text" class="form-control" id="end" aria-describedby="endInput"
-          th:attr="value=${(raExists)? ra.getEndTime() : ''}" th:field="*{endTime}" required>
+        <input type="number" class="form-control" id="end" aria-describedby="endInput"
+          th:attr="value=${(raExists)? ra.getEndTime() : 0}" th:field="*{endTime}" required>
         <small class="form-text text-muted">End time should be entered as an integer in military time (e.g. "1730 for
           5:30 PM").</small>
         <small class="form-text text-muted">End time should also be a multiple of the default duration <span
@@ -49,30 +50,29 @@
       </div>
       <div class="form-group">
         <label for="room">Room</label>
-        <input type="text" class="form-control" id="room" aria-describedby="roomInput"
-          th:attr="value=${(raExists)? ra.getRoom() : ''}">
+        <input type="text" class="form-control" id="room" name="room" aria-describedby="roomInput"
+          th:attr="value=${(raExists)? ra.getRoom().getName() : ''}" value="room">
       </div>
       <button type="submit" class="btn btn-primary" id="save">Save</button>
     </form>
-
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
+  </div>
 
-    <div class="modal fade" id="timeIsNotInteger" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Invalid Time Format</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            Time must be an integer
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-          </div>
+  <div class="modal fade" id="timeIsNotInteger" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Invalid Time Format</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Time must be an integer
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

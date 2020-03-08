@@ -16,6 +16,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -134,19 +136,21 @@ public class RoomAvailabilityController {
         }
         model.addAttribute("raExists", false);
         model.addAttribute("defaultDuration", defaultDuration);
-        model.addAttribute("newRA", new RoomAvailability());
+        model.addAttribute("ra", new RoomAvailability());
+        model.addAttribute("room", new Room());
         return "roomAvailability/edit";
 
     }
 
     @PostMapping("/roomAvailability/create")
-    public String create(@ModelAttribute RoomAvailability newRA, OAuth2AuthenticationToken token) {
+    public String create(@ModelAttribute RoomAvailability newRA, BindingResult result, @RequestParam("room") String room, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return "index";
         }
         newRA.setRoom(new Room(room));
         roomAvailabilityRepository.save(newRA);
+        logger.info(newRA.getEndTime() + "");
 
         return "redirect:/roomAvailability";
     }
@@ -161,7 +165,6 @@ public class RoomAvailabilityController {
         }
 
         model.addAttribute("ra", roomAvailabilityRepository.findById(id));
-        model.addAttribute("raDay", roomAvailabilityRepository.findById(id).getDay());
         model.addAttribute("raExists", true);
         model.addAttribute("raID", id);
         model.addAttribute("defaultDuration", defaultDuration);
