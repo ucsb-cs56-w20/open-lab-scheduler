@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <div th:replace="bootstrap/title.html"></div>
+  <div th:replace="bootstrap/bootstrap_head.html"></div>
+</head>
+
+<body>
+  <div class="container">
+    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+    <div class="row">
+      <div class="col-md-6">
+          <div th:replace="home/form.html"></div>
+          <table class="table table-striped table-responsive-md">
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>Room</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Course</th>
+                <th>Quarter</th>
+                <th>Tutor</th>
+              </tr>
+            </thead>
+              <tr th:each="tsa : ${timeSlotAssignments}">
+                <td th:text=${tsa.getTimeSlot().getRoomAvailability().getDay()}></td>
+                <td th:text=${tsa.getTimeSlot().getRoomAvailability().getRoom().getName()}></td>
+                <td th:text=${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getStartTime())}></td>
+                <td th:text=${tsa.getTimeSlot().getRoomAvailability().getTime12HrFormat(tsa.getTimeSlot().getEndTime())}></td>
+                <td th:text=${courseId}></td>
+                <td th:text=${quarter}></td>
+                <td th:text=${tsa.getTutor().getFullName()}></td>
+              </tr>
+          </table>
+          
+
+      </div>
+    </div>
+
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
+  </div>
+  <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+</body>
+
+</html>
