@@ -32,6 +32,10 @@ public class CourseOffering implements Comparable<CourseOffering>{
     @NotBlank(message = "Instructor Email is required")
     private String instructorEmail;
 
+    private String numTAs;
+    private String numLAs;
+    private String num190J;
+
     public CourseOffering(){}
     public CourseOffering(long id, String courseId, String quarter, String instructorName, String instructorEmail){
         this.id = id;
@@ -39,7 +43,21 @@ public class CourseOffering implements Comparable<CourseOffering>{
         this.quarter = quarter;
         this.instructorName = instructorName;
         this.instructorEmail = instructorEmail;
+        this.numTAs = "0";
+        this.numLAs = "0";
+        this.num190J = "0";
     }
+    public CourseOffering(long id, String courseId, String quarter, String instructorName, String instructorEmail, String numTAs, String numLAs, String num190J){
+        this.id = id;
+        this.courseId = courseId;
+        this.quarter = quarter;
+        this.instructorName = instructorName;
+        this.instructorEmail = instructorEmail;
+        this.numTAs = numTAs;
+        this.numLAs = numLAs;
+        this.num190J = num190J;
+    }
+
 
     public void setId(long id){
         this.id = id;
@@ -61,6 +79,18 @@ public class CourseOffering implements Comparable<CourseOffering>{
         this.instructorEmail = instructorEmail;
     }
 
+    public void setNumTAs(String numTAs){
+        this.numTAs = numTAs;
+    }
+
+    public void setNumLAs(String numLAs){
+        this.numLAs = numLAs;
+    }
+
+    public void setNum190J(String num190J){
+        this.num190J = num190J;
+    }
+
     public long getId(){
         return id;
     }
@@ -79,6 +109,18 @@ public class CourseOffering implements Comparable<CourseOffering>{
 
     public String getInstructorEmail(){
         return instructorEmail;
+    }
+
+    public String getNumTAs(){
+        return numTAs;
+    }
+
+    public String getNumLAs(){
+        return numLAs;
+    }
+
+    public String getNum190J(){
+        return num190J;
     }
 
     @Override
