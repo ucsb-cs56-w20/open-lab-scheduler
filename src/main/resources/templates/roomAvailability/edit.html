@@ -11,32 +11,28 @@
     <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
 
     <h2 class="my-5" th:inline="text">[[${raExists} ? 'Editing' : 'Creating']] a Room Availability</h2>
-    <form>
+    <form action="#" method="post" th:action="@{/roomAvailability/create}" th:object=${newRA}>
       <div class="form-group">
-        <label for="quarter">Quarter</label>
+        <label>Quarter</label>
         <input type="text" class="form-control" id="quarter" aria-describedby="quarterInput"
-          th:attr="value=${(raExists)? ra.getQuarter() : ''}">
+          th:attr="value=${(raExists)? ra.getQuarter() : ''}" th:field="*{quarter}" required>
       </div>
       <div class="form-group">
-        <label for="day">Day</label>
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" id="day" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false"></button>
-          <div class="dropdown-menu" aria-labelledby="day">
-            <button class="dropdown-item" type="button">Monday</button>
-            <button class="dropdown-item" type="button">Tuesday</button>
-            <button class="dropdown-item" type="button">Wednesday</button>
-            <button class="dropdown-item" type="button">Thursday</button>
-            <button class="dropdown-item" type="button">Friday</button>
-            <button class="dropdown-item" type="button">Saturday</button>
-            <button class="dropdown-item" type="button">Sunday</button>
-          </div>
-        </div>
+        <label>Day</label>
+        <select class="custom-select" th:field="*{day}">
+          <option selected value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thurdsday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+          <option value="Sunday">Sunday</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="start">Start Time</label>
         <input type="text" class="form-control" id="start" aria-describedby="startInput"
-          th:attr="value=${(raExists)? ra.getStartTime() : ''}">
+          th:attr="value=${(raExists)? ra.getStartTime() : ''}" th:field="*{startTime}" required>
         <small class="form-text text-muted">Start time should be entered as an integer in military time (e.g. "1730 for
           5:30 PM").</small>
         <small class="form-text text-muted">Start time should also be a multiple of the default duration <span
@@ -45,7 +41,7 @@
       <div class="form-group">
         <label for="end">End Time</label>
         <input type="text" class="form-control" id="end" aria-describedby="endInput"
-          th:attr="value=${(raExists)? ra.getEndTime() : ''}">
+          th:attr="value=${(raExists)? ra.getEndTime() : ''}" th:field="*{endTime}" required>
         <small class="form-text text-muted">End time should be entered as an integer in military time (e.g. "1730 for
           5:30 PM").</small>
         <small class="form-text text-muted">End time should also be a multiple of the default duration <span
@@ -56,7 +52,7 @@
         <input type="text" class="form-control" id="room" aria-describedby="roomInput"
           th:attr="value=${(raExists)? ra.getRoom() : ''}">
       </div>
-      <button type="button" class="btn btn-primary" id="save">Save</button>
+      <button type="submit" class="btn btn-primary" id="save">Save</button>
     </form>
 
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
@@ -150,12 +146,12 @@
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
 
   <script th:inline="javascript">
-
+    /*
     $(".dropdown-item").click(e => {
       document.getElementById("day").textContent = e.target.textContent;
-    })
+    })*/
     /*<![CDATA[*/
-
+    /*
     function militaryTimeToMinutes(time) {
       let minutes = Math.floor(time / 100);
       minutes *= 60;
@@ -180,7 +176,6 @@
     function validTimeSlot() {
       let startTime = document.getElementById("start").value;
       let endTime = document.getElementById("end").value;
-      let defaultDuration = /*[[${defaultDuration}]]*/30;
       if (validTime(startTime) && validTime(endTime)) {
         let start = militaryTimeToMinutes(parseInt(startTime));
         let end = militaryTimeToMinutes(parseInt(endTime));
@@ -208,10 +203,8 @@
       return true;
     }
 
-    var raExists = /*[[${raExists}]]*/false;
 
     if (raExists) {
-      var raDay = /*[[${raDay}]]*/"Monday";
       document.getElementById("day").textContent = raDay;
       $("#save").click(e => {
         if (validInput()) {
@@ -219,13 +212,11 @@
             url: "/roomAvailability/save",
             method: "PUT",
             data: {
-              id: /*[[${raID}]]*/0,
               quarter: document.getElementById("quarter").value,
               day: document.getElementById("day").textContent,
               start: document.getElementById("start").value,
               end: document.getElementById("end").value,
               room: document.getElementById("room").value,
-              /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
             },
           }).done(function () {
             console.log("saved");
@@ -249,7 +240,6 @@
               start: document.getElementById("start").value,
               end: document.getElementById("end").value,
               room: document.getElementById("room").value,
-              /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
             },
           }).done(function () {
             console.log("saved");
@@ -261,7 +251,7 @@
       });
     }
 
-    /*]]>*/
+    */
   </script>
 </body>
 

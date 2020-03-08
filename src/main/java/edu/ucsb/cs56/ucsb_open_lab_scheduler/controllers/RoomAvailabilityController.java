@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -133,23 +134,19 @@ public class RoomAvailabilityController {
         }
         model.addAttribute("raExists", false);
         model.addAttribute("defaultDuration", defaultDuration);
+        model.addAttribute("newRA", new RoomAvailability());
         return "roomAvailability/edit";
 
     }
 
     @PostMapping("/roomAvailability/create")
-    public String create(@RequestParam("quarter") String quarter, @RequestParam("day") String day,
-            @RequestParam("start") String start, @RequestParam("end") String end, @RequestParam("room") String room,
-            OAuth2AuthenticationToken token) {
+    public String create(@ModelAttribute RoomAvailability newRA, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return "index";
         }
-
-        RoomAvailability roomAvailability = new RoomAvailability(quarter, Integer.parseInt(start),
-                Integer.parseInt(end), day, new Room(room));
-
-        roomAvailabilityRepository.save(roomAvailability);
+        newRA.setRoom(new Room(room));
+        roomAvailabilityRepository.save(newRA);
 
         return "redirect:/roomAvailability";
     }
@@ -198,7 +195,6 @@ public class RoomAvailabilityController {
             return "index";
         }
         
-        logger.info("feelsbadman");
         List<TimeSlot> timeSlots= timeSlotRepository.findByRoomAvailabilityId(id);
         if(!timeSlots.isEmpty()){
             for(TimeSlot ts: timeSlots){
