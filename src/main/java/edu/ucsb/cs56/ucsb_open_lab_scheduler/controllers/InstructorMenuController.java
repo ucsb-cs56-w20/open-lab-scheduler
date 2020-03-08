@@ -21,22 +21,36 @@ import java.util.Optional;
 import java.util.Collections;
 import java.util.Comparator; 
 
+import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import org.springframework.http.HttpHeaders;
+
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.RoomAvailability;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 
+import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import org.springframework.http.HttpHeaders;
 
 
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Tutor;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
-
-
-
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.TutorlistToCSV;
 
 @Controller
 public class InstructorMenuController {
@@ -50,7 +64,6 @@ public class InstructorMenuController {
 
     @Autowired
     private TutorAssignmentRepository tutorAssignmentRepository;
-        
 
     
     private Comparator<CourseOffering> byYear=(c1,c2)->Integer.compare(Integer.parseInt(c2.getQuarter().substring(1,3)), Integer.parseInt(c1.getQuarter().substring(1,3)));
@@ -62,19 +75,16 @@ public class InstructorMenuController {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-	
-	String email= (String) token.getPrincipal().getAttributes().get("email");
-	List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
-	Collections.sort(courseList,byYear.thenComparing(byFirstLetter));
-	model.addAttribute("courses",courseList);
-        
+        String email= (String) token.getPrincipal().getAttributes().get("email");
+        List<CourseOffering> courseList= courseOfferingRepository.findByInstructorEmail(email);
+        Collections.sort(courseList,byYear.thenComparing(byFirstLetter));
+        model.addAttribute("courses",courseList);
         return "instructorMenu/instructorMenu";
     }
 
     @GetMapping("/instructorMenu/{id}")
-    public String getTutor(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
-                           RedirectAttributes redirAttrs){
-        if (!authControllerAdvice.getIsTutor(token)) {
+    public String getTutor(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs){
+        if (!authControllerAdvice.getIsInstructor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -88,5 +98,27 @@ public class InstructorMenuController {
         model.addAttribute("courseOffering", courseOffering.get());
         return "instructorMenu/getTutors";
     }
+    @GetMapping("/InstructorMenu/downloadCSV/{id}")
+    public String exportCSV(@PathVariable long id, Model model, HttpServletResponse response,  OAuth2AuthenticationToken token, RedirectAttributes redirAttrs)
+            throws IOException {
+        if (!authControllerAdvice.getIsInstructor(token)) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+        Optional<CourseOffering> courseOffering = courseOfferingRepository.findById(id);
+        if (!courseOffering.isPresent()) {
+            redirAttrs.addFlashAttribute("alertDanger", "Course offering with id " + id + " not found");
+            return "redirect:/";
+        }
+        String filename = "Tutors.csv";
+        response.setContentType("text/csv");
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
 
+        List<TutorAssignment> tutorassignment = (List<TutorAssignment>) tutorAssignmentRepository
+                .findByCourseOffering(courseOffering.get());
+
+        TutorlistToCSV.writeCSV(response.getWriter(), tutorassignment);
+        return "redirect:/instructorMenu/instructorMenu";
+
+    }
 }

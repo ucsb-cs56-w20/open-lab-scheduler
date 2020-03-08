@@ -20,6 +20,7 @@ import org.springframework.data.repository.query.Param;
 public interface TimeSlotAssignmentRepository extends CrudRepository<TimeSlotAssignment, Long> {
     List<TimeSlotAssignment> findByTutorId(long tutorId);
     List<TimeSlotAssignment> findByTutor(Tutor tutor);
+    List<TimeSlotAssignment> findByCourseOffering(CourseOffering courseOffering);
     List<TimeSlotAssignment> findByTutorAndCourseOffering(Tutor tutor, CourseOffering courseOffering);
     List<TimeSlotAssignment> findByTutorIdAndCourseOffering(long tutorId, CourseOffering courseOffering);
 
