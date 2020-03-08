@@ -13,19 +13,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 
 @Controller
-public class TutorViewController {
-    private static Logger log = LoggerFactory.getLogger(TutorViewController.class);
+public class TutorScheduleController {
+    private static Logger log = LoggerFactory.getLogger(TutorScheduleController.class);
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
 
-    @GetMapping("/mySchedule")
+    @GetMapping("/tutorSchedule")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!authControllerAdvice.getIsTutor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        return "mySchedule";
+        return "tutorSchedule/tutorSchedule";
     }
 }
