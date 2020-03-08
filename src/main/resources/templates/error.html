@@ -5,25 +5,24 @@
     <div th:replace="bootstrap/title.html"></div>
     <div th:replace="bootstrap/bootstrap_head.html"></div>
   </head>
-
+  
     <body>
     <div class="container">
         <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
-
+        
         <h1>Oops. Something is wrong! </h1>
         <h2>Here is the error information below: </h2>
-        <style>
-            p {
-                white-space: pre-line;
-            }
-        </style>
+        <style> 
+            p {  
+                white-space: pre-line; 
+            } 
+        </style> 
         <div data-controller="customErrorController">
            <p>
             <th>Timestamp: </th><p1 th:text="${timestamp}"></p1>
             <th>Status: </th><p2 th:text="${status}"></p2>
             <th>Error: </th><p3 th:text="${error}"></p3>
             <th>Message: </th><p4 th:text="${message}"></p4>
-            <th>Trace: </th><p5 th:text="${trace}"></p5>
             </p>
         </div>
 
