@@ -22,7 +22,7 @@ courseId,quarter,instructorName,instructorEmail
 CMPSC 56,W20,Conrad,conrad@ucsb.edu
 CMPSC 48,F19,Richert Wang,richert@ucsb.edu
         </pre>
-        <br/>
+        <br />
         <form action="/courseOffering/upload" method="post" enctype="multipart/form-data">
           <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
           <input type="file" name="csv" id="csv" accept="text/csv">
@@ -37,11 +37,8 @@ CMPSC 48,F19,Richert Wang,richert@ucsb.edu
               <th>Quarter</th>
               <th>Instructor Name</th>
               <th>Instructor Email</th>
-<<<<<<< HEAD
               <th> </th>
               <th> </th>
-=======
->>>>>>> Revert "Merge branch 'ys/rg-public_schedule' of github.com:ucsb-cs56-w20/open-lab-scheduler into ys/rg-public_schedule"
             </tr>
           </thead>
           <tbody>
