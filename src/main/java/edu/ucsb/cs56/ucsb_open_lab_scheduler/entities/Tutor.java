@@ -105,6 +105,7 @@ public class Tutor{
             ", firstName='"+firstName+"'"+
             ", lastName='"+lastName+"'"+
             ", isActive='"+isActive+"'"+
+            ", numberOfCoursesAssigned='"+numberOfCoursesAssigned+"'"+
             "}";
     }
 
@@ -116,11 +117,11 @@ public class Tutor{
             return false;
         }
         Tutor tutor = (Tutor) o;
-        return id == tutor.id && Objects.equals(email, tutor.email) && Objects.equals(firstName, tutor.firstName) && Objects.equals(lastName, tutor.lastName) && isActive == tutor.isActive;
+        return id == tutor.id && Objects.equals(email, tutor.email) && Objects.equals(firstName, tutor.firstName) && Objects.equals(lastName, tutor.lastName) && isActive == tutor.isActive && numberOfCoursesAssigned == tutor.numberOfCoursesAssigned;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, isActive);
+        return Objects.hash(id, email, firstName, lastName, isActive, numberOfCoursesAssigned);
     }
 }
