@@ -25,6 +25,7 @@ import java.util.Objects;
     @DurationConstraint(
         startTime = "startTime", 
         endTime = "endTime", 
+        defaultDuration = "defaultDuration",
         message = "Duration is not a multiple of default"
     )
 })
@@ -58,6 +59,8 @@ public class RoomAvailability{
     @JoinColumn(name = "room_id")
     private Room room;
 
+    private int defaultDuration;
+
     public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, String room) {
         this.id = id;
         this.quarter = quarter;
@@ -67,12 +70,13 @@ public class RoomAvailability{
         this.room = new Room(room);
     }
 
-    public RoomAvailability(String quarter, int startTime, int endTime, String day, String room) {
+    public RoomAvailability(String quarter, int startTime, int endTime, String day, String room, int duration) {
         this.quarter = quarter;
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
         this.room = new Room(room);
+        this.defaultDuration = duration;
     }
 
     public RoomAvailability(){}
@@ -103,6 +107,14 @@ public class RoomAvailability{
 
     public long getId() {
         return id;
+    }
+
+    public int getDefaultDuration() {
+        return defaultDuration;
+    }
+
+    public void setDefaultDuration(int defaultDuration) {
+        this.defaultDuration = defaultDuration;
     }
 
     public void setId(long id) {

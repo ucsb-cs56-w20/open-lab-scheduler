@@ -53,6 +53,9 @@
         <input type="text" class="form-control" id="room" name="room" aria-describedby="roomInput"
           th:attr="value=${(raExists)? ra.getRoom().getName() : ''}" th:field="*{room.name}">
       </div>
+      <div style="display: none">
+        <input type="input" id="defaultDuration" name="defaultDuration" th:attr="value=${defaultDuration}" th:field="*{defaultDuration}">
+      </div>
       <input th:if="${raExists}" type="hidden" id="id" name="id" th:value="${raID}">
       <button type="submit" class="btn btn-primary" id="save">Save</button>
     </form>

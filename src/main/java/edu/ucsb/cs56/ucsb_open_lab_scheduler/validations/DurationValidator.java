@@ -19,24 +19,20 @@ public class DurationValidator implements
 
     private String startTime;
     private String endTime;
-
-    
-    @Value("${app.timeSlotDefaultDuration}")
-    private int defaultDuration;
-    
+    private String defaultDuration;
 
     @Override
     public void initialize(DurationConstraint dur) {
       this.startTime = dur.startTime();
       this.endTime = dur.endTime();
+      this.defaultDuration = dur.defaultDuration();
     }
  
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
         Object endTime = new BeanWrapperImpl(value).getPropertyValue("endTime");
         Object startTime = new BeanWrapperImpl(value).getPropertyValue("startTime");
-        logger.info((int)endTime + " " + (int)startTime);
-        logger.info((int)defaultDuration + "");
+        Object defaultDuration = new BeanWrapperImpl(value).getPropertyValue("defaultDuration");
         return (militaryToMinutes((int)endTime) - militaryToMinutes((int)startTime)) % (int)defaultDuration == 0;
 
     }

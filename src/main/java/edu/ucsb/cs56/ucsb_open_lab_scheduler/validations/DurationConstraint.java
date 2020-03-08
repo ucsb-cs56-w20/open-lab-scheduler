@@ -15,9 +15,10 @@ import javax.validation.Payload;
 @Target( { ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DurationConstraint {
-    String message() default "Invalid duration";
+    String message() default "Invalid duration\n";
     String startTime();
     String endTime();
+    String defaultDuration();
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {}; 
     @Target({ ElementType.TYPE })

@@ -158,8 +158,11 @@ public class RoomAvailabilityController {
         if(result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
             String errorMessage = "";
-            for(ObjectError error : errors) {
-                errorMessage += error.getDefaultMessage() + "\n";
+            for(int i = 0; i < errors.size(); i++) {
+                errorMessage += errors.get(i).getDefaultMessage();
+                if(i != errors.size() - 1) {
+                    errorMessage += ", ";
+                }
             }
             redirAttrs.addFlashAttribute("alertDanger", errorMessage);
             return "redirect:/roomAvailability";
@@ -194,12 +197,21 @@ public class RoomAvailabilityController {
 
     @PostMapping("/roomAvailability/save")
     public String save(@ModelAttribute @Valid RoomAvailability ra, BindingResult result, @RequestParam("id") long id,
-        OAuth2AuthenticationToken token) {
+        OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             return "index";
         }
         if(result.hasErrors()) {
+            List<ObjectError> errors = result.getAllErrors();
+            String errorMessage = "";
+            for(int i = 0; i < errors.size(); i++) {
+                errorMessage += errors.get(i).getDefaultMessage();
+                if(i != errors.size() - 1) {
+                    errorMessage += ", ";
+                }
+            }
+            redirAttrs.addFlashAttribute("alertDanger", errorMessage);
             return "redirect:/roomAvailability";
         }
         RoomAvailability existingRA = roomAvailabilityRepository.findById(id);
