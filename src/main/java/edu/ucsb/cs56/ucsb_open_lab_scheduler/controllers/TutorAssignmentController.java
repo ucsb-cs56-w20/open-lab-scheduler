@@ -118,8 +118,7 @@ public class TutorAssignmentController {
     model.addAttribute("tutors", tutors);
     model.addAttribute("courseOffering", courseOffering.get());
     model.addAttribute("tutorCourses", tutorCourses);
-    model.addAttribute("type");
-    model.addAttribute("typeList", typeList);
+    //Add type attribute here
 
 
 
