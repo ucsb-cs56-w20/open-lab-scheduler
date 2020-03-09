@@ -124,9 +124,6 @@ public class TimeSlotAssignmentController {
         java.util.Collections.sort(timeSlots, byRoom.thenComparing(byDay).thenComparing(byTime));
         // 2d array where rows are "unique" time slots (unique in the table) and columns
         // are same time slots w/ different tutors
-        for(TimeSlotAssignment time : timeSlots) {
-            logger.info(time.getId() + "");
-        }
         
         ArrayList<ArrayList<TimeSlotAssignment>> uniqueTimeSlots = new ArrayList<ArrayList<TimeSlotAssignment>>();
         for (TimeSlotAssignment tsa : timeSlots) {
@@ -177,7 +174,7 @@ public class TimeSlotAssignmentController {
                 }
             }
         }
-
+        int counter = 0;
         ArrayList<ArrayList<Integer>> numTutorsPerRoom = new ArrayList<ArrayList<Integer>>();
         for(int i = 0; i < uniqueTimeSlots.size(); i++) {
             if(i == 0) {
@@ -192,23 +189,26 @@ public class TimeSlotAssignmentController {
                 numTutorsPerRoom.add(numTutors);
             }
             String currentCourseOffering = "";
-            int counter = 0;
+            counter = 0;
             for(int j = 0; j < uniqueTimeSlots.get(i).size(); j++) {
+                logger.info(j + "");
                 if(j == 0) {
                     currentCourseOffering = uniqueTimeSlots.get(i).get(j).getCourseOffering().getCourseId();
+                    logger.info(currentCourseOffering);
                     counter++;
                 } else {
-                    if(uniqueTimeSlots.get(numTutorsPerRoom.size() - 1).get(j).getCourseOffering().getCourseId().equals(currentCourseOffering)) {
+                    if(uniqueTimeSlots.get(i).get(j).getCourseOffering().getCourseId().equals(currentCourseOffering)) {
                         counter++;
+                        logger.info("incrementing");    
                     } else {
                         numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).add(counter);
                         currentCourseOffering = uniqueTimeSlots.get(i).get(j).getCourseOffering().getCourseId();
                         counter = 1;
+                        logger.info("entered");
                     }
                 }
-                numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).add(counter);
             }
-            logger.error("" + numTutorsPerRoom.size());
+            numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).add(counter);
             if(numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).size() < uniqueCourses.size()) {
                 numTutorsPerRoom.get(numTutorsPerRoom.size() - 1).add(0);
             }
