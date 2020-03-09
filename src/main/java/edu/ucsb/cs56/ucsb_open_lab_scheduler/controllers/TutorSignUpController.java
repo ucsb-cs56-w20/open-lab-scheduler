@@ -69,12 +69,13 @@ public class TutorSignUpController{
           return "redirect:/";
         }
 
-        Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
-        if (!tutor.isPresent()) {
-          redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
-          return "redirect:/";
-        }
-        List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
+      Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
+      if (!tutor.isPresent()) {
+        redirAttrs.addFlashAttribute("alertDanger", "Tutor with email " + authControllerAdvice.getEmail(token) + " not found");
+        return "redirect:/";
+      }
+      
+      List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByTutor(tutor.get());
 
         List<CourseOffering> courseOfferings = new ArrayList<>();
 
@@ -90,7 +91,7 @@ public class TutorSignUpController{
     @GetMapping("/tutorSignUp/courseSelect/{id}")
     public String timeSlotAssignMent(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs){
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Tutor")) {
+        if (!authControllerAdvice.getIsTutor(token)) {
         redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
         return "redirect:/";
         }
@@ -134,7 +135,7 @@ public class TutorSignUpController{
     public ResponseEntity<?> add(@RequestParam("sid") long sid, @RequestParam("tid") long tid,
                                  @RequestParam("cid") long cid, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Tutor")) {
+        if (!authControllerAdvice.getIsTutor(token)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -155,7 +156,7 @@ public class TutorSignUpController{
     public ResponseEntity<?> delete(@PathVariable("sid") long sid, @PathVariable("tid") long tid,
                                     @PathVariable("cid") long cid,OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Tutor")) {
+        if (!authControllerAdvice.getIsTutor(token)) {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 

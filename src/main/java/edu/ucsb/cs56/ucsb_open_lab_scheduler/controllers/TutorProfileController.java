@@ -51,7 +51,6 @@ public class TutorProfileController{
   
     @GetMapping("/tutorProfile")
     public String currentCourses(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-
         //String role = authControllerAdvice.getRole(token);
         if (!authControllerAdvice.getIsTutor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
@@ -83,6 +82,7 @@ public class TutorProfileController{
     @GetMapping("/tutorProfile/allCourses")
     public String allCourses(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         //String role = authControllerAdvice.getRole(token);
+
         if (!authControllerAdvice.getIsTutor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";

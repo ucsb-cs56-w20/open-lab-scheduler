@@ -9,5 +9,5 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.Admin;
 
 @Repository
 public interface AdminRepository extends CrudRepository<Admin, Long> {
-  public List<Admin> findByEmail(String email);
+    public List<Admin> findByEmail(String email);
 }
