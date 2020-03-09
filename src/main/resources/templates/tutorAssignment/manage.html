@@ -19,7 +19,7 @@
               <th>Name</th>
               <th>Assigned?</th>
               <th>isCourseLead?</th>
-              <th>Other Assignments</th>
+              <th>Tutor Type</th>
             </tr>
           </thead>
           <tbody>
@@ -33,7 +33,10 @@
                 <input class="isCourseLeadCheckBox" type="checkbox" th:checked="${shouldBeChecked2.test(tutor)}"
                 th:attr="data-tid=${tutor.id},data-cid=${courseOffering.id}"/>
               </td>
-              <td th:text="${tutorCourses[iterStat.index]}">
+              <td>
+              <input type="radio" name="type" value="1">TA</input>
+              <input type="radio" name="type" value="2">LA</input>
+              <input type="radio" name="type" value="3">190J</input>
               </td>
             </tr>
           </tbody>
