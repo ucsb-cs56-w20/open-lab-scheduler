@@ -7,6 +7,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlot;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.RoomAvailabilityRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.RoomAvailabilityDownloadCSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.opencsv.CSVWriter;
+import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 
 @Controller
 public class RoomAvailabilityController {
@@ -62,6 +67,24 @@ public class RoomAvailabilityController {
         return "roomAvailability/roomAvailability";
     }
 
+
+    @GetMapping("/roomAvailability/export-CSV")
+    public String exportCSV(HttpServletResponse response, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) throws IOException{
+          String role = authControllerAdvice.getRole(token);
+          if (!(role.equals("Admin"))) {
+              redirAttrs.addFlashAttribute("alertDanger", "You do not have per    mission to access that page");
+              return "redirect:/";
+          }
+          String filename = "roomAvailability.csv";
+          response.setContentType("text/csv");
+          response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
+                  "attachment; filename=\"" + filename + "\"");
+          List<RoomAvailability> rooms = (List<RoomAvailability>)roomAvailabilityRepository.findAll();
+          RoomAvailabilityDownloadCSV.writeRoomAvailability(response.getWriter(),rooms);
+          return "redirect:/roomAvailability";
+      }
+
+
     @PostMapping("/roomAvailability/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token,
             RedirectAttributes redirAttrs) {
@@ -75,8 +98,8 @@ public class RoomAvailabilityController {
             roomAvailabilityRepository.saveAll(roomAvails);
         } catch (IOException e) {
             log.error(e.toString());
-        }catch(RuntimeException a){
-            redirAttrs.addFlashAttribute("alertDanger", "Please enter the correct csv files.");
+        } catch (RuntimeException a){
+            redirAttrs.addFlashAttribute("alertDanger", "Please enter a correct csv file.");
             return "redirect:/roomAvailability";
         }
         return "redirect:/roomAvailability";

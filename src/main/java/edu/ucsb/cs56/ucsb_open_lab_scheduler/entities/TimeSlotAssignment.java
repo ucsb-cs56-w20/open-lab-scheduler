@@ -34,6 +34,10 @@ public class TimeSlotAssignment{
         this.tutor = tutor;
     }
 
+    public void setCourseOffering(CourseOffering courseOffering){
+        this.courseOffering = courseOffering;
+    }
+
     public long getId(){
         return id;
     }
@@ -44,6 +48,10 @@ public class TimeSlotAssignment{
 
     public Tutor getTutor(){
         return tutor;
+    }
+
+    public CourseOffering getCourseOffering(){
+        return courseOffering;
     }
 
 }

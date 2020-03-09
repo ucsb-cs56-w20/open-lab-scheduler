@@ -15,9 +15,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -42,6 +46,7 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
+@SessionAttributes("TutorModel")
 public class TutorController {
     private static Logger log = LoggerFactory.getLogger(TutorController.class);
 
@@ -60,7 +65,7 @@ public class TutorController {
     @GetMapping("/tutors")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!(role.equals("Admin"))) {
+        if (!(role.equals("Admin")) && !(role.equals("Instructor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -91,7 +96,7 @@ public class TutorController {
     @PostMapping("/tutors/upload")
     public String uploadCSV(@RequestParam("csv") MultipartFile csv, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
         String role = authControllerAdvice.getRole(token);
-        if (!(role.equals("Admin"))) {
+        if (!(role.equals("Admin")) && !(role.equals("Instructor"))) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -104,13 +109,14 @@ public class TutorController {
             redirAttrs.addFlashAttribute("alertDanger", "Please enter a correct csv file.");
             return "redirect:/tutors";
         }
+        
         return "redirect:/tutors";
     }
 
-    @PostMapping("/tutors/active")
-    public ResponseEntity<?> setActive(@RequestParam("tid") long tid, OAuth2AuthenticationToken token) {
+    @RequestMapping(value="/tutors/active", method=RequestMethod.PUT)
+    public ResponseEntity<?> setActive(@RequestParam("tid") long tid, @ModelAttribute("TutorModel") ArrayList<Tutor> tutors, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!role.equals("Admin") && !role.equals("Instructor")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -122,10 +128,10 @@ public class TutorController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/tutors/{tid}")
-    public ResponseEntity<?> setInactive(@PathVariable("tid") long tid, OAuth2AuthenticationToken token) {
+    @RequestMapping(value="/tutors/{tid}", method=RequestMethod.PUT)
+    public ResponseEntity<?> setInactive(@PathVariable("tid") long tid, @ModelAttribute("TutorModel") ArrayList<Tutor> tutors, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
-        if (!role.equals("Admin")) {
+        if (!role.equals("Admin") && !role.equals("Instructor")) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
@@ -156,6 +162,72 @@ public class TutorController {
 
         //write all users to csv file
         writer.write(tutorRepository.findAll().iterator());
+    }
 
+    @GetMapping("/tutors/sort")
+    public @ResponseBody ArrayList<Tutor> sortTutors(@RequestParam("col") int col, @RequestParam("ascending") boolean ascending, 
+            @ModelAttribute("TutorModel") ArrayList<Tutor> tutors) {
+        for(Tutor t : tutors) {
+            Tutor updatedTutor = tutorRepository.findById(t.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid tutor Id:" + t.getId()));
+            t.setIsActive(updatedTutor.getIsActive());
+        }
+
+        switch(col) {
+            case 0:
+                // by email, alphabetical
+                tutors.sort((t1, t2) -> {
+                    if(ascending) {
+                        return t1.getEmail().compareToIgnoreCase(t2.getEmail());
+                    } else {
+                        return t2.getEmail().compareToIgnoreCase(t1.getEmail());
+                    }
+                });
+                break;
+            case 1:
+                // by first name, alphabetical
+                tutors.sort((t1, t2) -> {
+                    if(ascending) {
+                        return t1.getFirstName().compareToIgnoreCase(t2.getFirstName());
+                    } else {
+                        return t2.getFirstName().compareToIgnoreCase(t1.getFirstName());
+                    }
+                });
+                break;
+            case 2:
+                // by last name, alphabetical
+                tutors.sort((t1, t2) -> {
+                    if(ascending) {
+                        return t1.getLastName().compareToIgnoreCase(t2.getLastName());
+                    } else {
+                        return t2.getLastName().compareToIgnoreCase(t1.getLastName());
+                    }
+                });
+                break;
+            case 3:
+                // by number of courses assigned, ascending
+                tutors.sort((t1, t2) -> {
+                    if(ascending) {
+                        return Integer.compare(t1.getNumberOfCoursesAssigned(), t2.getNumberOfCoursesAssigned());    
+                    } else {
+                        return Integer.compare(t2.getNumberOfCoursesAssigned(), t1.getNumberOfCoursesAssigned());
+                    }
+                });
+                break;
+            case 4:
+                // by active status, active first
+                tutors.sort((t1, t2) -> {
+                    if(ascending) {
+                        return Boolean.compare(t2.getIsActive(), t1.getIsActive()); 
+                    } else {
+                        return Boolean.compare(t1.getIsActive(), t2.getIsActive());
+                    }
+                });
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid column number: " + col);
+        }
+
+        return tutors;
     }
 }
