@@ -19,10 +19,11 @@
               <th>Name</th>
               <th>Assigned?</th>
               <th>isCourseLead?</th>
+              <th>Other Assignments</th>
             </tr>
           </thead>
           <tbody>
-            <tr th:each="tutor : ${tutors}">
+            <tr th:each="tutor, iterStat : ${tutors}">
               <td th:text="${tutor.firstName + ' ' + tutor.lastName}"></td>
               <td>
                 <input class="tutorAssignmentCheckBox" type="checkbox" th:checked="${shouldBeChecked.test(tutor)}"
@@ -31,6 +32,8 @@
               <td>
                 <input class="isCourseLeadCheckBox" type="checkbox" th:checked="${shouldBeChecked2.test(tutor)}"
                 th:attr="data-tid=${tutor.id},data-cid=${courseOffering.id}"/>
+              </td>
+              <td th:text="${tutorCourses[iterStat.index]}">
               </td>
             </tr>
           </tbody>
@@ -41,6 +44,7 @@
     <div th:replace="bootstrap/bootstrap_footer.html"></div>
   </div>
   <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+
   <script th:inline="javascript">
     /*<![CDATA[*/
     $(".tutorAssignmentCheckBox").click(e => {

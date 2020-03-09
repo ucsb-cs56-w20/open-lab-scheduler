@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <div th:replace="bootstrap/title.html"></div>
+  <div th:replace="bootstrap/bootstrap_head.html"></div>
+</head>
+
+<body>
+  <div class="container">
+    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h2>All Course Assignments</h2>
+        <table class="table table-striped table-responsive-md">
+
+          <thead>
+            <tr>
+              <th>Quarter</th>
+              <th>Course</th>
+              <th>Instructor</th>
+              <th>Instructor Email</th>
+            </tr>
+
+          </thead>
+          <tbody>
+            <tr th:each="courseOffering: ${CourseOfferings}">
+              <td th:text="${courseOffering.getQuarter()}"></td>
+              <td th:text="${courseOffering.courseId}"></td>
+              <td th:text="${courseOffering.instructorName}"></td>
+              <td th:text="${courseOffering.instructorEmail}"></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <form th:action="@{/tutorProfile}" th:method="get">
+          <button type="submit" class="btn btn-primary">Show Current Courses</button>
+        </form>
+
+      </div>
+    </div>
+
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
+  </div>
+  <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+  
+</body>
+
+</html>

@@ -12,29 +12,9 @@
 
     <div class="row">
       <div class="col-md-6">
+         <div th:replace="home/form.html"></div>
 
-        <h2 class="my-5">CS56 W20 Open Lab Hours</h2>
-
-        <table class="table table-striped table-responsive-md">
-          <thead>
-            <tr>
-              <th>Quarter</th>
-              <th>Day</th>
-              <th>Start Time</th>
-              <th>End Time</th>
-              <th>Room</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr th:each="ra : ${RoomAvailabilityModel}">
-              <td th:text="${ra.quarter}"></td>
-              <td th:text="${ra.day}"></td>
-              <td th:text="${ra.getTime12HrFormat(ra.startTime)}"></td>
-              <td th:text="${ra.getTime12HrFormat(ra.endTime)}"></td>
-              <td th:text="${ra.room}"></td>
-            </tr>
-          </tbody>
-        </table>
+          
 
       </div>
     </div>

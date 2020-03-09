@@ -3,8 +3,6 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvRecurse;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -42,7 +40,6 @@ public class RoomAvailability{
     @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "room_id")
     private Room room;
-
 
     public RoomAvailability(long id, String quarter, int startTime, int endTime, String day, Room room) {
         this.id = id;
