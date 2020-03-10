@@ -51,24 +51,43 @@ public class TimeSlotAssignmentController {
             .compareTo(b.getTutor().getLastName());
 
     private Comparator<TimeSlotAssignment> byDay = (a, b) -> {
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("EEE");
-            String dayA = a.getTimeSlot().getRoomAvailability().getDay();
-            String dayB = b.getTimeSlot().getRoomAvailability().getDay();
-            Date dateA = format.parse(dayA);
-            Date dateB = format.parse(dayB);
-            if (dateA.equals(dateB)) {
-                return dayA.substring(dayA.indexOf(" ") + 1).compareTo(dayB.substring(dayB.indexOf(" ") + 1));
-            } else {
-                Calendar cal1 = Calendar.getInstance();
-                Calendar cal2 = Calendar.getInstance();
-                cal1.setTime(dateA);
-                cal2.setTime(dateB);
-                return cal1.get(Calendar.DAY_OF_WEEK) - cal2.get(Calendar.DAY_OF_WEEK);
-            }
-        } catch (Exception e) {
-            return -1;
+        int dayA = -1;
+        int dayB = -1;
+        switch(a.getTimeSlot().getRoomAvailability().getDay()) {
+            case "M":
+                dayA = 0;
+                break;
+            case "T":
+                dayA = 1;
+                break;
+            case "W":
+                dayA = 2;
+                break;
+            case "R":
+                dayA = 3;
+                break;
+            case "F":
+                dayA = 4;
+                break;
         }
+        switch(b.getTimeSlot().getRoomAvailability().getDay()) {
+            case "M":
+                dayB = 0;
+                break;
+            case "T":
+                dayB = 1;
+                break;
+            case "W":
+                dayB = 2;
+                break;
+            case "R":
+                dayB = 3;
+                break;
+            case "F":
+                dayB = 4;
+                break;
+        }
+        return Integer.compare(dayA, dayB);
     };
 
     private Comparator<TimeSlotAssignment> byTime = (a, b) -> Integer.compare(a.getTimeSlot().getStartTime(),
