@@ -57,9 +57,6 @@ public class CourseOffering implements Comparable<CourseOffering>{
         this.numTAs = numTAs;
         this.numLAs = numLAs;
         this.num190J = num190J;
-        // this.numTAs = Integer.parseInt(numTAs);
-        // this.numLAs = Integer.parseInt(numLAs);
-        // this.num190J = Integer.parseInt(num190J);
     }
 
 
