@@ -56,11 +56,7 @@ public class TimeSlotAssignment{
         return tutor;
     }
 
-<<<<<<< HEAD
-    public CourseOffering getCourseOffering(){
-=======
     public CourseOffering getCourseOffering() {
->>>>>>> bq - implemented drop down menu for list of tutors sorted by their course then by last name
         return courseOffering;
     }
 
