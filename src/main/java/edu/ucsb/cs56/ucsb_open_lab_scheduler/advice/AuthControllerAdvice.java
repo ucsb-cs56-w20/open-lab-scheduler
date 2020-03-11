@@ -1,8 +1,6 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.advice;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.User;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.UserRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.MembershipService;
 
 import java.util.List;
@@ -24,14 +22,10 @@ public class AuthControllerAdvice {
     private MembershipService membershipService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     TutorRepository tutorRepository;
 
     @ModelAttribute("isLoggedIn")
     public boolean getIsLoggedIn(OAuth2AuthenticationToken token){
-        updateLoginTable(token);
         return token != null;
     }
 
@@ -119,21 +113,4 @@ public class AuthControllerAdvice {
         return membershipService.getAdminEmails();
     }
 
-    private void updateLoginTable(OAuth2AuthenticationToken token) {
-        if (token==null) return;
-        
-        String email = membershipService.email(token);
-        if (email == null) return;
-
-        List<User> appUsers = userRepository.findByEmail(email);
-
-        if (appUsers.size()==0) {
-            // No user with this email is in the AppUsers table yet, so add one
-            User u = new User();
-            u.setEmail(email);
-            u.setFirstName(membershipService.fname(token));
-            u.setLastName(membershipService.lname(token));
-            userRepository.save(u);
-        }
-    }
 }

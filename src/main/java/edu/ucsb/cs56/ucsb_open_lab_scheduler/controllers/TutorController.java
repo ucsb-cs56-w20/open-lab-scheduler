@@ -3,7 +3,6 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
