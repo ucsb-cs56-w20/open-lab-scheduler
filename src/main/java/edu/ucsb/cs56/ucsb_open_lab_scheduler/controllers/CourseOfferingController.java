@@ -4,8 +4,10 @@ import javax.validation.Valid;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.CourseOffering;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TimeSlotAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.TutorAssignment;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.CourseOfferingRepository;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TimeSlotAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.TutorAssignmentRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.CSVToObjectService;
 import org.slf4j.Logger;
@@ -27,6 +29,7 @@ import java.util.Optional;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,6 +47,9 @@ public class CourseOfferingController {
 
     @Autowired
     TutorAssignmentRepository tutorAssignmentRepository;
+
+    @Autowired
+    TimeSlotAssignmentRepository timeSlotAssignmentRepository;
 
     @GetMapping("/courseOffering")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
@@ -69,11 +75,41 @@ public class CourseOfferingController {
             courseOfferingRepository.saveAll(courseOfferings);
         } catch (IOException e) {
             log.error(e.toString());
-        }catch(RuntimeException a){
+        } catch (RuntimeException a) {
             redirAttrs.addFlashAttribute("alertDanger", "Please enter the correct csv files");
             return "redirect:/courseOffering";
         }
         return "redirect:/courseOffering";
+    }
+
+    @GetMapping("/courseOffering/staff/{id}")
+    public String staff(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
+            RedirectAttributes redirAttrs) {
+        String role = authControllerAdvice.getRole(token);
+        if (!role.equals("Admin")) {
+            redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+            return "redirect:/";
+        }
+
+        Optional<CourseOffering> course = courseOfferingRepository.findById(id);
+        if (!course.isPresent()) {
+            redirAttrs.addFlashAttribute("alertDanger", "Course with that id does not exist.");
+        } else {
+            List<TutorAssignment> tutorAssignments = tutorAssignmentRepository.findByCourseOffering(course.get());
+
+            List<Integer> numberTimeSlotsAssigned = new ArrayList<Integer>();
+
+            for (TutorAssignment tutorAssignment : tutorAssignments) {
+                List<TimeSlotAssignment> timeSlotAssignments = timeSlotAssignmentRepository
+                        .findByTutorAndCourseOffering(tutorAssignment.getTutor(), course.get());
+                numberTimeSlotsAssigned.add(timeSlotAssignments.size());
+            }
+            model.addAttribute("course", course.get());
+            model.addAttribute("tutorAssignments", tutorAssignments);
+            model.addAttribute("numberTimeSlotsAssigned", numberTimeSlotsAssigned);
+        }
+
+        return "courseOffering/staff";
     }
 
     @GetMapping("/courseOffering/delete/{id}")
@@ -123,9 +159,9 @@ public class CourseOfferingController {
         return "courseOffering/create";
     }
 
-
     @PostMapping("/courseOffering/add")
-    public String add(@Valid CourseOffering courseOffering, BindingResult result, Model model, RedirectAttributes redirAttrs, OAuth2AuthenticationToken token) {
+    public String add(@Valid CourseOffering courseOffering, BindingResult result, Model model,
+            RedirectAttributes redirAttrs, OAuth2AuthenticationToken token) {
         String role = authControllerAdvice.getRole(token);
         if (!role.equals("Admin")) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
@@ -156,11 +192,9 @@ public class CourseOfferingController {
             return "redirect:/";
         }
         if (result.hasErrors()) {
-            //courseOffering.setId(id);
             return "courseOffering/update";
         }
         courseOfferingRepository.save(courseOffering);
-        // model.addAttribute("courseOffering", courseOfferingRepository.findAll());
         return "redirect:/courseOffering";
     }
 }

@@ -1,0 +1,13 @@
+<form method="post" th:object="${newTutorCheckIn}">
+  <div class="row">
+    <div class="form-group col-md-6">
+        <label for="remarks" class="col-form-label">Remarks</label>
+        <input type="text" th:field="*{remarks}" class="form-control" id="remarks" placeholder="Remarks">
+        <span th:if="${#fields.hasErrors('remarks')}" th:errors="*{remarks}" class="text-danger"></span>
+    </div>
+  </div>
+
+  <!-- ADD SECTION FOR SELECTING TIMESLOT WITH A "RADIO" BUTTON -->
+
+  <button type="submit" th:formaction="@{/tutor/add}" class="btn btn-primary">Add Entry</button>
+</form>
