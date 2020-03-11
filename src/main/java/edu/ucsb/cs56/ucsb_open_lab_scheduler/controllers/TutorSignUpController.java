@@ -63,11 +63,11 @@ public class TutorSignUpController{
   
     @GetMapping("/tutorSignUp/courseSelect")
     public String signUpTable(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-      String role = authControllerAdvice.getRole(token);
-      if (!authControllerAdvice.getIsTutor(token)) {
-        redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-        return "redirect:/";
-      }
+        //String role = authControllerAdvice.getRole(token);
+        if (!authControllerAdvice.getIsTutor(token)) {
+          redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
+          return "redirect:/";
+        }
 
       Optional<Tutor> tutor = tutorRepository.findByEmail(authControllerAdvice.getEmail(token));
       if (!tutor.isPresent()) {

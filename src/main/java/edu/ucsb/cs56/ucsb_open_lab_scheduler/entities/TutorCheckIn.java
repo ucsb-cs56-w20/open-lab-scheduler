@@ -1,5 +1,8 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+
+import javax.persistence.*;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,30 +17,42 @@ public class TutorCheckIn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
+    @ManyToOne
+    @JoinColumn(name = "time_slot_assignment_id")
+    private TimeSlotAssignment timeSlotAssignmentId;
+
     @NotBlank
-    private long timeSlotAssignmentId;
+    private String remarks;
+
 
     @NotBlank
     private String date;
 
     @NotBlank
-    private String remarks;
+    private String time;
+
 
     public TutorCheckIn() {
     }
 
-    public TutorCheckIn(long timeSlotAssignmentId) {
+    public TutorCheckIn(TimeSlotAssignment timeSlotAssignmentId) {
         this.timeSlotAssignmentId = timeSlotAssignmentId;
     }
 
-    public TutorCheckIn(long timeSlotAssignmentId, String date, String remarks) {
+    public TutorCheckIn(TimeSlotAssignment timeSlotAssignmentId, String time, String date, String remarks) {
         this.timeSlotAssignmentId = timeSlotAssignmentId;
+        this.time = time;
         this.date = date;
         this.remarks = remarks;
     }
 
-    public void setId(long timeSlotAssignmentId) {
+    public void setId(TimeSlotAssignment timeSlotAssignmentId) {
         this.timeSlotAssignmentId = timeSlotAssignmentId;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setDate(String date) {
@@ -48,8 +63,12 @@ public class TutorCheckIn {
         this.remarks = remarks;
     }
 
-    public long getId() {
+    public TimeSlotAssignment getId() {
         return timeSlotAssignmentId;
+    }
+
+    public String getTime() {
+        return time;
     }
 
     public String getDate() {
