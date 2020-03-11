@@ -60,7 +60,7 @@ public class QuarterController {
   @GetMapping("/quarter")
   public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Admin"))) {
+    if (!(role.equals("Admin"))&&!(role.equals("Tutor"))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -81,7 +81,7 @@ public class QuarterController {
   public String showCourseLeads(@PathVariable("quarter") String quarter, Model model, OAuth2AuthenticationToken token,
       RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Admin"))) {
+    if (!(role.equals("Admin"))&&!(role.equals("Tutor"))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
@@ -136,7 +136,7 @@ public class QuarterController {
   public String showOpenLabHours(@PathVariable("quarter") String quarter, Model model, OAuth2AuthenticationToken token,
       RedirectAttributes redirAttrs) {
     String role = authControllerAdvice.getRole(token);
-    if (!(role.equals("Admin"))) {
+    if (!(role.equals("Admin"))&&!(role.equals("Tutor"))) {
       redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
       return "redirect:/";
     }
