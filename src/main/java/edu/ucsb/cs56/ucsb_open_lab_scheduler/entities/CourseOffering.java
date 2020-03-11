@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 
@@ -32,14 +34,31 @@ public class CourseOffering implements Comparable<CourseOffering>{
     @NotBlank(message = "Instructor Email is required")
     private String instructorEmail;
 
+    @Min(value = 0, message = "Must input an integer greater than 0")
+    @NotNull(message = "Must input an integer greater than 0")
+    private int numTAs;
+
+    @Min(value = 0, message = "Must input an integer greater than 0")
+    @NotNull(message = "Must input an integer greater than 0")
+    private int numLAs;
+
+    @Min(value = 0, message = "Must input an integer greater than 0")
+    @NotNull(message = "Must input an integer greater than 0")
+    private int num190J;
+
     public CourseOffering(){}
-    public CourseOffering(long id, String courseId, String quarter, String instructorName, String instructorEmail){
+
+    public CourseOffering(long id, String courseId, String quarter, String instructorName, String instructorEmail, int numTAs, int numLAs, int num190J){
         this.id = id;
         this.courseId = courseId;
         this.quarter = quarter;
         this.instructorName = instructorName;
         this.instructorEmail = instructorEmail;
+        this.numTAs = numTAs;
+        this.numLAs = numLAs;
+        this.num190J = num190J;
     }
+
 
     public void setId(long id){
         this.id = id;
@@ -61,6 +80,18 @@ public class CourseOffering implements Comparable<CourseOffering>{
         this.instructorEmail = instructorEmail;
     }
 
+    public void setNumTAs(int numTAs){
+        this.numTAs = numTAs;
+    }
+
+    public void setNumLAs(int numLAs){
+        this.numLAs = numLAs;
+    }
+
+    public void setNum190J(int num190J){
+        this.num190J = num190J;
+    }
+
     public long getId(){
         return id;
     }
@@ -79,6 +110,18 @@ public class CourseOffering implements Comparable<CourseOffering>{
 
     public String getInstructorEmail(){
         return instructorEmail;
+    }
+
+    public int getNumTAs(){
+        return numTAs;
+    }
+
+    public int getNumLAs(){
+        return numLAs;
+    }
+
+    public int getNum190J(){
+        return num190J;
     }
 
     @Override

@@ -156,11 +156,9 @@ public class CourseOfferingController {
             return "redirect:/";
         }
         if (result.hasErrors()) {
-            //courseOffering.setId(id);
             return "courseOffering/update";
         }
         courseOfferingRepository.save(courseOffering);
-        // model.addAttribute("courseOffering", courseOfferingRepository.findAll());
         return "redirect:/courseOffering";
     }
 }
