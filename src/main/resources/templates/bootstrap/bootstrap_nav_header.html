@@ -63,12 +63,17 @@
           id="navbarDropdown"
           role="button"
         >
-
           My Courses
         </a>
       </li>
+
       <li th:if="${isAdmin}" class="nav-item ">
-        <a class="nav-link" href="/admin" id="navbarDropdown" role="button">
+        <a
+          class="nav-link"
+          href="/admin"
+          id="navbarDropdown"
+          role="button"
+        >
           Admin
         </a>
       </li>
@@ -82,7 +87,27 @@
           Tutor View
         </a>
       </li>
+      
+      <li th:if="${isTutor}" class="dropdown user-nav">
+        <a href="#" class="dropdown-toggle float-right" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+        >Tutor Check In
+        </a>
+        <ul class="dropdown-menu">
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-item">
+              <a class="nav-link" href="/tutorCheckIn" id="navbarDropdown" role="button">
+                Log Tutor Entry
+              </a>
+          </li>
+          <li class="dropdown-item"> 
+            <a class="nav-link" href="/tutorCheckIn/" id="navbarDropdown" role="button">
+              View Tutor Log
+            </a>
+          </li>
+        </ul>
+      </li>
     </ul>
+
 
     <ul class="nav navbar-nav navbar-right">
       <li th:if="${isLoggedIn}">
@@ -100,8 +125,10 @@
         >
           <img th:src="${picture} " height="20" width="20" th:alt="${fname}" />
           <span class="caret"></span>
-        </a>
+      </a>
+        
         <ul class="dropdown-menu  pull-left">
+          
           <li role="separator" class="divider"></li>
           <li class="dropdown-item">
             <form
