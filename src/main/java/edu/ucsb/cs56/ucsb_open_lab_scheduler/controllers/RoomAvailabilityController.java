@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -53,6 +51,7 @@ public class RoomAvailabilityController {
 
     @Autowired
     TimeSlotRepository timeSlotRepository;
+
     @Value("${app.timeSlotDefaultDuration}")
     private int defaultDuration;
 
@@ -202,4 +201,5 @@ public class RoomAvailabilityController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
