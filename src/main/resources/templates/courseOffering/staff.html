@@ -15,7 +15,7 @@
 
                 <h2 class="my-5">CS56 W20 Open Lab Hours</h2>
                 <br />
-                <h4>Please confirm course deletion:</h4>
+                <h4>Staff:</h4>
 
                 <table class="table table-striped table-responsive-md">
                     <thead>
@@ -25,29 +25,39 @@
                             <th>Instructor Name</th>
                             <th>Instructor Email</th>
                             <th> </th>
-                            <th> </th>
                         </tr>
                     </thead>
                     <br />
                     <tbody>
-                        <tr th:with="co=${CourseToDelete}">
+                        <tr th:with="co=${course}">
                             <td th:text="${co.courseId}"></td>
                             <td th:text="${co.quarter}"></td>
                             <td th:text="${co.instructorName}"></td>
                             <td th:text="${co.instructorEmail}"></td>
-                            <td>
-                                <form th:action="@{/courseOffering/delete/confirm/{id}(id=${co.id})}" th:method="post">
-                                    <button type="submit" class="btn btn-danger btn-block">Delete</button>
-                                </form>
-                            </td>
-                            <td>
-                                <form th:action="@{/courseOffering/}" th:method="get">
-                                    <button type="submit" class="btn btn-primary btn-block">Cancel</button>
-                                </form>
-                            </td>
+                            <td></td>
+
                         </tr>
                     </tbody>
                 </table>
+
+                <table class="table table-striped table-responsive-md">
+                    <thead>
+                        <tr>
+                            <th>Staff</th>
+                            <th>Number of Time Slots Signed Up For</th>
+                        </tr>
+                    </thead>
+                    <br />
+                    <tbody>
+                        <tr th:each="t, tStat : ${tutorAssignments}">
+                            <td th:text="${t.tutor.getFullName()}"></td>
+                            <td th:text="${numberTimeSlotsAssigned[tStat.index].toString()}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form th:action="@{/courseOffering/}" th:method="get">
+                    <button type="submit" class="btn btn-primary btn-block">Back</button>
+                </form>
             </div>
         </div>
 
