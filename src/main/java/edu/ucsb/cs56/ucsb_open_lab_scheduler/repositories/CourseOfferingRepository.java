@@ -16,10 +16,7 @@ public interface CourseOfferingRepository extends CrudRepository<CourseOffering,
 
     public List<CourseOffering> findByInstructorEmail(String instructorEmail);
 
-<<<<<<< HEAD
-=======
     @Query(value = "SELECT DISTINCT quarter FROM course_offering", nativeQuery=true)
     public List<String> findAllUniqueQuarters();
->>>>>>> bq - rebasing errors
     public List<CourseOffering> findByQuarter(String quarter);
 }
