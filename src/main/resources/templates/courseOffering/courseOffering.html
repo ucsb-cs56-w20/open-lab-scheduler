@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 
@@ -28,7 +26,7 @@ CMPSC 48,F19,Richert Wang,richert@ucsb.edu
           <input type="file" name="csv" id="csv" accept="text/csv">
           <input type="submit" class="btn btn-primary" value="Submit">
         </form>
-        <br/>
+        <br />
         <a href="/courseOffering/create" class="btn btn-success">Create</a>
         <table class="table table-striped table-responsive-md">
           <thead>
@@ -40,6 +38,9 @@ CMPSC 48,F19,Richert Wang,richert@ucsb.edu
               <th>TAs</th>
               <th>LAs</th>
               <th>190J</th>
+              <th> </th>
+              <th> </th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -51,6 +52,11 @@ CMPSC 48,F19,Richert Wang,richert@ucsb.edu
               <td th:text="${co.numTAs}"></td>
               <td th:text="${co.numLAs}"></td>
               <td th:text="${co.num190J}"></td>
+              <td>
+                <form th:action="@{/courseOffering/staff/{id}(id=${co.id})}" th:method="get">
+                  <button type="submit" class="btn btn-primary">Staff</button>
+                </form>
+              </td>
               <td>
                 <form th:action="@{/courseOffering/edit/{id}(id=${co.id})}" th:method="get">
                   <button type="submit" class="btn btn-success">Edit</button>
