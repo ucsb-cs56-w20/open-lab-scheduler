@@ -12,7 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TutorCheckInRepository extends CrudRepository<TutorCheckIn, Long> {
     List<TutorCheckIn> findById(TimeSlotAssignment timeSlotAssignmentId);
-
     List<TutorCheckIn> findAll();
-
 }

@@ -19,9 +19,7 @@ INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assi
 INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('ChanChan','Mao','chanchanmao@ucsb.edu', 1,0);
 
 INSERT INTO room_availability (quarter, start_time, end_time, day, room_id) VALUES ('W20', 1700, 1900, 'Monday', 1);
-
 INSERT INTO time_slot (room_availability_id, start_time, end_time) VALUES (1, 1700, 1730);
-
 INSERT INTO time_slot_assignment (time_slot_id, tutor_id, course_offering_id) VALUES (1, 1, 1);
 
 INSERT INTO tutor_assignment(course_offering_id, tutor_id, is_course_lead) VALUES (1, 1, 0);

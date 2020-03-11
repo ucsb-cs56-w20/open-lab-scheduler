@@ -1,6 +1,8 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
+
 import javax.persistence.*;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +17,7 @@ public class TutorCheckIn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
     @ManyToOne
     @JoinColumn(name = "time_slot_assignment_id")
     private TimeSlotAssignment timeSlotAssignmentId;
@@ -22,11 +25,13 @@ public class TutorCheckIn {
     @NotBlank
     private String remarks;
 
+
     @NotBlank
     private String date;
 
     @NotBlank
     private String time;
+
 
     public TutorCheckIn() {
     }

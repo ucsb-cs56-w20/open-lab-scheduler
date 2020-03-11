@@ -25,7 +25,6 @@ import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.ValidEmailService;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
@@ -39,13 +38,12 @@ public class TutorCheckInController {
 
     @Autowired
     private AuthControllerAdvice authControllerAdvice;
-    
+  
     @Autowired
     private TutorRepository tutorRepository;
     
     @Autowired
     private TutorCheckInRepository tutorcheckinRepository;
-
     @Autowired
     public TutorCheckInController(TutorCheckInRepository repo) {
         this.tutorcheckinRepository = repo;
@@ -53,21 +51,17 @@ public class TutorCheckInController {
 
     @GetMapping("/tutorCheckIn")
     public String tutorcheckin(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-        // String role = authControllerAdvice.getRole(token);
+
         if (!authControllerAdvice.getIsTutor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
-        // addTutor();
+        
         model.addAttribute("tutors", tutorcheckinRepository.findAll());
         model.addAttribute("newTutor", new TutorCheckIn());
         return "/tutorCheckIn/tutorCheckIn";
     }
-    // private void addTutor() {
-    //     if (tutorcheckinRepository.findById(timeSlotAssignmentId).isEmpty()) {
-    //         tutorcheckinRepository.save(new TutorCheckIn());
-    //     }
-    // }
+    
 
     @GetMapping("/tutorCheckIn/viewLog")
     public String viewLog(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
@@ -103,28 +97,4 @@ public class TutorCheckInController {
         tutorcheckinRepository.save(tutorCheckIn);
 
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-
-
-    // @PostMapping("/tutorCheckIn") -- USE LATER?
-    // public String addEntry(@Valid TutorCheckIn tutor, BindingResult result, Model model, RedirectAttributes redirAttrs,
-    //         OAuth2AuthenticationToken token) {
-    //     String role = authControllerAdvice.getRole(token);
-    //     if (!role.equals("Tutor")) {
-    //         redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
-    //         return "redirect:/";
-    //     }
-
-    //     boolean errors = false;
-    //     if (!errors) {
-    //         tutorcheckinRepository.save(tutor);
-    //         model.addAttribute("newTutor", new TutorCheckIn());
-    //     } else {
-    //         model.addAttribute("newTutor", tutor);
-    //     }
-    //     model.addAttribute("tutors", tutorcheckinRepository.findAll());
-    //     return "redirect:/";
-    // }
-
     }
