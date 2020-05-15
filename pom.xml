@@ -85,6 +85,11 @@
 			<artifactId>opencsv</artifactId>
 			<version>5.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>6.4.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -92,6 +97,34 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- for flyway JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+					<id>copy-dependencies</id>
+					<phase>package</phase>
+					<goals><goal>copy</goal></goals>
+					<configuration>
+						<artifactItems>
+						<artifactItem>
+							<groupId>org.flywaydb</groupId>
+							<artifactId>flyway-core</artifactId>
+							<version>3.2.1</version>
+							<destFileName>flyway.jar</destFileName>
+						</artifactItem>
+						<artifactItem>
+							<groupId>org.postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+							<version>9.4-1204-jdbc41</version>
+							<destFileName>postgres.jar</destFileName>
+						</artifactItem>
+						</artifactItems>
+					</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
