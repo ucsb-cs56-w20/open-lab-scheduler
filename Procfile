@@ -1,1 +1,1 @@
-release: ./mvnw flyway:migrate
+release: ./mvnw flyway:baseline; ./mvnw flyway:migrate
