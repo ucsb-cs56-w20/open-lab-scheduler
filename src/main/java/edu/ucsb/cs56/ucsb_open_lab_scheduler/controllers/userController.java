@@ -1,7 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.User;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.AppUser;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.UserRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.MembershipService;
 
@@ -56,11 +56,11 @@ public class userController {
             return "redirect:/";
         }
 
-        Optional<User> optionaluser = userRepository.findById(id);
+        Optional<AppUser> optionaluser = userRepository.findById(id);
         if (!optionaluser.isPresent()) {
             redirAttrs.addFlashAttribute("alertDanger", "User with that id does not exist.");
         } else {
-            User user = optionaluser.get();
+            AppUser user = optionaluser.get();
             String email = user.getEmail();
             String curEmail = ms.email(token);
 

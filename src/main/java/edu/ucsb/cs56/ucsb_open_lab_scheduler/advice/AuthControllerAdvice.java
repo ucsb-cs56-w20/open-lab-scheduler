@@ -1,7 +1,7 @@
 package edu.ucsb.cs56.ucsb_open_lab_scheduler.advice;
 
 import org.springframework.web.bind.annotation.ModelAttribute;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.User;
+import edu.ucsb.cs56.ucsb_open_lab_scheduler.entities.AppUser;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.UserRepository;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.MembershipService;
 
@@ -125,11 +125,11 @@ public class AuthControllerAdvice {
         String email = membershipService.email(token);
         if (email == null) return;
 
-        List<User> appUsers = userRepository.findByEmail(email);
+        List<AppUser> appUsers = userRepository.findByEmail(email);
 
         if (appUsers.size()==0) {
-            // No user with this email is in the AppUsers table yet, so add one
-            User u = new User();
+            // No user with this email is in the Users table yet, so add one
+            AppUser u = new AppUser();
             u.setEmail(email);
             u.setFirstName(membershipService.fname(token));
             u.setLastName(membershipService.lname(token));
