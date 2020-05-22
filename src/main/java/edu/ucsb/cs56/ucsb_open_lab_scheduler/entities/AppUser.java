@@ -9,7 +9,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class User {
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,10 +19,10 @@ public class User {
     private String firstName;
     private String lastName;
     
-    public User() {
+    public AppUser() {
     }
     
-    public User(String email, String firstName, String lastName) {
+    public AppUser(String email, String firstName, String lastName) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
