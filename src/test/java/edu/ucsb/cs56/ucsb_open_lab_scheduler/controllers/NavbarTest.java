@@ -51,7 +51,6 @@ public class NavbarTest {
     @MockBean
     private AuthControllerAdvice aca;
 
-    @MockBean
     private GoogleMembershipService gms;
 
     @MockBean
@@ -112,5 +111,50 @@ public class NavbarTest {
                         .doesNotExist())
                 .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='navbar-nav mr-auto mt-2 mt-lg-0']/li[@class='nav-item '][6]/a[@id='navbarDropdown']")
                         .doesNotExist());
+    }
+    @Test
+    public void testAdminNavbar() throws Exception {
+        when(aca.getFirstName(any())).thenReturn("Joe");
+        when(aca.getLastName(any())).thenReturn("Gaucho");
+        when(aca.getEmail(any())).thenReturn("joegaucho@ucsb.edu");
+        when(aca.getIsAdmin(any())).thenReturn(true);
+        when(aca.getRole(any())).thenReturn("Admin");
+        when(aca.getIsLoggedIn(any())).thenReturn(true);
+
+        // Now check that the name in the header is Joe
+        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='nav navbar-nav navbar-right']/li[1]/a")
+                        .string("Joe"));
+
+        // check role in header is (Admin)
+        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='nav navbar-nav navbar-right']/li[2]")
+                        .string("(Admin)"));
+
+        // Check login button is NOT present
+        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='nav navbar-nav navbar-right']/li/form[@class='form-inline my-2 my-lg-0']/button[@class='navbar-btn']")
+                        .doesNotExist());
+
+        // Make sure all admin buttons are NOT present
+        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.TEXT_HTML)).andExpect(status().isOk())
+                .andExpect(content().contentType("text/html;charset=UTF-8"))
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='navbar-nav mr-auto mt-2 mt-lg-0']/li[@class='nav-item '][1]/a[@id='navbarDropdown']")
+                        .exists())
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='navbar-nav mr-auto mt-2 mt-lg-0']/li[@class='nav-item '][2]/a[@id='navbarDropdown']")
+                        .exists())
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='navbar-nav mr-auto mt-2 mt-lg-0']/li[@class='nav-item '][3]/a[@id='navbarDropdown']")
+                        .exists())
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='navbar-nav mr-auto mt-2 mt-lg-0']/li[@class='nav-item '][4]/a[@id='navbarDropdown']")
+                        .exists())
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='navbar-nav mr-auto mt-2 mt-lg-0']/li[@class='nav-item '][5]/a[@id='navbarDropdown']")
+                        .exists())
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='navbar-nav mr-auto mt-2 mt-lg-0']/li[@class='nav-item '][6]/a[@id='navbarDropdown']")
+                        .exists())
+                .andExpect(xpath("/html/body/div[@class='container']/nav[@class='navbar navbar-expand-lg navbar-light bg-light']/div[@id='navbarTogglerDemo03']/ul[@class='navbar-nav mr-auto mt-2 mt-lg-0']/li[@class='nav-item '][7]/a[@id='navbarDropdown']")
+                        .exists());
     }
 }
