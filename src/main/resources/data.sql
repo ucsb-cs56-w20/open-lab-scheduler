@@ -10,13 +10,13 @@ INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email, numTAs, numLAs, num190J) VALUES ('CMPSC 160','F19','Ding', 'ding@ucsb.edu', 0, 0, 0);
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email, numTAs, numLAs, num190J) VALUES ('CMPSC 130A','W20','Koc', 'koc@ucsb.edu', 0, 0, 0);
 INSERT INTO course_offering (course_id,quarter,instructor_name, instructor_email, numTAs, numLAs, num190J) VALUES ('CMPSC 130B','W20','Lokshtanov', 'lokshtanov@ucsb.edu', 0, 0, 0);
-INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('Scott','Chow','scottpchow@example.org', 1,0);
-INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('Zach','Sisco','zachsisco@example.org', 1,0);
-INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('Cindy','Zhao','cindyzhao@ucsb.edu', 1,0);
-INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('Aaron','Huang','aaronhuang@ucsb.edu', 1,0);
-INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('Kate','Perkins','kateperkins@example.org', 1,0);
-INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('George','Kripac','Georgekripac@example.org', 1,0);
-INSERT INTO tutor (first_name,last_name, email, is_active,number_of_courses_assigned) VALUES ('ChanChan','Mao','chanchanmao@ucsb.edu', 1,0);
+INSERT INTO tutor (first_name,last_name, email,student_perm, is_active,number_of_courses_assigned) VALUES ('Scott','Chow','scottpchow@example.org', 1, 1,0);
+INSERT INTO tutor (first_name,last_name, email,student_perm, is_active,number_of_courses_assigned) VALUES ('Zach','Sisco','zachsisco@example.org', 2, 1,0);
+INSERT INTO tutor (first_name,last_name, email,student_perm, is_active,number_of_courses_assigned) VALUES ('Cindy','Zhao','cindyzhao@ucsb.edu', 3, 1,0);
+INSERT INTO tutor (first_name,last_name, email,student_perm, is_active,number_of_courses_assigned) VALUES ('Aaron','Huang','aaronhuang@ucsb.edu', 4, 1,0);
+INSERT INTO tutor (first_name,last_name, email,student_perm, is_active,number_of_courses_assigned) VALUES ('Kate','Perkins','kateperkins@example.org', 5, 1,0);
+INSERT INTO tutor (first_name,last_name, email,student_perm, is_active,number_of_courses_assigned) VALUES ('George','Kripac','Georgekripac@example.org', 6, 1,0);
+INSERT INTO tutor (first_name,last_name, email,student_perm, is_active,number_of_courses_assigned) VALUES ('ChanChan','Mao','chanchanmao@ucsb.edu', 7, 1,0);
 
 INSERT INTO room_availability (quarter, start_time, end_time, day, room_id) VALUES ('W20', 1700, 1900, 'Monday', 1);
 INSERT INTO time_slot (room_availability_id, start_time, end_time) VALUES (1, 1700, 1730);
