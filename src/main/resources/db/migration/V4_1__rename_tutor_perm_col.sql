@@ -1,0 +1,1 @@
+ALTER TABLE tutor RENAME COLUMN "perm" TO "student_perm";
