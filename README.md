@@ -21,7 +21,7 @@ A project to:
     - Note that you SHOULD NOT edit `localhost.json.SAMPLE` directly.
     - The copied file `localhost.json` will NOT be commited to GitHub; it's in the `.gitignore`
 
-3.  Then, edit the `localhost.json` file and put in your client id and client secret in the places indicated.
+3.  Then, edit the `localhost.json` file and put in your client id and client secret in the places indicated. Additionally `localhost.json`can be used to overwrite the `app.admin.emails`, which is used to provide the initial admin emails for the application.
 
 4.  Finally, IN EACH terminal session where you are going to run `mvn spring-boot:run`, and EACH TIME after you
     change the values in `localhost.json`, execute this command to load those values into the Unix environment:
