@@ -45,5 +45,5 @@ INSERT INTO tutor_check_in(time_slot_assignment_id, time, date, remarks) VALUES 
 INSERT INTO tutor_check_in(time_slot_assignment_id, time, date, remarks) VALUES (1, '6:00','9/3/20','explained recursion');
 INSERT INTO tutor_check_in(time_slot_assignment_id, time, date, remarks) VALUES (1, '10:00','5/10/20','helped a student with constructor method');
 
-INSERT INTO admin(email, is_permanent_admin) VALUES ('joe@ucsb.edu', FALSE);
+INSERT INTO admin(email, is_permanent_admin) VALUES ('joe@example.com', FALSE);
 

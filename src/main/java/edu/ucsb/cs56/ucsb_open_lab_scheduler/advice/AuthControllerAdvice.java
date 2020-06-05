@@ -78,7 +78,7 @@ public class AuthControllerAdvice {
     public Object getOauth(OAuth2AuthenticationToken token){
         return token;
     }
-    
+
     @ModelAttribute("isMember")
     public boolean getIsMember(OAuth2AuthenticationToken token){
         return membershipService.isMember(token);
@@ -88,7 +88,7 @@ public class AuthControllerAdvice {
     public boolean getIsInstructor(OAuth2AuthenticationToken token){
         return membershipService.isInstructor(token);
     }
-    
+
     @ModelAttribute("isAdmin")
     public boolean getIsAdmin(OAuth2AuthenticationToken token){
         return membershipService.isAdmin(token);
@@ -122,7 +122,7 @@ public class AuthControllerAdvice {
 
     private void updateLoginTable(OAuth2AuthenticationToken token) {
         if (token==null) return;
-        
+
         String email = membershipService.email(token);
         if (email == null) return;
 

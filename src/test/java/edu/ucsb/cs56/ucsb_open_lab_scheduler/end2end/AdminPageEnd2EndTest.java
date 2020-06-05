@@ -15,13 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
-/**
- * This test runs a complete end-to-end test on the project as a single test.
- * Starts by logging in as a student, submitting a review, and reviewing 5 ideas
- *
- * If you are trying to duplicate this test in a project, make sure to copy the
- * html template under the test/resources/__files/ directory!
- */
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, properties="spring.datasource.name=end2endtest")
 public class AdminPageEnd2EndTest {
@@ -68,7 +62,7 @@ public class AdminPageEnd2EndTest {
         mockOAuth2Provider.stubFor(post(urlPathEqualTo("/oauth/token"))
                 .willReturn(okJson("{\"token_type\": \"Bearer\",\"access_token\":\"{{randomValue length=20 type='ALPHANUMERIC'}}\"}")));
         mockOAuth2Provider.stubFor(get(urlPathEqualTo("/userinfo"))
-                .willReturn(okJson("{\"sub\":\"my-id\",\"email\":\"joe@ucsb.edu\", \"hd\":\"ucsb.edu\", \"name\":\"Joe\", \"given_name\":\"Joe\", \"family_name\":\"Gaucho\"}")));
+                .willReturn(okJson("{\"sub\":\"my-id\",\"email\":\"joe@example.com\", \"hd\":\"example.com\", \"name\":\"Joe\", \"given_name\":\"Joe\", \"family_name\":\"Gaucho\"}")));
     }
 
     //Close the browser after tests are done
@@ -81,7 +75,7 @@ public class AdminPageEnd2EndTest {
 
 
     @Test
-    public void runUserFlowEnd2EndTestWithAuthentication() {
+    public void runAdminPageEnd2EndTest() {
         // Navigate to login page
         webDriver.get("http://localhost:8080/oauth2/authorization/wiremock");
         // Make sure Spring redirected us to the right place
@@ -94,14 +88,14 @@ public class AdminPageEnd2EndTest {
         // Verify that we are at the correct url
         assert(webDriver.getCurrentUrl().equalsIgnoreCase("http://localhost:8080/admin"));
         // Find the form input and create an admin
-        webDriver.findElement(By.id("selenium-email-input")).sendKeys("testAdmin@ucsb.edu");
-        webDriver.findElement(By.id("selenium-admin-add")).click();
+        webDriver.findElement(By.cssSelector("[data-selenium='email-input']")).sendKeys("testAdmin@ucsb.edu");
+        webDriver.findElement(By.cssSelector("[data-selenium='admin-add']")).click();
         // Verify that the admin we tried to create exists
         assert(webDriver.findElement(By.xpath("//table/tbody/tr[3]/td[1]"))
                 .getText()
                 .equalsIgnoreCase("testAdmin@ucsb.edu"));
         // Delete the admin
-        webDriver.findElement(By.id("selenium-admin-delete")).click();
+        webDriver.findElement(By.cssSelector("[data-selenium='admin-delete']")).click();
         // Verify that the admin is deleted
         assert(webDriver.findElements(By.xpath("//table/tbody/tr[3]/td[1]")).isEmpty());
     }
