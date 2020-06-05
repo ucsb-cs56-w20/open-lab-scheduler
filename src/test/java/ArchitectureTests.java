@@ -5,6 +5,8 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.library.freeze.FreezingArchRule;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.persistence.Entity;
@@ -71,10 +73,28 @@ public class ArchitectureTests {
         );
 
     @ArchTest
+    public static final ArchRule controllerPackage =
+        classes()
+            .that().areAnnotatedWith(Controller.class)
+            .should().resideInAPackage("..controllers..");
+
+    @ArchTest
     public static final ArchRule repositoryClassNames =
         classes()
             .that().resideInAPackage("..repositories..")
             .should().haveSimpleNameEndingWith("Repository");
+
+    @ArchTest
+    public static final ArchRule repositoryPackage =
+        classes()
+            .that().areAnnotatedWith(Repository.class)
+            .should().resideInAPackage("..repositories..");
+
+    @ArchTest
+    public static final ArchRule adviceClassNames =
+        classes()
+            .that().resideInAPackage("..advice..")
+            .should().haveSimpleNameEndingWith("Advice");
 
     @ArchTest
     public static final ArchRule advicePackage =
