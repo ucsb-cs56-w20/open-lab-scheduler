@@ -4,6 +4,7 @@ import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.library.freeze.FreezingArchRule;
 
 import javax.persistence.Entity;
 
@@ -62,9 +63,11 @@ public class ArchitectureTests {
 
     @ArchTest
     public static final ArchRule controllerClassNames =
-        classes()
-            .that().resideInAPackage("..controllers..")
-            .should().haveSimpleNameEndingWith("Controller");
+        FreezingArchRule.freeze(
+            classes()
+                .that().resideInAPackage("..controllers..")
+                .should().haveSimpleNameEndingWith("Controller")
+        );
 
     @ArchTest
     public static final ArchRule repositoryClassNames =
