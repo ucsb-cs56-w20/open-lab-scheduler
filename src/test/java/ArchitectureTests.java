@@ -5,6 +5,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 import com.tngtech.archunit.library.freeze.FreezingArchRule;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
 import javax.persistence.Entity;
 
@@ -76,4 +77,18 @@ public class ArchitectureTests {
         classes()
             .that().resideInAPackage("..repositories..")
             .should().haveSimpleNameEndingWith("Repository");
+
+    @ArchTest
+    public static final ArchRule advicePackage =
+        classes()
+            .that().areAnnotatedWith(ControllerAdvice.class)
+            .should().resideInAPackage("..advice..");
+
+    @ArchTest
+    public static final ArchRule decoupleAdviceClasses =
+        FreezingArchRule.freeze(
+            noClasses()
+                .should().dependOnClassesThat().resideInAPackage("..advice..")
+        );
+
 }
