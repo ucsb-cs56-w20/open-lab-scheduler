@@ -44,3 +44,26 @@ A project to:
 | `mvn spring-boot:run`                                                                                                                                                                  | to run the web app                                |
 | `./checkLocalhost.py`                                                                                                                                                                  | to check the syntax of your `localhost.json` file |
 | `./setHerokuEnv.py --app APPNAME` | to check the syntax of your `heroku.json` file and set the configuration variables for Heroku app `APPNAME` (requires logging in to Heroku CLI first) |
+
+# Testing
+
+## ArchUnit
+
+This project uses [ArchUnit](https://www.archunit.org/) to enforce various architectural practices. These rules are 
+defined in the file `src/test/java/ArchitectureTests.java` and enforce a number of standards that are considered
+"good software design".
+
+### Legacy code and "Frozen" rules
+
+You may find many examples of code inside the codebase that violate one or more of the rules that are currently
+in place. Non-compliant code that was written before an ArchRule was implemented will not fail the build, but new code
+will. Note that this means you may not necessarily be able to copy-paste code from old parts of the codebase to
+implement new features; you may need to refactor/adapt the code to conform to the new rules.
+
+If you are a maintainer creating a new ArchRule and need to "freeze" a rule so that existing code does not fail a build:
+1. Wrap your ArchRule in [`FreezingArchRule.freeze`](https://www.archunit.org/userguide/html/000_Index.html#_usage)
+2. Run `mvn test -Pfreeze-new-archrules`
+3. Commit the tests and the new files generated in the `archunit_store` folder.
+
+If you are refactoring legacy code and have resolved all of the violations of a particular type, you may also remove
+the `FreezingArchRule.freeze` wrapper around the ArchRule in question.

@@ -1,0 +1,5 @@
+#
+#Fri Jun 05 01:27:18 PDT 2020
+classes\ that\ reside\ in\ a\ package\ '..controllers..'\ should\ have\ simple\ name\ ending\ with\ 'Controller'=c0bb9a71-ea09-4d85-9574-ee5e6bc28f8a
+Entities\ without\ a\ user-defined\ name\ should\ not\ have\ a\ class\ name\ that\ is\ a\ reserved\ SQL\ keyword=133ec74d-aab3-4a1e-aeff-34a2290fb18f
+no\ classes\ should\ depend\ on\ classes\ that\ reside\ in\ a\ package\ '..advice..'=8dac7256-0859-48f1-8fbb-44ac3552755e
