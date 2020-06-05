@@ -10,6 +10,7 @@
               th:field="*{email}"
               class="form-control"
               id="email"
+              data-selenium="email-input"
             />
           </td>
         </tr>
@@ -32,7 +33,7 @@
     type="submit"
     th:formaction="@{/admin/add}"
     class="btn btn-primary"
-    id="selenium-admin-add"
+    data-selenium="admin-add"
   >
     Add Admin
   </button>

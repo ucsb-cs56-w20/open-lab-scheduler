@@ -37,7 +37,7 @@
                   th:name="${_csrf.parameterName}"
                   th:value="${_csrf.token}"
                 />
-                <button  th:if="${!a.isPermanentAdmin}" type="submit" class="btn btn-danger">Delete</button>
+                <button  th:if="${!a.isPermanentAdmin}" type="submit" data-selenium="admin-delete" class="btn btn-danger">Delete</button>
               </form>
               </td>
           </tr>

@@ -1,0 +1,15 @@
+<html>
+<body>
+Welcome to the mock login page!
+<br />
+<form method="POST" action="/login">
+    <input type="hidden" name="state" value="{{request.query.state}}"/>
+    <input type="hidden" name="redirectUri" value="{{request.query.redirect_uri}}"/>
+
+    <input type="text" name="username" />
+    <input type="password" name="password" />
+
+    <input type="submit" id="submit" />
+</form>
+</body>
+</html>
