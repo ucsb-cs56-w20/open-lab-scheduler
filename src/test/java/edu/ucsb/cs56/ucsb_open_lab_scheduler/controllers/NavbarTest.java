@@ -2,7 +2,6 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.controllers;
 
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.advice.AuthControllerAdvice;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.repositories.*;
-import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.GoogleMembershipService;
 import edu.ucsb.cs56.ucsb_open_lab_scheduler.services.MembershipService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,19 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(ApplicationController.class)
