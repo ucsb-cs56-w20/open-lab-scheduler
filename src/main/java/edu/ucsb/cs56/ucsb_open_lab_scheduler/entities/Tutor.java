@@ -2,6 +2,7 @@ package edu.ucsb.cs56.ucsb_open_lab_scheduler.entities;
 
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,6 +30,8 @@ public class Tutor{
     @CsvBindByName
     @NotBlank(message = "First name is required")
     private String firstName;
+
+    private long studentPerm;
 
     private boolean isActive;
     private int numberOfCoursesAssigned;
@@ -67,6 +70,14 @@ public class Tutor{
 
     public String getLastName(){
         return this.lastName;
+    }
+
+    public void setStudentPerm(long p){
+        this.studentPerm = p;
+    }
+
+    public long getStudentPerm(){
+        return this.studentPerm;
     }
 
     public void setIsActive(boolean isActive) {
