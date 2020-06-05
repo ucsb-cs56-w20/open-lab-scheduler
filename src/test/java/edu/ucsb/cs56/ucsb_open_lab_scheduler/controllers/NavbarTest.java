@@ -51,8 +51,6 @@ public class NavbarTest {
     @MockBean
     private AuthControllerAdvice aca;
 
-    private GoogleMembershipService gms;
-
     @MockBean
     private MembershipService ms;
 
