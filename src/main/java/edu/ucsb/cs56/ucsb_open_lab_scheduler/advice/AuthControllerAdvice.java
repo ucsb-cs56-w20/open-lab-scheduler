@@ -20,7 +20,7 @@ import java.util.ArrayList;
 @ControllerAdvice
 public class AuthControllerAdvice {
 
-    @Autowired   
+    @Autowired
     private MembershipService membershipService;
 
     @Autowired
@@ -64,6 +64,7 @@ public class AuthControllerAdvice {
     @ModelAttribute("picture")
     public String getPicture(OAuth2AuthenticationToken token){
         if (token == null) return "";
+        if (token.getPrincipal().getAttributes().get("picture") == null) return "";
         return token.getPrincipal().getAttributes().get("picture").toString();
     }
 
