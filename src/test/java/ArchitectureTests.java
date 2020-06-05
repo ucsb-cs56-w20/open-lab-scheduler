@@ -46,12 +46,14 @@ public class ArchitectureTests {
 
     @ArchTest
     public static final ArchRule noReservedEntityNames =
-        classes()
-            .that().resideInAPackage("..entities..")
-            .and().areAnnotatedWith(Entity.class)
-            .and().areNotAnnotatedWith(userDefinedEntityName)
-            .should().notHaveSimpleName("User")
-            .as("Entities without a user-defined name should not have a class name that is a reserved SQL keyword");
+        FreezingArchRule.freeze(
+            classes()
+                .that().resideInAPackage("..entities..")
+                .and().areAnnotatedWith(Entity.class)
+                .and().areNotAnnotatedWith(userDefinedEntityName)
+                .should().notHaveSimpleName("User")
+                .as("Entities without a user-defined name should not have a class name that is a reserved SQL keyword")
+        );
 
     @ArchTest
     public static final ArchRule noReservedUserDefinedEntityNames =
