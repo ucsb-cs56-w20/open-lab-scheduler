@@ -71,7 +71,7 @@ W20,Friday,1500,1700,Phelps 2510
     $(".delete").click(e => {
       if(confirm("Are you sure you want to delete?")) {
           $.ajax({
-              url: `/roomAvailability/${e.target.dataset.raid}`,
+              url: `/roomAvailability/${e.currentTarget.dataset.raid}`,
               method: "DELETE",
               data: {
                 /*[[${_csrf.parameterName}]]: [[${_csrf.token}]]*/
@@ -84,7 +84,7 @@ W20,Friday,1500,1700,Phelps 2510
       }
     })
     $(".edit").click(e => {
-      window.location.href=`roomAvailability/${e.target.dataset.raid}/edit`;
+      window.location.href=`roomAvailability/${e.currentTarget.dataset.raid}/edit`;
     })
     /*]]>*/
   </script>
