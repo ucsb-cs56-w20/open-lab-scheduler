@@ -51,7 +51,7 @@
           Tutor Assignment
         </a>
       </li>
-      <li th:if="${isAdmin}" class="nav-item ">
+      <li th:if="${isAdmin or isTutor}" class="nav-item ">
         <a class="nav-link" href="/quarter" id="navbarDropdown" role="button">
           Quarters
         </a>

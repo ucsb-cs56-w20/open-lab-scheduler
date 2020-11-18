@@ -71,7 +71,7 @@ public class InstructorMenuController {
     
     @GetMapping("/instructorMenu")
     public String dashboard(Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs) {
-        if (!authControllerAdvice.getIsInstructor(token)) {
+        if (!authControllerAdvice.getIsTutor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";
         }
@@ -83,8 +83,7 @@ public class InstructorMenuController {
     }
 
     @GetMapping("/instructorMenu/{id}")
-    public String getTutor(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token,
-            RedirectAttributes redirAttrs) {
+    public String getTutor(@PathVariable("id") long id, Model model, OAuth2AuthenticationToken token, RedirectAttributes redirAttrs){
         if (!authControllerAdvice.getIsInstructor(token)) {
             redirAttrs.addFlashAttribute("alertDanger", "You do not have permission to access that page");
             return "redirect:/";

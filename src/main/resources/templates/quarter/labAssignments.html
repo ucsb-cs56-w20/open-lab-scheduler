@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+  <div th:replace="bootstrap/title.html"></div>
+  <div th:replace="bootstrap/bootstrap_head.html"></div>
+</head>
+
+<body>
+  <div class="container">
+    <div th:replace="bootstrap/bootstrap_nav_header.html"></div>
+
+    <div class="row">
+      <div class="col-md-10">
+        <h2 class="my-5", th:text="${quarter} + ' Lab Assignments'"></h2>
+        <table class="table table-striped table-responsive-md">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Open Lab Hours</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="course : ${courseOfferingsInQuarter}">
+            <td th:text="${course.getQuarter() + ' ' + course.getCourseId()}"></td>
+            <td th:text="${openLabHours.get(course)}"></td>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div th:replace="bootstrap/bootstrap_footer.html"></div>
+  </div>
+  <div th:replace="bootstrap/bootstrap_scripts.html"></div>
+</html>
